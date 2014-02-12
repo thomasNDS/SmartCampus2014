@@ -35,21 +35,45 @@ var Customer = new Schema({
 });
 var CustomerModel = mongoose.model('Customer', Customer);
 
-var Invoice = new Schema({
-    customer: { type: Schema.Types.ObjectId, ref: 'Customer' },
-    amount: { type: Number, required: true }
+///////////////////////////////////
+/////// MONGODB  //////////////////
+//////////////////////////////////
+//Connection to the a mongodb database path localhost:port/nameOfCollection
+mongoose.connect("mongodb://localhost:27017/Client", function(err) {
+  if(err) { throw err; }
 });
-var InvoiceModel = mongoose.model('Invoice', Invoice);
+
+
+//Definition of a schema
+var Temperature = new Schema({
+    _id : Number,
+    temp: Number
+});
+//Creation of the model
+var TemperatureModel = mongoose.model('temperature', Temperature);
+
+//Creation of an object which respect the model define before
+var myTemperatureModel = new TemperatureModel({ _id : 123, temp : 16});
+
+
+//saved the temperature in the mongodb database
+myTemperatureModel.save(function(err){
+      if (err) { throw err; }
+  console.log('Commentaire ajouté avec succès !');
+  // On se déconnecte de MongoDB maintenant
+  mongoose.connection.close();
+});
 
 
 var app = express();
 app.configure(function(){
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    restify.serve(app, CustomerModel);
-    restify.serve(app, InvoiceModel);
+    restify.serve(app, TemperatureModel);
 });
 
+
+//Run the server
 http.createServer(app).listen(4242, function() {
     console.log("http://localhost:4242");
 });
