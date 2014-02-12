@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * SmartCampus
  */
 
 var http = require('http');
@@ -15,7 +13,7 @@ var restify = require('express-restify-mongoose')
 var uristring =
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
-'mongodb://nicko466@gmail.com:salocin28500@ds031359.mongolab.com:31359/heroku_app17938038';
+'mongodb://localhost/smart';
 
 // The http server will listen to an appropriate port, or default to
 // port 5000.
@@ -30,9 +28,6 @@ mongoose.connect(uristring, function (err, res) {
   console.log ('Succeeded connected to: ' + uristring);
   }
 });
-
-
-
 
 var Customer = new Schema({
     name: { type: String, required: true },
@@ -56,5 +51,5 @@ app.configure(function(){
 });
 
 http.createServer(app).listen(4242, function() {
-    console.log("Express server listening on port 4242");
+    console.log("http://localhost:4242");
 });
