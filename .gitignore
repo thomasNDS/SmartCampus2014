@@ -5,3 +5,4 @@
 *.war
 *.ear
 /ServeurMqtt/nbproject/private/
+/appsClient/exampleAR/nbproject/private/
