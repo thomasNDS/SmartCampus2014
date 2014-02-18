@@ -1,6 +1,6 @@
-HelloWorld
+MQQT server
 ==============
 
-This is HelloWorld.
+sudo npm install mqtt express mongodb mongoose mongoose-schema-extend express-restify-mongoose 
 
 

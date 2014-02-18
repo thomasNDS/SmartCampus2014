@@ -1,25 +1,26 @@
 {
   "name" : "ServeurMqtt",
   "version" : "0.0.1",
-  "main" : "./HelloWorld.js",
+  "main" : "./serveur.js",
   "author" : {
-    "name" : "nicko",
-    "email" : "nicko466@gmail.com"
+    "name" : "SmartCampus 2013",
+    "email" : ""
   },
-  "keywords" : [ ],
+  "keywords" : [ "smartcities", "campus"],
   "licenses" : {
     "type" : "mit"
   },
   "repository" : {
     "type" : "git",
-    "url" : "git://github.com/YOUR_LOGIN/HelloWorld.git"
+    "url" : "https://github.com/thomasNDS/SmartCampus2014.git"
   },
   "bugs" : {
-    "url" : "http://github.com/YOUR_LOGIN/HelloWorld/issues"
+    "url" : "https://github.com/thomasNDS/SmartCampus2014/issues"
   },
   "dependencies" : {
     "express" : "3.4.8",
     "restify" : "2.6.1",
-    "mongoose" : "3.8.7"
+    "mongoose" : "3.8.7",
+    "mongoose-schema-extend" : "0.1.7" 
   }
 }
