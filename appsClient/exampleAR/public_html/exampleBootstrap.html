@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Example AR - Bootstrap</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+
+        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+        <script src="js/libs/AR_mediaStream_fichiers/ga.js" async="" type="text/javascript"></script>
+        <script src="js/libs/AR_mediaStream_fichiers/JSARToolKit.js"></script>
+        <script src="js/libs/AR_mediaStream_fichiers/utils.js"></script>
+        <script src="js/libs/jquery/jquery.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+
+        <script>
+
+            console.log("largeur" + window.innerWidth);
+
+            //Fonction en cas d'erreur
+            function onFailure(err) {
+                alert("The following error occured: " + err.name);
+            }
+
+            //////////////////////////
+            //GESTION LECTURE MARKER//
+            //////////////////////////
+
+            //Nombre de marqueurs possibles à lire??
+            threshold = 128;
+            //Var booleen pour savoir si on voit un qrCode
+            qrVisible = false;
+            $(window).ready(function() {
+
+                ////////////////////////
+                //// GESTION CAMERA ////
+                ////////////////////////
+
+                //Creation et configuration d'un element video, il sera utilise pour streamer la camera
+                //L'element n'est pas affiche et est integre dans un canvas plus loin..
+                var video = document.createElement('video');
+//                video.width = 640;
+//                video.height = 480;
+                console.log("Avt fonction" + $(document).width());
+                video.width = $(document).width();
+                video.height = $(document).height();
+                video.loop = true;
+                video.volume = 0;
+                video.autoplay = true;
+                video.style.display = 'none';
+                video.controls = true;
+                //getUser mutliplateforme
+                navigator.getUserMedia = (navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia);
+                //Si getUser a marche, on le conf pour la video
+                //En cas d'erreur, fonction de failure
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({video: true},
+                    function(localMediaStream) {
+                        video.src = window.URL.createObjectURL(localMediaStream);
+                    }, onFailure);
+                }
+                else {
+                    alert('OOPS No browser Support');
+                }
+
+                console.log("Avt fonction" + $(document).width());
+                //Canvas pour la detection des marqueurs
+                var canvas = document.createElement('canvas');
+//                canvas.width = 320;
+//                canvas.height = 240;
+                canvas.width = $(document).width();
+                canvas.height = $(document).height();
+//                canvas.style.display = 'block';
+
+                //Canvas pour l'affichage de la video
+                var videoCanvas = document.createElement('canvas');
+                videoCanvas.setAttribute("id", "videoCanvas");
+                console.log(video.width);
+                videoCanvas.width = video.width;
+                videoCanvas.height = video.height;
+                // Create a RGB raster (image matricielle) object for the 2D canvas.
+                // JSARToolKit uses raster objects to read image data.
+                var raster = new NyARRgbRaster_Canvas2D(canvas);
+                // FLARParam is the thing used by FLARToolKit to set camera parameters.
+                var param = new FLARParam(canvas.width, canvas.height);
+                // The FLARMultiIdMarkerDetector is the actual detection engine for marker detection.
+                // It detects multiple ID markers. ID markers are special markers that encode a number.
+                var detector = new FLARMultiIdMarkerDetector(param, 120);
+                // For tracking video set continue mode to true. In continue mode, the detector
+                // tracks markers across multiple frames.
+                detector.setContinueMode(true);
+                //Contexte du canvas, utilise plus tard pour afficher la video
+                var ctx = canvas.getContext('2d');
+                //Ajout du canvas de video a la page
+//                document.body.appendChild(videoCanvas);
+                $("#backgroundVideo").append(videoCanvas);
+
+                /// FULL SCREEN ///
+                //// TODO ////
+                function onResizeHandler(e) {
+//                    console.log("full");
+                    var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
+                    if (isFullScreen) {
+//                        canvas.width = window.innerWidth;
+//                        canvas.height = window.innerHeight;
+                        console.log("larg " + window.innerWidth + "haut " + window.innerHeight);
+                        videoCanvas.getContext('2d').drawImage(video, 0, 0, window.innerWidth, window.innerHeight);
+                    }
+                }
+                window.onresize = onResizeHandler;
+//                window.onfullscreenchange = onResizeHandler;
+//                window.onwebkitfullscreenchange = onResizeHandler;
+//                window.onmozfullscreenchange = onResizeHandler;
+
+                //////////////////////
+
+                //Fonction appele a chaque interval
+                setInterval(function() {
+
+                    //Affichage image dans les deux canvas crees
+                    videoCanvas.getContext('2d').drawImage(video, 0, 0, video.width, video.height);
+//                    ctx.drawImage(videoCanvas, 0, 0, 320, 240);
+                    ctx.drawImage(videoCanvas, 0, 0);
+                    //Prevenir que le canvas a changer
+                    canvas.changed = true;
+                    //initiale avant d'entrer dans la boucle le qrvisible vu a faux
+                    qrVisible = false;
+                    //Creation du detecteur de marques, avec l'image matricielle et le nombre de marqueurs a detectes (surement..)
+                    var detected = detector.detectMarkerLite(raster, threshold);
+                    //id du marqueur lu
+                    var currId;
+                    // Go through the detected markers (and get their IDs and transformation matrices)
+                    for (var idx = 0; idx < detected; idx++) {
+
+                        //Si on entre dans cette boucle, c'est qu'on a lu un marqueur
+                        qrVisible = true;
+                        // Get the ID marker data for the current marker.
+                        // ID markers are special kind of markers that encode a number.
+                        // The bytes for the number are in the ID marker data.
+                        var id = detector.getIdMarkerData(idx);
+                        // This code handles only 32-bit numbers or shorter.
+                        if (id.packetLength > 4) {
+                            currId = -1;
+                        } else {
+                            currId = 0;
+                            for (var i = 0; i < id.packetLength; i++) {
+                                currId = (currId << 8) | id.getPacketData(i);
+                            }
+                        }
+                        console.log("[add] : ID = " + currId);
+                        //Test pour voir afficher l'id lu
+                        $(".coucou").html(currId);
+                    }
+
+                    ////////////////////////
+                    ///// INTERFACE AR /////
+                    ////////////////////////
+
+                    //Exemple de ce qu'on peut faire une fois un marqueur lu
+                    //Si on a lu un marqueur on popup pour demander si on veut afficher info de l'element lu?
+                    //TODO: possiblement plusieurs marqueurs lu..
+                    if (qrVisible) {
+                        var afficherContenu = confirm("Code repéré, target destroyed ?");
+                        if (afficherContenu) {
+                            console.log("SWITCH" + currId);
+                            switch (currId) {
+                                case 0:
+                                    $("#contenu2").css('visibility', 'visible');
+                                    break;
+                                case 4 :
+                                    $("#contenu4").css('visibility', 'visible');
+                            }
+                        }
+                    }
+                }, 15);
+            });
+        </script>
+
+        <style>
+            html {
+                background: black;
+                color: white;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .coucou {
+                text-decoration-color: black;
+            }
+            #contenu2 {
+                background-color: yellow;
+                /*                width : 400px;
+                                height: 100px;
+                                position: absolute;
+                                left: 100px;
+                                top: 150px;*/
+            }
+            #contenu4 {
+                background-color: blue;
+                /*width : 400px;*/
+                height: 100px;
+                /*position: absolute;*/
+                /*left: 100px;*/
+                /*top: 250px;*/
+            }
+            #backgroundVideo{
+                position: absolute;
+            }
+            #mainContent {
+                position : relative;
+            }
+            #pageContent{
+                /*position : absolute;*/
+                /*top : 100px;*/
+                background-color: green;
+            }
+            #verticalOffset{
+                height: 60px;
+                /*background-color: pink;*/
+            }
+        </style>
+
+    </head>
+    <body>
+        <!--MENU-->
+        <nav class="navbar navbar-static-top navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ul class="nav">
+                        <li><a href="#"><i class="icon-white icon-cog"></i> Paramètres</a></li>
+                        <li><a href="#"><i class="icon-white icon-info-sign"></i> Aide</a></li>
+                    </ul>
+                    <button class="btn pull-right">Switch</button>
+                </div>
+            </div>
+        </nav>
+
+        <!--DIV POUR LA VIDEO-->
+        <div id="backgroundVideo"></div>
+
+        <!--DIV QUI CONTIENDRA L'UI-->
+        <div id="mainContent" class="container-fluid">
+            <div class="row-fluid voffset7">
+                <div id="pageContent" class="span12">
+                    <div class="row-fluid">
+                        <div id="contenu2" class="span3 offset6" style="visibility: hidden">
+                            <div class="coucou"></div>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div id="contenu4" class="span11" style="visibility: hidden">
+                            <div class="coucou"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal hide fade" id="infos">
+                <div class="modal-header"> <a class="close" data-dismiss="modal">×</a>
+                    <h3>Plus d'informations</h3>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer"> <a class="btn btn-info" data-dismiss="modal">Fermer</a><a class="btn btn-info" data-dismiss="modal">Bidule</a> </div>
+            </div>
+            <a class="btn btn-primary" data-toggle="modal" href="tuto02_01.html" data-target="#infos">Plus d'informations</a>
+        </div>
+
+    </body>
+</html>
