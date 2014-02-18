@@ -9,16 +9,6 @@ var mqtt = require('mqtt')
 var Schema = mongoose.Schema;
 var restify = require('express-restify-mongoose')
 
-// Here we find an appropriate database to connect to, defaulting to
-// localhost if we don't find one.
-var uristring =
-process.env.MONGOLAB_URI ||
-process.env.MONGOHQ_URL ||
-'mongodb://localhost/smart';
-
-// The http server will listen to an appropriate port, or default to
-// port 5000.
-var theport = process.env.PORT || 5000;
 
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
@@ -30,14 +20,8 @@ mongoose.connect(uristring, function (err, res) {
   }
 });
 
-var Customer = new Schema({
-    name: { type: String, required: true },
-    comment: { type: String }
-});
-var CustomerModel = mongoose.model('Customer', Customer);
-
-///////////////////////////////////
-/////// MONGODB  //////////////////
+//////////////////////////////////
+/////// MONGODB  /////////////////
 //////////////////////////////////
 //Connection to the a mongodb database path localhost:port/nameOfCollection
 mongoose.connect("mongodb://localhost:27017/Client", function(err) {
@@ -46,44 +30,114 @@ mongoose.connect("mongodb://localhost:27017/Client", function(err) {
     }
 });
 
-//Definition of a schema
-var Temperature = new Schema({
-    _id: Number,
-    temp: Number
+//////////////////////////////////
+//Definition of a schema /////////
+//////////////////////////////////
+var Building = new Schema({
+	name: { type: String, required: true },
+	comment: { type: String }
 });
-//Creation of the model
-var TemperatureModel = mongoose.model('tables', Temperature);
+var BuildingModel = mongoose.model('Building', Building);
+
+var Item = new Schema({
+    name: { type: String, required: true },
+    position: { type: String },
+    room_number: { type: Number }
+});
+var ItemModel = mongoose.model('Item', Item);
+
+var Sensors_data = new Schema({
+    type: { type: String},
+    position: { type: String }
+});
+var Sensors_dataModel = mongoose.model('Sensors_data', Sensors_data);
+
+var Mesure = new Schema({
+    date: { type: Date, default: Date.now },
+    value: String
+});
+var MesureModel = mongoose.model('Mesure', Mesure);
+
+var Comment = new Schema({
+    value: String
+});
+var CommentModel = mongoose.model('Comment', Comment);
+
+var Administrator = new Schema({
+    room_number: Number,
+    name: String,
+    first_name: String
+});
+var AdministratorModel = mongoose.model('Administrator', Administrator);
+
+var Entity = new Schema({
+    room_number: Number,
+    name: String,
+    first_name: String
+});
+var EntityModel = mongoose.model('Entity', Entity);
+
+var Tram = new Schema({
+    value: String
+});
+var TramModel = mongoose.model('Tram', Tram);
+
+var Lampadaire = new Schema({
+    value: String
+});
+var LampadaireModel = mongoose.model('Lampadaire', Lampadaire);
+
+var Parking = new Schema({
+    total_place : Number,
+    vacant_place : Number
+});
+var ParkingModel = mongoose.model('Parking', Parking);
+
+var Building_parking = new Schema({
+    total_place : Number,
+    vacant_place : Number
+});
+var BuildingModel = mongoose.model('Building', Sensors_data);
+
+var Cafeteria = new Schema({
+    name : String
+});
+var CafeteriaModel = mongoose.model('Cafeteria', Cafeteria);
+
+var Classroom = new Schema({
+    total_place : Number
+});
+var ClassroomModel = mongoose.model('Classroom', Classroom);
 
 //Creation of an object which respect the model define before
-var myTemperatureModel = new TemperatureModel({_id: 1473, temp: 16});
+//var myBuildingModel = new BuildingModel({_id: 1473, temp: 16});
 
-
-//saved the temperature in the mongodb database
-/*myTemperatureModel.save(function(err){
+//saved the Building in the mongodb database
+/*myBuildingModel.save(function(err){
  if (err) { throw err; }
  console.log('Commentaire ajouté avec succès !');
  // On se déconnecte de MongoDB maintenant
  mongoose.connection.close();
  });*/
 
-/*var query = TemperatureModel.findOne({_id: 123}, function(err, tempFind) {
+/*var query = BuildingModel.findOne({_id: 123}, function(err, tempFind) {
     if (err)
         return handleError(err);
     console.log('Temp find : %d', tempFind.temp)
 })*/
 
-///////////////////////////////////
+////////////////////////////////
 /////// MQTT  //////////////////
-//////////////////////////////////
+////////////////////////////////
 
 client = mqtt.createClient(1883, 'localhost');
 
-client.subscribe('temperature');
+client.subscribe('Building');
 var i = 12;
 client.on('message', function(topic, message) {
     console.log(message);
-    var myTemperatureModel = new TemperatureModel({_id: i++, temp: message});
-    myTemperatureModel.save(function(err) {
+    var myBuildingModel = new BuildingModel({_id: i++, temp: message});
+    myBuildingModel.save(function(err) {
         if (err) {
             throw err;
         }
@@ -96,7 +150,7 @@ var app = express();
 app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    restify.serve(app, TemperatureModel);
+    restify.serve(app, BuildingModel);
 });
 
 
