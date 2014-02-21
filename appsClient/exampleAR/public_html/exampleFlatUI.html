@@ -11,12 +11,12 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width">
 
         <!-- Loading Bootstrap -->
-        <link href="bootstrapFlat/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
-        <link href="bootstrapFlat/css/bootstrap.css" rel="stylesheet" type="text/css">
-        <link href="bootstrapFlat/css/prettify.css" rel="stylesheet">
+        <link href="bootstrapF2/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+        <link href="bootstrapF2/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="bootstrapF2/css/prettify.css" rel="stylesheet">
 
         <!-- Loading Flat UI -->
-        <link href="bootstrapFlat/css/flat-ui.css" rel="stylesheet">
+        <link href="bootstrapF2/css/flat-ui.css" rel="stylesheet">
 
         <!-- Loading JSARToolkit -->
         <script src="js/libs/AR_mediaStream_fichiers/ga.js" async="" type="text/javascript"></script>
@@ -270,19 +270,19 @@ and open the template in the editor.
             }
             #contenu2 {
                 background-color: yellow;
-                                /*width : 400px;*/
-                                height: 100px;
-/*                                position: absolute;
-                                left: 100px;
-                                top: 150px;*/
+                /*width : 400px;*/
+                height: 100px;
+                /*                                position: absolute;
+                                                left: 100px;
+                                                top: 150px;*/
             }
             #contenu4 {
                 background-color: blue;
                 /*width : 400px;*/
                 height: 100px;
-/*                position: absolute;
-                left: 100px;
-                top: 250px;*/
+                /*                position: absolute;
+                                left: 100px;
+                                top: 250px;*/
             }
             #navBar{
                 margin-bottom: 0px;
@@ -305,7 +305,7 @@ and open the template in the editor.
                 max-width: 100%;
                 width: 100%;
             }
-            #footerPopUp {
+            #popUpFooter {
                 text-align: center;
             }
             #popUpInfos {
@@ -316,6 +316,18 @@ and open the template in the editor.
                 margin-top: 0%;
                 margin-left: 0%;
             }
+
+            //Ajout pour un offset vertical
+            .voffset  { margin-top: 2px; }
+            .voffset1 { margin-top: 5px; }
+            .voffset2 { margin-top: 10px; }
+            .voffset3 { margin-top: 15px; }
+            .voffset4 { margin-top: 30px; }
+            .voffset5 { margin-top: 40px; }
+            .voffset6 { margin-top: 60px; }
+            .voffset7 { margin-top: 80px; }
+            .voffset8 { margin-top: 100px; }
+            .voffset9 { margin-top: 150px; }
         </style>
 
     </head>
@@ -372,7 +384,7 @@ and open the template in the editor.
                     <div class="modal-body">
                         Voulez-vous l'afficher ?
                     </div>
-                    <div id="footerPopUp" class="modal-footer"> 
+                    <div id="popUpFooter" class="modal-footer"> 
                         <a class="btn btn-success" onclick="showInfoPanel()" data-dismiss="modal">Afficher</a>
                         <a class="btn btn-inverse" data-dismiss="modal">Annuler</a> 
                     </div>
