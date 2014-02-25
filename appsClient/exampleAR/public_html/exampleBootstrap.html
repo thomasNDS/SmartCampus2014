@@ -18,15 +18,15 @@ and open the template in the editor.
         <!-- CSS de la page -->
         <link href="css/style.css" rel="stylesheet" type="text/css">
 
+        <!-- JS -->
         <script src="js/libs/AR_mediaStream_fichiers/ga.js" async="" type="text/javascript"></script>
         <script src="js/libs/AR_mediaStream_fichiers/JSARToolKit.js"></script>
         <script src="js/libs/AR_mediaStream_fichiers/utils.js"></script>
         <script src="js/libs/jquery/jquery.min.js"></script>
+        <script src="js/screenManagement.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
 
         <script>
-
-            console.log("largeur" + window.innerWidth);
 
             //Fonction en cas d'erreur
             function onFailure(err) {
@@ -41,7 +41,11 @@ and open the template in the editor.
             threshold = 128;
             //Var booleen pour savoir si on voit un qrCode
             qrVisible = false;
+            //Marqueur courant
             currentMarker = null;
+            //Marqueur du panel courant
+            currentPanelMarker = null;
+            //Var booleen pour savoir si un panel est affiché ou non
             isPanelDisplayed = false;
 
             $(window).ready(function() {
@@ -80,7 +84,6 @@ and open the template in the editor.
                     alert('No browser Support');
                 }
 
-                console.log("Avt fonction" + $(document).width());
                 //Canvas pour la detection des marqueurs
                 var canvas = document.createElement('canvas');
 //                canvas.width = 320;
@@ -113,7 +116,7 @@ and open the template in the editor.
                 $("#backgroundVideo").append(videoCanvas);
 
                 /// FULL SCREEN ///
-                //// TODO ////
+                //// TODO : Probleme avec le canvas de detection + paysage / portrait resize foireux ////
                 function onResizeHandler(e) {
 //                    console.log("full");
 //                    var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
@@ -168,33 +171,25 @@ and open the template in the editor.
                                 currId = (currId << 8) | id.getPacketData(i);
                             }
                         }
-                        console.log("[add] : ID = " + currId);
-                        //Test pour voir afficher l'id lu
-//                        $(".coucou").html(currId);
+//                        console.log("[add] : ID = " + currId);
                     }
 
                     ////////////////////////
                     ///// INTERFACE AR /////
                     ////////////////////////
 
+                    var isPopUpShown = $('#popUpInfos').hasClass('in');
+                    var isBottomPopUpShown = $('#bottomPopUp').css("display") === 'block';
+
                     //Exemple de ce qu'on peut faire une fois un marqueur lu
                     //Si on a lu un marqueur on popup pour demander si on veut afficher info de l'element lu?
                     //TODO: possiblement plusieurs marqueurs lu..
-                    if (qrVisible) {
-//                        var afficherContenu = confirm("Code repéré, target destroyed ?");
-//                        if (afficherContenu) {
-//                            console.log("SWITCH" + currId);
-//                            switch (currId) {
-//                                case 0:
-//                                    $("#contenu2").css('visibility', 'visible');
-//                                    break;
-//                                case 4 :
-//                                    $("#contenu4").css('visibility', 'visible');
-//                            }
-//                        }
-                        currentMarker = currId;
-//                        $("#popUpInfos").modal('show');
-                        showPopUp(currId);
+                    if (qrVisible && !isPopUpShown && !isBottomPopUpShown) {
+                            //Si le marker que l'on lit et différent de celui affiché on affiche le popup pour changer de panel
+                            if (getPanelFromMarker(currId) !== getPanelFromMarker(currentPanelMarker)) {
+                                showPopUp(currId);
+                                currentMarker = currId;
+                            }
                     }
                 }, 15);
             });
@@ -205,11 +200,19 @@ and open the template in the editor.
             function showInfoPanel() {
                 console.log("showPanel");
                 var panSelected, panToDelete = null;
-                switch (currentMarker) {
+                //On enregistre le marqueur
+                currentPanelMarker = currentMarker;
+                //Si le panel du bas est affiché
+                if ($("#bottomPopUp").css('display') === 'block') {
+                    //On ferme le popUp du bas
+                    closeBottomPopUp();
+                }
+
+                switch (currentPanelMarker) {
                     case 0:
 //                        panSelected = $("#contenu2");
                         panToDelete = $("#contenu4");
-                        panSelected = getPanelFromMarker(currentMarker);
+                        panSelected = getPanelFromMarker(currentPanelMarker);
 //                        $("#contenu2").css('visibility', 'visible');
 //                        $("#contenu4").css('visibility', 'hidden');
                         $("#contenu2").css('display', 'block');
@@ -218,7 +221,7 @@ and open the template in the editor.
                     case 4 :
 //                        panSelected = $("#contenu4");
                         panToDelete = $("#contenu2");
-                        panSelected = getPanelFromMarker(currentMarker);
+                        panSelected = getPanelFromMarker(currentPanelMarker);
 //                        $("#contenu2").css('visibility', 'hidden');
 //                        $("#contenu4").css('visibility', 'visible');
                         $("#contenu2").css('display', 'none');
@@ -238,7 +241,7 @@ and open the template in the editor.
              */
             function showPopUp(elementDetected) {
                 var textTitle = "Bâtiment numero ";
-                var textBody = null;
+                var textBody = "";
                 switch (elementDetected) {
                     case 0:
                         textTitle += elementDetected;
@@ -254,44 +257,16 @@ and open the template in the editor.
                 textTitle += " detecté";
                 $("#popUpTitle").html(textTitle);
                 $("#popUpContent").html(textBody);
-                $("#popUpInfos").modal('show');
-            }
+                $("#bottomPopUpDescription").html(textTitle);
 
-            // Find the right method, call on correct element
-            function launchFullscreen(element) {
-                if (element.requestFullscreen) {
-                    element.requestFullscreen();
-                } else if (element.mozRequestFullScreen) {
-                    element.mozRequestFullScreen();
-                } else if (element.webkitRequestFullscreen) {
-                    element.webkitRequestFullscreen();
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen();
-                }
-            }
-
-            function exitFullscreen() {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
-            }
-
-            /*
-             * Gestion du plein écran
-             */
-            function manageFullScreen(elementToFullScreened) {
-                var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
-                if (isFullScreen) {
-                    $("#btnFullScreen").html("FullScreen");
-                    exitFullscreen();
+                //Si le panel centrale n'est pas affiché, popup centrale
+                //Sinon popUp bottom
+                if (!isPanelDisplayed) {
+                    $("#popUpInfos").modal('show');
                 } else {
-                    launchFullscreen(elementToFullScreened);
-                    $("#btnFullScreen").html("Normal");
+                    showBottomPopUp();
                 }
+
             }
 
             /*
@@ -303,12 +278,12 @@ and open the template in the editor.
                     case 0:
 //                        panel = $("#contenu2");
                         panel = "contenu2";
-                        console.log("panel contenu2");
+//                        console.log("panel contenu2");
                         break;
                     case 4 :
 //                        panel = $("#contenu4");
                         panel = "contenu4";
-                        console.log("panel contenu4");
+//                        console.log("panel contenu4");
                         break;
                     default :
                         console.log("Pas de panel pour ce marker");
@@ -320,23 +295,51 @@ and open the template in the editor.
              * Ferme le panel actuellement ouvert
              */
             function closePanel() {
-//                var d = document.getElementById('pageContent');
-//                d.re
+
                 var idPanel = getPanelFromMarker(currentMarker);
-                console.log("close : " + idPanel);
+//                console.log("close : " + idPanel);
 //                var innerPanelPop = document.getElementById(idPanel);
 //                var panelPop = document.getElementById("pageContent");
 //                panelPop.removeChild(innerPanelPop);
-                $("#"+idPanel).css('display', 'none');
-                
+                $("#" + idPanel).css('display', 'none');
+
 //                var panelToClose = getPanelFromMarker(currentMarker);
-                
+
 
 //                $("#pageContent").remove(panelToClose);
                 isPanelDisplayed = false;
             }
 
-//            $("#pageContent").attr("heigth", window.innerHeight * 0.5)
+            function switchAction() {
+                showBottomPopUp();
+            }
+
+            /*
+             * Afficher le popup du bas
+             */
+            function showBottomPopUp() {
+//                $("#bottomPopUp").css("display", "block");
+                $("#bottomPopUp").animate({
+                    height: "toggle"
+                }, 600, "linear", function() {
+                    console.log("show!!");
+                });
+//                $("#bottomPopUp").toggle("slow");
+
+            }
+
+            /*
+             * Fermer le popup du bas
+             */
+            function closeBottomPopUp() {
+//                $("#bottomPopUp").css("display", "none");
+//                $("#bottomPopUp").css("visibility", "hidden");
+                $("#bottomPopUp").animate({
+                    height: "toggle"
+                }, 500, "linear", function() {
+                    console.log("close!!");
+                });
+            }
 
         </script>
 
@@ -352,7 +355,7 @@ and open the template in the editor.
                             <li><a href="#"><i class="icon-white icon-info-sign"></i> Aide</a></li>
                         </ul>
                         <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);">FullScreen</button>
-                        <button class="btn btn-primary pull-right">Switch</button>
+                        <button class="btn btn-primary pull-right" onclick="switchAction()">Switch</button>
                     </div>
                 </div>
             </nav>
@@ -452,6 +455,34 @@ and open the template in the editor.
                         </div>
                     </div>
                     <!--<a class="btn btn-primary" data-toggle="modal" data-target="#infos">Informations bâtiments détectées</a>-->
+
+                    <!--                    <div id="popUpInfos" style="display: none">
+                                            <div class="modal-header"> <a class="close">×</a>
+                                                <h3 id="popUpTitle"></h3>
+                                            </div>
+                                            <div id="popUpContent">
+                                                Voulez-vous l'afficher ?
+                                            </div>
+                                            <div id="popUpFooter"> 
+                                                <a class="btn btn-success" onclick="showInfoPanel()">Plus d'informations ?</a>
+                                                <a class="btn btn-inverse">Annuler</a> 
+                                            </div>
+                                        </div>-->
+
+                    <!-- Barre du bas pour le popUp info quand un panel est déjà affiché-->
+                    <nav id="bottomPopUp" class="navbar navbar-fixed-bottom navbar-inverse">
+                        <div class="navbar-inner">
+                            <div class="container-fluid" >
+                                <button class="btn btn-primary pull-right" onclick="closeBottomPopUp()">X</button>
+                                <div id="bottomPopUpArrow" class="row-fluid" onclick="showInfoPanel()">^</div>
+                                <div id="bottomPopUpContent" class="row-fluid" onclick="showInfoPanel()">
+                                    <div id="bottomPopUpPicture" class="span2"></div>
+                                    <div id="bottomPopUpDescription" class="span7"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
                 </div>
             </div>
         </div>
