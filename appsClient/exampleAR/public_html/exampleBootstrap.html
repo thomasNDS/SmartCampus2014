@@ -48,6 +48,9 @@ and open the template in the editor.
             //Var booleen pour savoir si un panel est affiché ou non
             isPanelDisplayed = false;
 
+            //Tableau contenant les différents éléments 
+            elementsArray = new Array();
+
             $(window).ready(function() {
 
                 ////////////////////////
@@ -185,11 +188,11 @@ and open the template in the editor.
                     //Si on a lu un marqueur on popup pour demander si on veut afficher info de l'element lu?
                     //TODO: possiblement plusieurs marqueurs lu..
                     if (qrVisible && !isPopUpShown && !isBottomPopUpShown) {
-                            //Si le marker que l'on lit et différent de celui affiché on affiche le popup pour changer de panel
-                            if (getPanelFromMarker(currId) !== getPanelFromMarker(currentPanelMarker)) {
-                                showPopUp(currId);
-                                currentMarker = currId;
-                            }
+                        //Si le marker que l'on lit et différent de celui affiché on affiche le popup pour changer de panel
+                        if (getPanelFromMarker(currId) !== getPanelFromMarker(currentPanelMarker)) {
+                            showPopUp(currId);
+                            currentMarker = currId;
+                        }
                     }
                 }, 15);
             });
@@ -208,28 +211,32 @@ and open the template in the editor.
                     closeBottomPopUp();
                 }
 
-                switch (currentPanelMarker) {
-                    case 0:
-//                        panSelected = $("#contenu2");
-                        panToDelete = $("#contenu4");
-                        panSelected = getPanelFromMarker(currentPanelMarker);
-//                        $("#contenu2").css('visibility', 'visible');
-//                        $("#contenu4").css('visibility', 'hidden');
-                        $("#contenu2").css('display', 'block');
-                        $("#contenu4").css('display', 'none');
-                        break;
-                    case 4 :
-//                        panSelected = $("#contenu4");
-                        panToDelete = $("#contenu2");
-                        panSelected = getPanelFromMarker(currentPanelMarker);
-//                        $("#contenu2").css('visibility', 'hidden');
-//                        $("#contenu4").css('visibility', 'visible');
-                        $("#contenu2").css('display', 'none');
-                        $("#contenu4").css('display', 'block');
-                        break;
-                    default :
-                        console.log("Pas reconnu");
-                }
+                elemDetected = elementsArray[currentPanelMarker];
+                buildPanel(elemDetected);
+                $("#informationPanel").css("display", "block");
+
+//                switch (currentPanelMarker) {
+//                    case 0:
+////                        panSelected = $("#contenu2");
+//                        panToDelete = $("#contenu4");
+//                        panSelected = getPanelFromMarker(currentPanelMarker);
+////                        $("#contenu2").css('visibility', 'visible');
+////                        $("#contenu4").css('visibility', 'hidden');
+//                        $("#contenu2").css('display', 'block');
+//                        $("#contenu4").css('display', 'none');
+//                        break;
+//                    case 4 :
+////                        panSelected = $("#contenu4");
+//                        panToDelete = $("#contenu2");
+//                        panSelected = getPanelFromMarker(currentPanelMarker);
+////                        $("#contenu2").css('visibility', 'hidden');
+////                        $("#contenu4").css('visibility', 'visible');
+//                        $("#contenu2").css('display', 'none');
+//                        $("#contenu4").css('display', 'block');
+//                        break;
+//                    default :
+//                        console.log("Pas reconnu");
+//                }
 //                $("#pageContent").remove(panToDelete);
 //                $("#pageContent").append(panSelected);
                 isPanelDisplayed = true;
@@ -239,26 +246,33 @@ and open the template in the editor.
              * Ouverture du pop en fonction du batiment detecté
              * @returns {undefined}
              */
-            function showPopUp(elementDetected) {
-                var textTitle = "Bâtiment numero ";
-                var textBody = "";
-                switch (elementDetected) {
-                    case 0:
-                        textTitle += elementDetected;
-                        textBody = "Lorem ipsum dolor sit amet, charetra varius quam sit amet";
-                        break;
-                    case 4:
-                        textTitle += elementDetected;
-                        textBody = "Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit.";
-                        break;
-                    default:
-                        break;
-                }
-                textTitle += " detecté";
+            function showPopUp(idElem) {
+//                var textTitle = "Bâtiment numero ";
+//                var textBody = "";
+//                switch (elementDetected) {
+//                    case 0:
+//                        textTitle += elementDetected;
+//                        textBody = "Lorem ipsum dolor sit amet, charetra varius quam sit amet";
+//                        break;
+//                    case 4:
+//                        textTitle += elementDetected;
+//                        textBody = "Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit.";
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                textTitle += " detecté";
+//                $("#popUpTitle").html(textTitle);
+//                $("#popUpContent").html(textBody);
+//                $("#bottomPopUpDescription").html(textTitle);
+                var elem = elementsArray[idElem];
+                var textTitle = elem.name;
+                var textBody = elem.subElements[0].content;
+                var textType = elem.type;
                 $("#popUpTitle").html(textTitle);
                 $("#popUpContent").html(textBody);
-                $("#bottomPopUpDescription").html(textTitle);
-
+                $("#bottomPopUpDescription").html("<strong>" + textTitle + "</strong> - " + textType);
+                
                 //Si le panel centrale n'est pas affiché, popup centrale
                 //Sinon popUp bottom
                 if (!isPanelDisplayed) {
@@ -296,13 +310,14 @@ and open the template in the editor.
              */
             function closePanel() {
 
-                var idPanel = getPanelFromMarker(currentMarker);
+//                var idPanel = getPanelFromMarker(currentPanelMarker);
 //                console.log("close : " + idPanel);
 //                var innerPanelPop = document.getElementById(idPanel);
 //                var panelPop = document.getElementById("pageContent");
 //                panelPop.removeChild(innerPanelPop);
-                $("#" + idPanel).css('display', 'none');
-
+//                $("#" + idPanel).css('display', 'none');
+                currentPanelMarker = null;
+                $("#informationPanel").css("display", "none");
 //                var panelToClose = getPanelFromMarker(currentMarker);
 
 
@@ -339,6 +354,115 @@ and open the template in the editor.
                 }, 500, "linear", function() {
                     console.log("close!!");
                 });
+            }
+
+
+            function loadElements() {
+                var elem0 = {
+                    "name": "POLYTECH",
+                    "type": "Université UJF",
+                    "subElements": [
+                        {"title": "Information", "content": "POLYTECH GRENOBLE est l'école d'ingénieurs de l'UNIVERSITE JOSEPH FOURIER.C\n\
+        ’est une grande école habilitée par la Commission des Titres d’Ingénieur, labelisée IDEFI (Initiatives d'Excellence en Formations Innovantes). Comme toutes les autres écoles du RESEAU POLYTECH, elle s’appuie sur un fort partenariat avec le monde de l’entreprise"},
+                        {"title": "Horaire", "content": "12h:55    22h45"},
+                        {"title": "Casier", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."}
+                    ]
+                };
+
+                var elem4 = {
+                    "name": "BU",
+                    "type": "Université UJF",
+                    "subElements": [
+                        {"title": "Information", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."},
+                        {"title": "Horaire", "content": "12h:55    22h45"}
+                    ]
+                };
+                elementsArray[0] = elem0;
+                elementsArray[4] = elem4;
+            }
+
+            /*
+             * Chargement d'un objet représentant l'element detecté
+             * Information des différents labels du panel :
+             *      .Titre
+             *      .Onglets
+             *          .Titre onglet
+             *          .Contenu
+             */
+//            function buildPanel(idElement) {
+            function buildPanel(objElem) {
+
+                //TODO LOAD depuis la BD via id
+
+//                var elem0 = {
+//                    "name": "POLYTECH",
+//                    "subElements": [
+//                        {"title": "Information", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."},
+//                        {"title": "Horaire", "content": "12h:55    22h45"},
+//                        {"title": "Casier", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."}
+//                    ]
+//                };
+//
+//                var elem4 = {
+//                    "name": "BU",
+//                    "subElements": [
+//                        {"title": "Information", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."},
+//                        {"title": "Horaire", "content": "12h:55    22h45"}
+//                    ]
+//                };
+//
+//                var elemChoosen = null;
+//                if (idElement === 0) {
+//                    elemChoosen = elem0;
+//                } else {
+//                    elemChoosen = elem4;
+//                }
+
+                /* Clean le panel */
+                cleanChildOfNodeID("tabsPanel");
+                cleanChildOfNodeID("contentTabs");
+
+//                $("#informationTitle").html(elemChoosen.name);
+                $("#informationTitle").html(objElem.name);
+
+                var firstElementSelected = false;
+
+//                elemChoosen.subElements.forEach(function(entry, index) {
+                objElem.subElements.forEach(function(entry, index) {
+                    console.log("---");
+                    console.log("Titre " + entry.title);
+                    console.log(" Contenu " + entry.content);
+
+                    //Creation d'un onglet
+                    var tabTitle = "";
+                    if (!firstElementSelected) {
+                        //On met en active le premier
+                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
+                    } else {
+                        tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
+                    }
+                    $("#tabsPanel").append(tabTitle);
+
+                    //Creation du contenu de l'onglet
+                    var tabContent = "";
+                    if (!firstElementSelected) {
+                        //Active le premier
+                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
+                        firstElementSelected = true;
+                    } else {
+                        tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
+                    }
+                    $("#contentTabs").append(tabContent);
+
+                });
+
+            }
+
+            function cleanChildOfNodeID(parentNode) {
+                var myNode = document.getElementById(parentNode);
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
             }
 
         </script>
@@ -388,56 +512,74 @@ and open the template in the editor.
                         
                                                 </div>-->
 
-                        <div id="contenu2" class="internPanel" style="display: none">
+                        <!--                        <div id="contenu2" class="internPanel" style="display: none">
+                                                    <div class="titlePanel">
+                                                        <h3 id="title"> Tabs -left</h3>
+                                                        <button class="btn btn-primary" onclick="closePanel()">x</button>
+                                                    </div>
+                                                    <div class="tabbable tabs-left">
+                                                        <ul id="tabsPanel" class="nav nav-tabs">
+                                                            <li class="active"><a href="#a" data-toggle="tab">One</a></li>
+                                                            <li><a href="#b" data-toggle="tab">Two</a></li>
+                                                            <li><a href="#c" data-toggle="tab">Twee</a></li>
+                                                        </ul>
+                                                        <div id="contentTabs" class="tab-content">
+                                                            <div class="tab-pane active" id="a">Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. 
+                                                                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero.</div>
+                                                            <div class="tab-pane" id="b">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
+                                                                Aliquam in felis sit amet augue.</div>
+                                                            <div class="tab-pane" id="c">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
+                                                                Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                        
+                                                <div id="contenu4" class="internPanel" style="display: none">
+                                                    <div class="titlePanel">
+                                                        <h3> Tabs -left</h3>
+                                                        <button class="btn btn-primary" onclick="closePanel()">x</button>
+                                                    </div>
+                                                     tabs left 
+                                                    <div class="tabbable tabs-left">
+                                                        <ul class="nav nav-tabs">
+                                                            <li class="active"><a href="#e" data-toggle="tab">One</a></li>
+                                                            <li><a href="#f" data-toggle="tab">Two</a></li>
+                                                            <li><a href="#g" data-toggle="tab">Twee</a></li>
+                                                            <li><a href="#h" data-toggle="tab">Four</a></li>
+                                                        </ul>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane active" id="e">Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. 
+                                                                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero.</div>
+                                                            <div class="tab-pane" id="f">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
+                                                                Aliquam in felis sit amet augue.</div>
+                                                            <div class="tab-pane" id="g">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
+                                                                Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
+                                                            <div class="tab-pane" id="h">AAAAAA, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
+                                                                Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
+                                                        </div>
+                                                    </div>
+                                                     /tabs 
+                                                </div>-->
+
+                        <div id="informationPanel" class="internPanel">
                             <div class="titlePanel">
-                                <h3> Tabs -left</h3>
+                                <h3 id="informationTitle"></h3>
                                 <button class="btn btn-primary" onclick="closePanel()">x</button>
                             </div>
-                            <!-- tabs left -->
                             <div class="tabbable tabs-left">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#a" data-toggle="tab">One</a></li>
-                                    <li><a href="#b" data-toggle="tab">Two</a></li>
-                                    <li><a href="#c" data-toggle="tab">Twee</a></li>
+                                <ul id="tabsPanel" class="nav nav-tabs">
+                                    <!--                                    <li class="active"><a href="#a" data-toggle="tab"></a></li>
+                                                                        <li><a href="#b" data-toggle="tab"></a></li>-->
                                 </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="a">Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. 
-                                        Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero.</div>
-                                    <div class="tab-pane" id="b">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
-                                        Aliquam in felis sit amet augue.</div>
-                                    <div class="tab-pane" id="c">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
-                                        Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
+                                <div id="contentTabs" class="tab-content">
+                                    <!--                                    <div class="tab-pane active" id="a">Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. 
+                                                                            Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero.</div>
+                                                                        <div class="tab-pane" id="b">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
+                                                                            Aliquam in felis sit amet augue.</div>-->
                                 </div>
                             </div>
-                            <!-- /tabs -->
                         </div>
 
-                        <div id="contenu4" class="internPanel" style="display: none">
-                            <div class="titlePanel">
-                                <h3> Tabs -left</h3>
-                                <button class="btn btn-primary" onclick="closePanel()">x</button>
-                            </div>
-                            <!-- tabs left -->
-                            <div class="tabbable tabs-left">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#e" data-toggle="tab">One</a></li>
-                                    <li><a href="#f" data-toggle="tab">Two</a></li>
-                                    <li><a href="#g" data-toggle="tab">Twee</a></li>
-                                    <li><a href="#h" data-toggle="tab">Four</a></li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="e">Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. 
-                                        Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero.</div>
-                                    <div class="tab-pane" id="f">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
-                                        Aliquam in felis sit amet augue.</div>
-                                    <div class="tab-pane" id="g">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
-                                        Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
-                                    <div class="tab-pane" id="h">AAAAAA, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
-                                        Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
-                                </div>
-                            </div>
-                            <!-- /tabs -->
-                        </div>
 
                     </div>
 
@@ -451,7 +593,7 @@ and open the template in the editor.
                         </div>
                         <div id="popUpFooter" class="modal-footer"> 
                             <a class="btn btn-success" onclick="showInfoPanel()" data-dismiss="modal">Plus d'informations ?</a>
-                            <a class="btn btn-inverse" data-dismiss="modal">Annuler</a> 
+                            <!--<a class="btn btn-inverse" data-dismiss="modal">Annuler</a>--> 
                         </div>
                     </div>
                     <!--<a class="btn btn-primary" data-toggle="modal" data-target="#infos">Informations bâtiments détectées</a>-->
@@ -473,7 +615,7 @@ and open the template in the editor.
                     <nav id="bottomPopUp" class="navbar navbar-fixed-bottom navbar-inverse">
                         <div class="navbar-inner">
                             <div class="container-fluid" >
-                                <button class="btn btn-primary pull-right" onclick="closeBottomPopUp()">X</button>
+                                <button class="btn btn-large btn-primary pull-right" onclick="closeBottomPopUp()">X</button>
                                 <div id="bottomPopUpArrow" class="row-fluid" onclick="showInfoPanel()">^</div>
                                 <div id="bottomPopUpContent" class="row-fluid" onclick="showInfoPanel()">
                                     <div id="bottomPopUpPicture" class="span2"></div>
@@ -486,5 +628,9 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
+
+        <script>
+            loadElements();
+        </script>
     </body>
 </html>

@@ -45,6 +45,11 @@ body {
 #popUpFooter {
     text-align: center;
 }
+
+#popUpTitle {
+    text-align: center;
+}
+
 #popUpInfos {
     width: 60%;
     position: absolute;
@@ -55,7 +60,7 @@ body {
 }
 
 .internPanel {
-    /*background-color: whitesmoke;*/
+    /* background-color: whitesmoke; */
 }
 
 //Ajout pour un offset vertical
@@ -180,8 +185,16 @@ body {
 
 /* ----- end custom tab ------*/
 
+#contentTabs{
+    padding-top: 7px;
+}
+
 .titlePanel{
+    color : white;
+    background-color: #333333;
     text-align: center;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
 }
 
 .titlePanel > button{
@@ -197,9 +210,15 @@ body {
 #bottomPopUpContent, #bottomPopUpArrow{
     cursor : pointer;
     color : white;
+    text-align: center;
 }
 
 #bottomPopUpArrow{
-    text-align: center;
     height: 12px;
+}
+
+#informationPanel{
+    display: none;
+    background-color : white;
+    border-radius : 6px;
 }
