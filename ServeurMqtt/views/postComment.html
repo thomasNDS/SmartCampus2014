@@ -1,0 +1,13 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+add
+<script>
+    jQuery.post("http://localhost:4242/api/comment", {
+        "name": "ca"
+    }, function(data, textStatus, jqXHR) {
+        console.log("Post resposne:");
+        console.dir(data);
+        console.log(textStatus);
+        console.dir(jqXHR);
+    });
+
+</script>

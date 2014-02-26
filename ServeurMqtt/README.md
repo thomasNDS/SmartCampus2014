@@ -12,6 +12,14 @@ Launch
 sudo service mongodb start
 nodejs serveur.js
 
+mongo
+----------
+
+    mongo
+    use Client
+    db
+
+More info about mongo shell: http://docs.mongodb.org/manual/tutorial/getting-started/
 
 API
 =====

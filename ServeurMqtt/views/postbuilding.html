@@ -1,0 +1,14 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+add building
+<script>
+    jQuery.post("http://localhost:4242/api/building", {
+        "comment": "grenoble",
+        "name": "popo",
+    }, function(data, textStatus, jqXHR) {
+        console.log("Post resposne:");
+        console.dir(data);
+        console.log(textStatus);
+        console.dir(jqXHR);
+    });
+
+</script>

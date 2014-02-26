@@ -1,0 +1,19 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+put
+<script>
+
+jQuery.ajax({
+    url: "http://localhost:4242/api/administrator/530626ca5a8dc7a51055fb71",
+    type: "PUT",
+    data: {
+      "first_name": "Black",
+      "name": " sleeve",
+    },
+    success: function (data, textStatus, jqXHR) {
+        console.log("Post resposne:");
+        console.dir(data);
+        console.log(textStatus);
+        console.dir(jqXHR);
+    }
+});
+</script>
