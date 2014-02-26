@@ -14,18 +14,19 @@ and open the template in the editor.
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
 
+
         <!-- CSS de la page -->
         <link href="css/style.css" rel="stylesheet" type="text/css">
 
+        <!-- JS -->
         <script src="js/libs/AR_mediaStream_fichiers/ga.js" async="" type="text/javascript"></script>
         <script src="js/libs/AR_mediaStream_fichiers/JSARToolKit.js"></script>
         <script src="js/libs/AR_mediaStream_fichiers/utils.js"></script>
         <script src="js/libs/jquery/jquery.min.js"></script>
+        <script src="js/screenManagement.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
 
         <script>
-
-            console.log("largeur" + window.innerWidth);
 
             //Fonction en cas d'erreur
             function onFailure(err) {
@@ -40,7 +41,15 @@ and open the template in the editor.
             threshold = 128;
             //Var booleen pour savoir si on voit un qrCode
             qrVisible = false;
+            //Marqueur courant
             currentMarker = null;
+            //Marqueur du panel courant
+            currentPanelMarker = null;
+            //Var booleen pour savoir si un panel est affiché ou non
+            isPanelDisplayed = false;
+
+            //Tableau contenant les différents éléments 
+            elementsArray = new Array();
 
             $(window).ready(function() {
 
@@ -78,7 +87,6 @@ and open the template in the editor.
                     alert('No browser Support');
                 }
 
-                console.log("Avt fonction" + $(document).width());
                 //Canvas pour la detection des marqueurs
                 var canvas = document.createElement('canvas');
 //                canvas.width = 320;
@@ -111,7 +119,7 @@ and open the template in the editor.
                 $("#backgroundVideo").append(videoCanvas);
 
                 /// FULL SCREEN ///
-                //// TODO ////
+                //// TODO : Probleme avec le canvas de detection + paysage / portrait resize foireux ////
                 function onResizeHandler(e) {
 //                    console.log("full");
 //                    var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
@@ -166,32 +174,26 @@ and open the template in the editor.
                                 currId = (currId << 8) | id.getPacketData(i);
                             }
                         }
-                        console.log("[add] : ID = " + currId);
-                        //Test pour voir afficher l'id lu
-                        $(".coucou").html(currId);
+//                        console.log("[add] : ID = " + currId);
                     }
 
                     ////////////////////////
                     ///// INTERFACE AR /////
                     ////////////////////////
 
+                    var isPopUpShown = $('#popUpInfos').hasClass('in');
+                    var isBottomPopUpShown = $('#bottomPopUp').css("display") === 'block';
+
                     //Exemple de ce qu'on peut faire une fois un marqueur lu
                     //Si on a lu un marqueur on popup pour demander si on veut afficher info de l'element lu?
                     //TODO: possiblement plusieurs marqueurs lu..
-                    if (qrVisible) {
-//                        var afficherContenu = confirm("Code repéré, target destroyed ?");
-//                        if (afficherContenu) {
-//                            console.log("SWITCH" + currId);
-//                            switch (currId) {
-//                                case 0:
-//                                    $("#contenu2").css('visibility', 'visible');
-//                                    break;
-//                                case 4 :
-//                                    $("#contenu4").css('visibility', 'visible');
-//                            }
-//                        }
-                        currentMarker = currId;
-                        $("#popUpInfos").modal('show');
+                    if (qrVisible && !isPopUpShown && !isBottomPopUpShown) {
+                        //Si le marker que l'on lit est différent de celui affiché on affiche le popup pour changer de panel
+//                        if (getPanelFromMarker(currId) !== getPanelFromMarker(currentPanelMarker)) {
+                        if (currId !== currentPanelMarker) {
+                            showPopUp(currId);
+                            currentMarker = currId;
+                        }
                     }
                 }, 15);
             });
@@ -200,56 +202,170 @@ and open the template in the editor.
              * Fonction pour afficher le panneau d'information du batiment que l'on a repéré
              */
             function showInfoPanel() {
-                console.log("showPanel");
-                switch (currentMarker) {
-                    case 0:
-                        $("#contenu2").css('visibility', 'visible');
-                        $("#contenu4").css('visibility', 'hidden');
-                        break;
-                    case 4 :
-                        $("#contenu2").css('visibility', 'hidden');
-                        $("#contenu4").css('visibility', 'visible');
-                        break;
-                    default :
-                        console.log("Pas reconnu");
+                //On enregistre le marqueur
+                currentPanelMarker = currentMarker;
+
+                //Si le panel du bas est affiché
+                if ($("#bottomPopUp").css('display') === 'block') {
+                    //On ferme le popUp du bas
+                    closeBottomPopUp();
                 }
+
+                //On cherche l'element actuellement detecte dans le tableau via un id
+                elemDetected = elementsArray[currentPanelMarker];
+                //Construction du panel d'info en fonction de l'element
+                buildPanel(elemDetected);
+                $("#informationPanel").css("display", "block");
+
+                isPanelDisplayed = true;
             }
 
-            // Find the right method, call on correct element
-            function launchFullscreen(element) {
-                if (element.requestFullscreen) {
-                    element.requestFullscreen();
-                } else if (element.mozRequestFullScreen) {
-                    element.mozRequestFullScreen();
-                } else if (element.webkitRequestFullscreen) {
-                    element.webkitRequestFullscreen();
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen();
-                }
-            }
+            /*
+             * Ouverture du pop en fonction du batiment detecté
+             * @returns {undefined}
+             */
+            function showPopUp(idElem) {
+                var elem = elementsArray[idElem];
+                var textTitle = elem.name;
+                var textBody = elem.subElements[0].content;
+                var textType = elem.type;
+                $("#popUpTitle").html(textTitle);
+                $("#popUpContent").html(textBody);
+                $("#bottomPopUpDescription").html("<strong>" + textTitle + "</strong> - " + textType);
 
-            function exitFullscreen() {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
-            }
-
-            function manageFullScreen(elementToFullScreened) {
-                var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
-                if (isFullScreen) {
-                    $("#btnFullScreen").html("FullScreen");
-                    exitFullscreen();
+                //Si le panel centrale n'est pas affiché, popup centrale
+                //Sinon popUp bottom
+                if (!isPanelDisplayed) {
+                    $("#popUpInfos").modal('show');
                 } else {
-                    launchFullscreen(elementToFullScreened);
-                    $("#btnFullScreen").html("Normal");
+                    showBottomPopUp();
                 }
+
             }
 
-            $("#pageContent").attr("heigth", window.innerHeight * 0.5)
+
+            /*
+             * Ferme le panel actuellement ouvert
+             */
+            function closePanel() {
+                currentPanelMarker = null;
+                $("#informationPanel").css("display", "none");
+                isPanelDisplayed = false;
+            }
+
+            function switchAction() {
+                showBottomPopUp();
+            }
+
+            /*
+             * Afficher le popup du bas
+             */
+            function showBottomPopUp() {
+                $("#bottomPopUp").animate({
+                    height: "toggle"
+                }, 600, "linear", function() {
+                    console.log("show!!");
+                });
+            }
+
+            /*
+             * Fermer le popup du bas
+             */
+            function closeBottomPopUp() {
+                $("#bottomPopUp").animate({
+                    height: "toggle"
+                }, 500, "linear", function() {
+                    console.log("close!!");
+                });
+            }
+
+
+            /*
+             * Fonction pour charger le tableau des elements
+             */
+            function loadElements() {
+                var elem0 = {
+                    "name": "POLYTECH",
+                    "type": "Université UJF",
+                    "subElements": [
+                        {"title": "Information", "content": "POLYTECH GRENOBLE est l'école d'ingénieurs de l'UNIVERSITE JOSEPH FOURIER.C\n\
+        ’est une grande école habilitée par la Commission des Titres d’Ingénieur, labelisée IDEFI (Initiatives d'Excellence en Formations Innovantes). Comme toutes les autres écoles du RESEAU POLYTECH, elle s’appuie sur un fort partenariat avec le monde de l’entreprise"},
+                        {"title": "Horaire", "content": "12h:55    22h45"},
+                        {"title": "Casier", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."}
+                    ]
+                };
+
+                var elem4 = {
+                    "name": "BU",
+                    "type": "Université UJF",
+                    "subElements": [
+                        {"title": "Information", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."},
+                        {"title": "Horaire", "content": "12h:55    22h45"}
+                    ]
+                };
+                elementsArray[0] = elem0;
+                elementsArray[4] = elem4;
+            }
+
+            /*
+             * Chargement d'un objet représentant l'element detecté
+             * Information des différents labels du panel :
+             *      .Titre
+             *      .Onglets
+             *          .Titre onglet
+             *          .Contenu
+             */
+            function buildPanel(objElem) {
+
+                /* Clean le panel */
+                cleanChildOfNodeID("tabsPanel");
+                cleanChildOfNodeID("contentTabs");
+
+                //Titre du panel info
+                $("#informationTitle").html(objElem.name);
+
+                //Booleen pour avoir le premier element active
+                var firstElementSelected = false;
+
+                objElem.subElements.forEach(function(entry, index) {
+//                    console.log("---");
+//                    console.log("Titre " + entry.title);
+//                    console.log(" Contenu " + entry.content);
+
+                    //Creation d'un onglet
+                    var tabTitle = "";
+                    if (!firstElementSelected) {
+                        //On met en active le premier
+                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
+                    } else {
+                        tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
+                    }
+                    $("#tabsPanel").append(tabTitle);
+
+                    //Creation du contenu de l'onglet
+                    var tabContent = "";
+                    if (!firstElementSelected) {
+                        //Active le premier
+                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
+                        firstElementSelected = true;
+                    } else {
+                        tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
+                    }
+                    $("#contentTabs").append(tabContent);
+
+                });
+
+            }
+
+            /*
+             * Enleve les child d'un node
+             */
+            function cleanChildOfNodeID(parentNode) {
+                var myNode = document.getElementById(parentNode);
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
+            }
 
         </script>
 
@@ -265,7 +381,7 @@ and open the template in the editor.
                             <li><a href="#"><i class="icon-white icon-info-sign"></i> Aide</a></li>
                         </ul>
                         <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);">FullScreen</button>
-                        <button class="btn btn-primary pull-right">Switch</button>
+                        <button class="btn btn-primary pull-right" onclick="switchAction()">Switch</button>
                     </div>
                 </div>
             </nav>
@@ -277,23 +393,16 @@ and open the template in the editor.
             <div id="mainContent" class="container-fluid">
                 <div class="row-fluid voffset7">
                     <div id="pageContent" class="span12">
-                        
-<!--                        <div class="row-fluid">
-                            <div id="contenu2" class="span3 offset6" style="visibility: hidden">
-                                <div class="coucou"></div>
-                            </div>
-                        </div>
-                        <div class="row-fluid">
-                            <div id="contenu4" class="span11" style="visibility: hidden">
-                                <div class="coucou"></div>
-                            </div>
-                        </div>-->
 
-                        <div class="internPanel row-fluid">
-                            <div class="btn-group btn-group-lg btn-group-vertical">
-                                <button type="button" class="btn">Left</button>
-                                <button type="button" class="btn">Middle</button>
-                                <button type="button" class="btn">Right</button>
+                        <div id="informationPanel" class="internPanel">
+                            <div class="titlePanel">
+                                <h3 id="informationTitle"></h3>
+                                <button class="btn btn-primary" onclick="closePanel()">x</button>
+                            </div>
+                            <div class="tabbable tabs-left">
+                                <ul id="tabsPanel" class="nav nav-tabs">
+                                </ul>
+                                <div id="contentTabs" class="tab-content"></div>
                             </div>
                         </div>
 
@@ -302,19 +411,36 @@ and open the template in the editor.
                     <!-- POP UP AFFICHER QUAND EN FACE D'UN BATIMENT -->
                     <div id="popUpInfos" class="modal hide fade">
                         <div class="modal-header"> <a class="close" data-dismiss="modal">×</a>
-                            <h3>Informations bâtiments détectées</h3>
+                            <h3 id="popUpTitle"></h3>
                         </div>
-                        <div class="modal-body">
+                        <div id="popUpContent" class="modal-body">
                             Voulez-vous l'afficher ?
                         </div>
-                        <div id="footerPopUp" class="modal-footer"> 
-                            <a class="btn btn-success" onclick="showInfoPanel()" data-dismiss="modal">Afficher</a>
-                            <a class="btn btn-inverse" data-dismiss="modal">Annuler</a> 
+                        <div id="popUpFooter" class="modal-footer"> 
+                            <a class="btn btn-success" onclick="showInfoPanel()" data-dismiss="modal">Plus d'informations ?</a>
                         </div>
                     </div>
-                    <!--<a class="btn btn-primary" data-toggle="modal" data-target="#infos">Informations bâtiments détectées</a>-->
+
+                    <!-- Barre du bas pour le popUp info quand un panel est déjà affiché-->
+                    <nav id="bottomPopUp" class="navbar navbar-fixed-bottom navbar-inverse">
+                        <div class="navbar-inner">
+                            <div class="container-fluid" >
+                                <button class="btn btn-large btn-primary pull-right" onclick="closeBottomPopUp()">X</button>
+                                <div id="bottomPopUpArrow" class="row-fluid" onclick="showInfoPanel()">^</div>
+                                <div id="bottomPopUpContent" class="row-fluid" onclick="showInfoPanel()">
+                                    <div id="bottomPopUpPicture" class="span2"></div>
+                                    <div id="bottomPopUpDescription" class="span7"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
                 </div>
             </div>
         </div>
+
+        <script>
+            loadElements();
+        </script>
     </body>
 </html>
