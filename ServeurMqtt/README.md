@@ -4,13 +4,21 @@ MQQT server
 Install
 -----------
 
-sudo npm install mqtt express mongodb mongoose mongoose-schema-extend express-restify-mongoose mers
+sudo npm install mqtt express mongodb mongoose mongoose-schema-extend express-restify-mongoose mers ejs
 
 Launch
 -----------
 
 sudo service mongodb start
 nodejs serveur.js
+
+Init database
+--------------
+
+    http://localhost:4242/initDB.html
+
+mongo usage
+============
 
 mongo
 ----------
@@ -23,55 +31,60 @@ More info about mongo shell: http://docs.mongodb.org/manual/tutorial/getting-sta
 
 API
 =====
-
-you could then access it at
-    listing.
     
-    http://localhost:4242/api/building/
-    http://localhost:4242/api/building/$id
-    http://localhost:4242/api/building/$id/items
-    http://localhost:4242/api/building/$id/items/$id
-    http://localhost:4242/api/building/$id/items/0
-    http://localhost:4242/api/building/finder/findTitleLike/term
+Show all entities
+http://localhost:4242/api/entity/ 
+
+Show an entity $id
+http://localhost:4242/api/entity/$id/ 
+
+Show infos of entity $id
+http://localhost:4242/api/entity/$id/infos 
+
+Show the first info of entity $id
+http://localhost:4242/api/entity/$id/infos/0 
+
+Show the first info of entity $id
+http://localhost:4242/api/entity/$id/infos/0/uneInfo 
     
     
 ###Pagination
 Pagination is also supported via skip= and limit= query params.
 
-    http://localhost:4242/api/building/$id?skip=10&limit=10
+    http://localhost:4242/api/entity/$id?skip=10&limit=10
 
 ###Population
 Mongoose populate is supported, but this will be changing shortly to allow for more
 fine grained controll over population.  Currently you can do
 
-    http://localhost:4242/api/building?populate=items
+    http://localhost:4242/api/entity?populate=items
 
 or to specify particular fields.
 
-    http://localhost:4242/api/building?skip=10&populate[items]=title,date
+    http://localhost:4242/api/entity?skip=10&populate[items]=title,date
 
 
 
 ###Filter
 Filtering is available for strings. To find all the blog posts with C in the title.
 
-    http://localhost:4242/api/building?filter[title]=C
+    http://localhost:4242/api/entity?filter[title]=C
 
 Also you can and or nor the filters by using + (and) - (nor)  or nothing or
-    http://localhost:4242/api/building?filter[-title]=C
-    http://localhost:4242/api/building?filter[+title]=C&filter[-body]=A
+    http://localhost:4242/api/entity?filter[-title]=C
+    http://localhost:4242/api/entity?filter[+title]=C&filter[-body]=A
 
 
 
 To filter all String fields that have a C in them
 
-    http://localhost:4242/api/building?filter=C
+    http://localhost:4242/api/entity?filter=C
 
 
 ###Sorting
 Sorting is supported 1 ascending -1 ascending.
 
-  http://localhost:4242/api/building?sort=title:1,date:-1
+  http://localhost:4242/api/entity?sort=title:1,date:-1
 
 ###Transformer
 Transformers can be registered on startup.  A simple TransformerFactory is
@@ -101,7 +114,7 @@ app.use('/api', require('mers').rest({
 
 to get results transformered just add
 
-     http://localhost:4242/api/building?transform=renameid
+     http://localhost:4242/api/entity?transform=renameid
 
 
 
@@ -127,11 +140,11 @@ BlogPostSchema.statics.findTitleLike = function findTitleLike(q, term) {
 
 So you can get the url
 
-    http://localhost:4242/api/building/finder/findTitleLike?title=term
+    http://localhost:4242/api/entity/finder/findTitleLike?title=term
 
 or
 
-    http://localhost:4242/api/building/finder/findTitleLike/term
+    http://localhost:4242/api/entity/finder/findTitleLike/term
 
 ### [Error Handling][error]
 To create a custom error handler
