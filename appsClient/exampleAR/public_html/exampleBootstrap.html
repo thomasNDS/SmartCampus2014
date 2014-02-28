@@ -53,6 +53,11 @@ and open the template in the editor.
 
             $(window).ready(function() {
 
+                scrollBarWidth = 0;//getScrollerWidth();
+                menuHeight = $("#menu").height() + 5;
+                console.log("sc : " + scrollBarWidth);
+                console.log("menu height : " + $("#menu").height());
+
                 ////////////////////////
                 //// GESTION CAMERA ////
                 ////////////////////////
@@ -62,14 +67,15 @@ and open the template in the editor.
                 var video = document.createElement('video');
 //                video.width = 640;
 //                video.height = 480;
-                console.log("Avt fonction" + $(document).width());
-                video.width = $(document).width();
-                video.height = $(document).height();
+//                console.log("Avt fonction" + $(document).width());
+                video.width = $(document).width() - scrollBarWidth;
+                video.height = $(document).height() - menuHeight;
                 video.loop = true;
                 video.volume = 0;
                 video.autoplay = true;
                 video.style.display = 'none';
                 video.controls = true;
+
                 //getUser mutliplateforme
                 navigator.getUserMedia = (navigator.getUserMedia ||
                         navigator.webkitGetUserMedia ||
@@ -91,16 +97,15 @@ and open the template in the editor.
                 var canvas = document.createElement('canvas');
 //                canvas.width = 320;
 //                canvas.height = 240;
-                canvas.width = $(document).width();
-                canvas.height = $(document).height();
+                canvas.width = $(document).width();// - scrollBarWidth;
+                canvas.height = $(document).height();// - menuHeight;
 //                canvas.style.display = 'block';
 
                 //Canvas pour l'affichage de la video
                 var videoCanvas = document.createElement('canvas');
                 videoCanvas.setAttribute("id", "videoCanvas");
-                console.log(video.width);
-                videoCanvas.width = video.width;
-                videoCanvas.height = video.height;
+                videoCanvas.width = video.width - scrollBarWidth;
+                videoCanvas.height = video.height - menuHeight;
                 // Create a RGB raster (image matricielle) object for the 2D canvas.
                 // JSARToolKit uses raster objects to read image data.
                 var raster = new NyARRgbRaster_Canvas2D(canvas);
@@ -118,39 +123,18 @@ and open the template in the editor.
 //                document.body.appendChild(videoCanvas);
                 $("#backgroundVideo").append(videoCanvas);
 
-                /// FULL SCREEN ///
-                //// TODO : Probleme avec le canvas de detection + paysage / portrait resize foireux ////
-                function onResizeHandler(e) {
-//                    console.log("full");
-//                    var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
-//                    if (isFullScreen) {
-                    video.width = window.innerWidth;
-                    video.height = window.innerHeight;
-
-                    videoCanvas.width = window.innerWidth;
-                    videoCanvas.height = window.innerHeight;
-
-                    console.log("larg " + window.innerWidth + "haut " + window.innerHeight);
-                    videoCanvas.getContext('2d').drawImage(video, 0, 0, window.innerWidth, window.innerHeight);
-//                    }
-                }
-                window.onresize = onResizeHandler;
-//                window.onfullscreenchange = onResizeHandler;
-//                window.onwebkitfullscreenchange = onResizeHandler;
-//                window.onmozfullscreenchange = onResizeHandler;
-
-                //////////////////////
-
                 //Fonction appele a chaque interval
                 setInterval(function() {
 
                     //Affichage image dans les deux canvas crees
+                    //Affichage pour la video
                     videoCanvas.getContext('2d').drawImage(video, 0, 0, video.width, video.height);
 //                    ctx.drawImage(videoCanvas, 0, 0, 320, 240);
+                    //Prise de l'image du canvas pour la detection marker
                     ctx.drawImage(videoCanvas, 0, 0);
                     //Prevenir que le canvas a changer
                     canvas.changed = true;
-                    //initiale avant d'entrer dans la boucle le qrvisible vu a faux
+                    //initialise avant d'entrer dans la boucle le qrvisible vu a faux
                     qrVisible = false;
                     //Creation du detecteur de marques, avec l'image matricielle et le nombre de marqueurs a detectes (surement..)
                     var detected = detector.detectMarkerLite(raster, threshold);
@@ -196,6 +180,80 @@ and open the template in the editor.
                         }
                     }
                 }, 15);
+
+
+                /// FULL SCREEN ///
+                //// TODO : Probleme avec le canvas de detection + paysage / portrait resize foireux ////
+                function onResizeHandler(e) {
+//                    console.log("full");
+//                    var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
+//                    if (isFullScreen) {
+                    menuHeight = $("#menu").height() + 5;
+//                    console.log("menu height : " + $("#menu").height());
+
+                    video.width = window.innerWidth - scrollBarWidth;
+                    video.height = window.innerHeight - menuHeight;
+
+                    videoCanvas.width = window.innerWidth - scrollBarWidth;
+                    videoCanvas.height = window.innerHeight - menuHeight;
+
+//                    canvas.width = $(document).width();// - scrollBarWidth;
+//                    canvas.height = $(document).height();
+
+//                    console.log("larg " + window.innerWidth + "haut " + window.innerHeight);
+//                    videoCanvas.getContext('2d').drawImage(video, 0, 0, window.innerWidth - scrollBarWidth, window.innerHeight - menuHeight);
+//                    videoCanvas.getContext('2d').drawImage(video, 0, 0, video.width, video.height);
+//                    }
+                }
+                window.onresize = onResizeHandler;
+//                window.onfullscreenchange = onResizeHandler;
+//                window.onwebkitfullscreenchange = onResizeHandler;
+//                window.onmozfullscreenchange = onResizeHandler;
+
+                //////////////////////
+
+
+                function getScrollerWidth() {
+                    var scr = null;
+                    var inn = null;
+                    var wNoScroll = 0;
+                    var wScroll = 0;
+
+                    // Outer scrolling div
+                    scr = document.createElement('div');
+                    scr.style.position = 'absolute';
+                    scr.style.top = '-1000px';
+                    scr.style.left = '-1000px';
+                    scr.style.width = '100px';
+                    scr.style.height = '50px';
+                    // Start with no scrollbar
+                    scr.style.overflow = 'hidden';
+
+                    // Inner content div
+                    inn = document.createElement('div');
+                    inn.style.width = '100%';
+                    inn.style.height = '200px';
+
+                    // Put the inner div in the scrolling div
+                    scr.appendChild(inn);
+                    // Append the scrolling div to the doc
+
+                    document.body.appendChild(scr);
+
+                    // Width of the inner div sans scrollbar
+                    wNoScroll = inn.offsetWidth;
+                    // Add the scrollbar
+                    scr.style.overflow = 'auto';
+                    // Width of the inner div width scrollbar
+                    wScroll = inn.offsetWidth;
+
+                    // Remove the scrolling div from the doc
+                    document.body.removeChild(document.body.lastChild);
+
+                    // Pixel width of the scroller
+                    return (wNoScroll - wScroll);
+                }
+
             });
 
             /*
@@ -305,6 +363,18 @@ and open the template in the editor.
                 };
                 elementsArray[0] = elem0;
                 elementsArray[4] = elem4;
+                
+                loadFromDB();
+
+            }
+            
+            function loadFromDB(){
+                jQuery.get("http://localhost:4242/api/administrator", function(data, textStatus, jqXHR) {
+                    console.log("Get response:");
+                    console.dir(data);
+                    console.log(textStatus);
+                    console.dir(jqXHR);
+                });
             }
 
             /*
@@ -373,7 +443,7 @@ and open the template in the editor.
     <body>
         <div id="wrapper">
             <!--MENU-->
-            <nav class="navbar navbar-static-top navbar-inverse">
+            <nav id="menu" class="navbar navbar-static-top navbar-inverse">
                 <div class="navbar-inner">
                     <div class="container-fluid">
                         <ul class="nav">
@@ -391,10 +461,11 @@ and open the template in the editor.
 
             <!--DIV QUI CONTIENDRA L'UI-->
             <div id="mainContent" class="container-fluid">
-                <div class="row-fluid voffset7">
+                <!-- Tout le contenu dans une row -->
+                <div class="row-fluid voffset5">
                     <div id="pageContent" class="span12">
 
-                        <div id="informationPanel" class="internPanel">
+                        <div id="informationPanel">
                             <div class="titlePanel">
                                 <h3 id="informationTitle"></h3>
                                 <button class="btn btn-primary" onclick="closePanel()">x</button>

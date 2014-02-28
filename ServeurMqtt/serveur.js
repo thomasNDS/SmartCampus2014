@@ -2,7 +2,7 @@
  * SmartCampus
  */
 
-var addrmongo ='mongodb://localhost:27017/Client';
+var addrmongo = 'mongodb://localhost:27017/Client';
 
 var fs = require("fs");
 http = require('http'),
@@ -64,6 +64,22 @@ client.on('message', function(topic, message) {
         console.log('Température ajouté à la BD avec succès !');
     });
 });
+
+/**
+ * CORS support.
+ */
+
+app.all('*', function(req, res, next){
+  if (!req.get('Origin')) return next();
+  // use "*" here to accept any origin
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST');
+  res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+   res.set('Access-Control-Allow-Max-Age', 3600);
+  if ('OPTIONS' === req.method) return res.send(200);
+  next();
+});
+
 
 app.get('/api', function(req, res) {
     res.send('API is running');

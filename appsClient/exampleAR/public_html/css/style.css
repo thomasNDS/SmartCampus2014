@@ -6,38 +6,15 @@ body {
     margin: 0;
     padding: 0;
 }
-.coucou {
-    text-decoration-color: black;
-}
-#contenu2 {
-    background-color: yellow;
 
-    /*    width : 400px; 
-        height: 100%;
-        position: absolute;
-        left: 100px;
-        top: 150px;*/
-}
-#contenu4 {
-    background-color: blue;
-    /*width : 400px;*/
-    /* height: 100px; */
-    /*position: absolute;*/
-    /*left: 100px;*/
-    /*top: 250px;*/
-}
 #backgroundVideo{
     position: absolute;
 }
+
 #mainContent {
     position : relative;
 }
-#pageContent {
-    /*    border-style: solid;
-        border-width: 1px;
-        background-color: white;
-        height: 500px; */
-}
+
 #wrapper {
     max-width: 100%;
     width: 100%;
@@ -57,10 +34,6 @@ body {
     left: 20%;
     margin-top: 0%;
     margin-left: 0%;
-}
-
-.internPanel {
-    /* background-color: whitesmoke; */
 }
 
 //Ajout pour un offset vertical
@@ -187,6 +160,8 @@ body {
 
 #contentTabs{
     padding-top: 7px;
+    padding-bottom: 5px;
+    padding-right: 5px;
 }
 
 .titlePanel{
@@ -200,7 +175,7 @@ body {
 .titlePanel > button{
     position: absolute;
     right: 25px;
-    top: 95px;
+    top: 55px;
 }
 
 #bottomPopUp {
