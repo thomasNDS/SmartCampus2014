@@ -363,6 +363,18 @@ and open the template in the editor.
                 };
                 elementsArray[0] = elem0;
                 elementsArray[4] = elem4;
+                
+                loadFromDB();
+
+            }
+            
+            function loadFromDB(){
+                jQuery.get("http://localhost:4242/api/administrator", function(data, textStatus, jqXHR) {
+                    console.log("Get response:");
+                    console.dir(data);
+                    console.log(textStatus);
+                    console.dir(jqXHR);
+                });
             }
 
             /*
