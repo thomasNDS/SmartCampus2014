@@ -9,7 +9,7 @@ sudo npm install mqtt express mongodb mongoose mongoose-schema-extend express-re
 Launch
 -----------
 
-sudo service mongodb start
+sudo service mongodb start  
 nodejs serveur.js
 
 Init database

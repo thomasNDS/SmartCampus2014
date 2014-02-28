@@ -11,7 +11,7 @@ var Entity = new Schema({
     type: String,
     comments: [Comment],
     administrators: [Administrator],
-//    events: [Event],
+    //events: [Event],
     infos: []
     
 });
