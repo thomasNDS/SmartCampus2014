@@ -69,20 +69,26 @@ client.on('message', function(topic, message) {
  * CORS support.
  */
 
-app.all('*', function(req, res, next){
-  if (!req.get('Origin')) return next();
-  // use "*" here to accept any origin
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET, POST');
-  res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
-   res.set('Access-Control-Allow-Max-Age', 3600);
-  if ('OPTIONS' === req.method) return res.send(200);
-  next();
+app.all('*', function(req, res, next) {
+    if (!req.get('Origin'))
+        return next();
+    // use "*" here to accept any origin
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST');
+    res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+    res.set('Access-Control-Allow-Max-Age', 3600);
+    if ('OPTIONS' === req.method)
+        return res.send(200);
+    next();
 });
 
 
 app.get('/api', function(req, res) {
-    res.send('API is running');
+    res.send("Show all entities</br>http://localhost:4242/api/entity/ </br></br>Show an entity $id\
+</br>http://localhost:4242/api/entity/$id/ </br>Show infos of entity $id\
+</br>http://localhost:4242/api/entity/$id/infos </br>Show the first info of entity $id\
+</br>http://localhost:4242/api/entity/$id/infos/0 </br>Show the first info of entity $id\
+</br>http://localhost:4242/api/entity/$id/infos/0/uneInfo ");
 });
 
 app.get('/', routes.index);

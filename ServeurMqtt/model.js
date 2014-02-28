@@ -11,18 +11,17 @@ var Entity = new Schema({
     type: String,
     comments: [Comment],
     administrators: [Administrator],
-    //events: [Event],
+    events: [Event],
     infos: []
     
 });
 
-//var Building = Entity.extend({
-//    id: ObjectId,
-//    name: {type: String, required: true},
-//    comment: {type: String},
-//    type: {type: String},
-//    items: [Item]
-//});
+var Event = new Schema({
+    id: ObjectId,
+    name: {type: String, required: true},
+    description: {type: String},
+    date: {type: Date, default: Date.now}
+});
 
 var Item = new Schema({
     id: ObjectId,
@@ -55,41 +54,10 @@ var Administrator = new Schema({
     first_name: String,
     entity: [{ type: Schema.Types.ObjectId, ref: 'Entity' }] 
 });
-//
-//var Tram = Entity.extend({
-//    id: ObjectId,
-//    value: String
-//});
-//
-//var Lampadaire = Entity.extend({
-//    id: ObjectId,
-//    value: String
-//});
-//var Parking = Entity.extend({
-//    id: ObjectId,
-//    total_place: Number,
-//    vacant_place: Number
-//});
-//var Building_parking = Item.extend({
-//    id: ObjectId,
-//    total_place: Number,
-//    vacant_place: Number
-//});
-//var Cafeteria = Item.extend({
-//    name: String
-//});
-//var Classroom = Item.extend({
-//    id: ObjectId,
-//    total_place: Number
-//});
+
 // models
-//var ClassroomModel = mongoose.model('Classroom', Classroom);
-//var CafeteriaModel = mongoose.model('Cafeteria', Cafeteria);
-//var BuildingModel = mongoose.model('Building', Building);
-//var ParkingModel = mongoose.model('Parking', Parking);
-//var LampadaireModel = mongoose.model('Lampadaire', Lampadaire);
+var LampadaireModel = mongoose.model('Event', Event);
 var ItemModel = mongoose.model('Item', Item);
-//var TramModel = mongoose.model('Tram', Tram);
 var EntityModel = mongoose.model('Entity', Entity);
 var AdministratorModel = mongoose.model('Administrator', Administrator);
 var CommentModel = mongoose.model('Comment', Comment);
