@@ -47,7 +47,16 @@ http://localhost:4242/api/entity/$id/infos/0
 Show the first info of entity $id
 http://localhost:4242/api/entity/$id/infos/0/uneInfo 
     
-    
+Examples
+--------
+Some examples available in /view
+    post.html
+    get.html
+    getone.html
+    update.html
+    delete.html
+
+
 ###Pagination
 Pagination is also supported via skip= and limit= query params.
 
