@@ -3,7 +3,7 @@
 //Definition of a schema /////////
 //////////////////////////////////
 var ObjectId = Schema.ObjectId;
-console.log("modele");
+console.log("model");
 
 var Entity = new Schema({
     id: ObjectId,
@@ -12,8 +12,14 @@ var Entity = new Schema({
     comments: [Comment],
     administrators: [Administrator],
     events: [Event],
+    items: [{
+            id: ObjectId,
+            name: {type: String, required: true},
+            position: {type: String},
+            room_number: {type: Number},
+            Sensors_data: [Sensors_data]
+        }],
     infos: []
-    
 });
 
 var Event = new Schema({
@@ -23,13 +29,13 @@ var Event = new Schema({
     date: {type: Date, default: Date.now}
 });
 
-var Item = new Schema({
-    id: ObjectId,
-    name: {type: String, required: true},
-    position: {type: String},
-    room_number: {type: Number},
-    Sensors_data: [Sensors_data]
-});
+//var Item = new Schema({
+//    id: ObjectId,
+//    name: {type: String, required: true},
+//    position: {type: String},
+//    room_number: {type: Number},
+//    Sensors_data: [Sensors_data]
+//});
 
 var Sensors_data = new Schema({
     id: ObjectId,
@@ -48,16 +54,16 @@ var Comment = new Schema({
     id: ObjectId,
     value: String
 });
+
 var Administrator = new Schema({
     id: ObjectId,
     name: String,
     first_name: String,
-    entity: [{ type: Schema.Types.ObjectId, ref: 'Entity' }] 
+    entity: [{type: Schema.Types.ObjectId, ref: 'Entity'}]
 });
 
 // models
-var LampadaireModel = mongoose.model('Event', Event);
-var ItemModel = mongoose.model('Item', Item);
+//var ItemModel = mongoose.model('Item', Item);
 var EntityModel = mongoose.model('Entity', Entity);
 var AdministratorModel = mongoose.model('Administrator', Administrator);
 var CommentModel = mongoose.model('Comment', Comment);

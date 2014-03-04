@@ -89,22 +89,63 @@
         "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
-        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <span class='ok'> OK </span> <br>");
+        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
     });
     jQuery.post("http://localhost:4242/api/entity", {
         "name": "tram B",
         "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
-        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <span class='ok'> OK </span> <br>");
+        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
     });
     jQuery.post("http://localhost:4242/api/entity", {
         "name": "tram C",
         "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
-        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <span class='ok'> OK </span> <br>");
-    });</script>
+        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+    });
+</script>
+
+<h2>RU</h2>
+<div id="ru"></div>
+<script>
+    jQuery.post("http://localhost:4242/api/entity", {
+        "name": "Diderot",
+        "infos": [{}],
+        "items": [
+            {"id_crous": 19, "name": "Cafeteria", "menus": [{}]},
+            {"id_crous": 18, "name": "Entracte", "menus": [{}]},
+            {"id_crous": 46, "name": "Administractif", "menus": [{}]},
+            {"id_crous": 17, "name": "Traditionnel (2 salles) ", "menus": [{}]}
+        ]
+    }, function(data, textStatus, jqXHR) {
+        console.log(data.payload);
+        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+    });
+    jQuery.post("http://localhost:4242/api/entity", {
+        "name": "condillac",
+        "infos": [{"id_crous": 3}],
+        "items": [
+            {"id_crous": 4, "name": "condillac ", "menus": [{}]}
+        ]
+    }, function(data, textStatus, jqXHR) {
+        console.log(data.payload);
+        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+    });
+    jQuery.post("http://localhost:4242/api/entity", {
+        "name": "barnave",
+        "infos": [{"id_crous": 3}],
+        "items": [
+            {"id_crous": 13, "name": "Cafeteria", "menus": [{}]},
+            {"id_crous": 24, "name": "Framboisière", "menus": [{}]},
+            {"id_crous": 3, "name": "Traditionnel (2 salles) ", "menus": [{}]}
+        ]
+    }, function(data, textStatus, jqXHR) {
+        console.log(data.payload);
+        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+    });
+</script>
 
 <h2>Administrators</h2>
 <div id="admin"></div>

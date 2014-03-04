@@ -1,4 +1,4 @@
-MQQT server
+MQTT server
 ==============
 
 Install
@@ -70,18 +70,18 @@ fine grained controll over population.  Currently you can do
 
 or to specify particular fields.
 
-    http://localhost:4242/api/entity?skip=10&populate[items]=title,date
+    http://localhost:4242/api/entity?skip=10&populate[items]=name,type
 
 
 
 ###Filter
-Filtering is available for strings. To find all the blog posts with C in the title.
+Filtering is available for strings. 
 
-    http://localhost:4242/api/entity?filter[title]=C
+    http://localhost:4242/api/entity?filter[name]=iae
 
 Also you can and or nor the filters by using + (and) - (nor)  or nothing or
-    http://localhost:4242/api/entity?filter[-title]=C
-    http://localhost:4242/api/entity?filter[+title]=C&filter[-body]=A
+    http://localhost:4242/api/entity?filter[-name]=C
+    http://localhost:4242/api/entity?filter[+name]=iae&filter[-type]=p
 
 
 

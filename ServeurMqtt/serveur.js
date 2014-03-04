@@ -52,18 +52,34 @@ mongoose.connect(addrmongo, function(err) {
 
 client = mqtt.createClient(1883, 'localhost');
 
-client.subscribe('Building');
+client.subscribe('barnave');
 var i = 12;
 client.on('message', function(topic, message) {
     console.log(message);
-    var myBuildingModel = new BuildingModel({_id: i++, temp: message});
-    myBuildingModel.save(function(err) {
-        if (err) {
-            throw err;
-        }
-        console.log('Température ajouté à la BD avec succès !');
+
+		  EntityModel.findOne({ name : topic }, function(err, p) {
+		  if (!p)
+			return next(new Error('Could not load Document'));
+		  else {
+            p.infos.name = message;
+			p.save(function(err) {
+			  if (err)
+				console.log('error')
+			  else
+				console.log('\n success'+topic)
+			});
+		  }
     });
 });
+//////////////
+   // var myEntityModel = new EntityModel({_id: i++, temp: message});
+//    myEntityModel.save(function(err) {
+ //       if (err) {
+  //          throw err;
+    //    }
+   //     console.log('success!');
+  //  });
+
 
 /**
  * CORS support.
@@ -98,5 +114,5 @@ app.use('/api', mers({uri: addrmongo}).rest());
 
 //Run the server
 http.createServer(app).listen(4242, function() {
-    console.log("http://localhost:4242");
+    console.log("/n Start on http://localhost:4242 /n");
 });
