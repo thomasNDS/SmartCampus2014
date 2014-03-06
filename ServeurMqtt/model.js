@@ -6,20 +6,22 @@ var ObjectId = Schema.ObjectId;
 console.log("model");
 
 var Entity = new Schema({
-    id: ObjectId,
+    id: String,
     name: String,
     type: String,
     comments: [Comment],
     administrators: [Administrator],
     events: [Event],
-    items: [{
-            id: ObjectId,
-            name: {type: String, required: true},
-            position: {type: String},
-            room_number: {type: Number},
-            Sensors_data: [Sensors_data]
-        }],
+    items: [Item],
     infos: []
+});
+
+var Item = new Schema({
+    id: ObjectId,
+    name: {type: String},
+    position: {type: String},
+    room_number: {type: Number},
+    Sensors_data: [Sensors_data]
 });
 
 var Event = new Schema({
@@ -28,14 +30,6 @@ var Event = new Schema({
     description: {type: String},
     date: {type: Date, default: Date.now}
 });
-
-//var Item = new Schema({
-//    id: ObjectId,
-//    name: {type: String, required: true},
-//    position: {type: String},
-//    room_number: {type: Number},
-//    Sensors_data: [Sensors_data]
-//});
 
 var Sensors_data = new Schema({
     id: ObjectId,
@@ -63,7 +57,7 @@ var Administrator = new Schema({
 });
 
 // models
-//var ItemModel = mongoose.model('Item', Item);
+var ItemModel = mongoose.model('Item', Item);
 var EntityModel = mongoose.model('Entity', Entity);
 var AdministratorModel = mongoose.model('Administrator', Administrator);
 var CommentModel = mongoose.model('Comment', Comment);

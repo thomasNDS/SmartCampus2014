@@ -24,7 +24,7 @@
         success: function(data, textStatus, jqXHR) {
             console.log(data.payload);
             polytech_id = data.payload._id;
-            if (data.payload) {
+            if (data.payload.name) {
                 $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
             } else {
                 $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
@@ -110,41 +110,66 @@
 <h2>RU</h2>
 <div id="ru"></div>
 <script>
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "Diderot",
-        "infos": [{}],
-        "items": [
-            {"id_crous": 19, "name": "Cafeteria", "menus": [{}]},
-            {"id_crous": 18, "name": "Entracte", "menus": [{}]},
-            {"id_crous": 46, "name": "Administractif", "menus": [{}]},
-            {"id_crous": 17, "name": "Traditionnel (2 salles) ", "menus": [{}]}
-        ]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+        var diderot19_id = "";
+        var diderot18_id = "";
+        var diderot46_id = "";
+        var diderot17_id = "";
+
+    jQuery.ajax({
+        url: "http://localhost:4242/api/item",
+        type: 'POST',
+        data: {"name": "Polytech Grenoble",
+            "comment": "L’École Polytechnique de l'université Grenoble-I, plus communément appelée Polytech Grenoble (anciennement ISTG), est l'école d'ingénieurs de l'Université Joseph Fourier. Elle est située près de la mairie de Saint-Martin-d’Hères, à quelques centaines de mètres du domaine universitaire de Saint-Martin-d’Hères et Gières. Polytech Grenoble appartient au réseau Polytech qui regroupe treize écoles d'ingénieurs universitaires dans toute la France.",
+            "type": "ecole",
+            "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
+        },
+        success: function(data, textStatus, jqXHR) {
+            console.log(data.payload);
+            polytech_id = data.payload._id;
+            if (data.payload.name) {
+                $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+            } else {
+                $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+            }
+        },
+        async: false,
+        cache: false
     });
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "condillac",
-        "infos": [{"id_crous": 3}],
-        "items": [
-            {"id_crous": 4, "name": "condillac ", "menus": [{}]}
-        ]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-    });
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "barnave",
-        "infos": [{"id_crous": 3}],
-        "items": [
-            {"id_crous": 13, "name": "Cafeteria", "menus": [{}]},
-            {"id_crous": 24, "name": "Framboisière", "menus": [{}]},
-            {"id_crous": 3, "name": "Traditionnel (2 salles) ", "menus": [{}]}
-        ]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-    });
+//    jQuery.post("http://localhost:4242/api/entity", {
+//        "name": "Diderot",
+//        "infos": [{}],
+//        "items": [
+//            {"id_crous": 19, "name": "Cafeteria", "menus": [{}]},
+//            {"id_crous": 18, "name": "Entracte", "menus": [{}]},
+//            {"id_crous": 46, "name": "Administractif", "menus": [{}]},
+//            {"id_crous": 17, "name": "Traditionnel (2 salles) ", "menus": [{}]}
+//        ]
+//    }, function(data, textStatus, jqXHR) {
+//        console.log(data.payload);
+//        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//    });
+//    jQuery.post("http://localhost:4242/api/entity", {
+//        "name": "condillac",
+//        "infos": [{"id_crous": 3}],
+//        "items": [
+//            {"id_crous": 4, "name": "condillac ", "menus": [{}]}
+//        ]
+//    }, function(data, textStatus, jqXHR) {
+//        console.log(data.payload);
+//        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//    });
+//    jQuery.post("http://localhost:4242/api/entity", {
+//        "name": "barnave",
+//        "infos": [{"id_crous": 3}],
+//        "items": [
+//            {"id_crous": 13, "name": "Cafeteria", "menus": [{}]},
+//            {"id_crous": 24, "name": "Framboisière", "menus": [{}]},
+//            {"id_crous": 3, "name": "Traditionnel (2 salles) ", "menus": [{}]}
+//        ]
+//    }, function(data, textStatus, jqXHR) {
+//        console.log(data.payload);
+//        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//    });
 </script>
 
 <h2>Administrators</h2>

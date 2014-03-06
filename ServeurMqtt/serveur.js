@@ -59,9 +59,9 @@ client.on('message', function(topic, message) {
 
 		  EntityModel.findOne({ name : topic }, function(err, p) {
 		  if (!p)
-			return next(new Error('Could not load Document'));
+			return (new Error('Could not load Document'));
 		  else {
-            p.infos.name = message;
+            p.items = message;
 			p.save(function(err) {
 			  if (err)
 				console.log('error')
@@ -72,14 +72,6 @@ client.on('message', function(topic, message) {
     });
 });
 //////////////
-   // var myEntityModel = new EntityModel({_id: i++, temp: message});
-//    myEntityModel.save(function(err) {
- //       if (err) {
-  //          throw err;
-    //    }
-   //     console.log('success!');
-  //  });
-
 
 /**
  * CORS support.
@@ -99,14 +91,8 @@ app.all('*', function(req, res, next) {
 });
 
 
-app.get('/api', function(req, res) {
-    res.send("Show all entities</br>http://localhost:4242/api/entity/ </br></br>Show an entity $id\
-</br>http://localhost:4242/api/entity/$id/ </br>Show infos of entity $id\
-</br>http://localhost:4242/api/entity/$id/infos </br>Show the first info of entity $id\
-</br>http://localhost:4242/api/entity/$id/infos/0 </br>Show the first info of entity $id\
-</br>http://localhost:4242/api/entity/$id/infos/0/uneInfo ");
-});
-
+app.get('/api',routes.help);
+app.get('/help',routes.help);
 app.get('/', routes.index);
 
 var mers = require('mers');
@@ -114,5 +100,6 @@ app.use('/api', mers({uri: addrmongo}).rest());
 
 //Run the server
 http.createServer(app).listen(4242, function() {
-    console.log("/n Start on http://localhost:4242 /n");
+    console.log("\n Start on http://localhost:4242 \n");
 });
+
