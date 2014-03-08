@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Salles RUs</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <style>
+            html{margin:0;padding:0}body{font:75% georgia,sans-serif;line-height:1.88889;color:#555753;background:#fff;margin:0;padding:0;margin-left:45px}p{margin-top:0;text-align:justify}h3{font:italic normal 1.4em georgia,sans-serif;letter-spacing:1px;margin-bottom:0;color:#7D775C}a:link{font-weight:700;text-decoration:none;color:#B7A5DF}a:visited{font-weight:700;text-decoration:none;color:#D4CDDC}a:active,a:hover{text-decoration:underline;color:#9685BA}.ok{color:#fff;background:#90ee90;font-weight:800}.no{color:#fff;background:red;font-weight:800}
+        </style>
+    </head>
+    <body> 
+        <div id="wrapper">
+            <h1>Salles RUs</h1>
+            <div id="menu"></div>
+            <div id="show"></div>
+        </div>
+        <script>
+            jQuery.get("http://localhost:4242/api/item", function(data, textStatus, jqXHR) {
+                var a = 0;
+                var res = "";
+                while (data.payload[a]) {
+                    res += "<p id='" + data.payload[a]._id + "' class='clikable' onclick='show(\"" + data.payload[a]._id + "\")'>" + data.payload[a].name + "</p>";
+                    a++;
+                }
+                $("#menu").html("content: <br/>" + res);
+            });
+//            CF: bind event on ajax content: http://chez-syl.fr/2012/02/les-evenements-sur-des-elements-charges-en-ajax/
+
+            function show(id) {
+                var res = "<h1>Menu</h1>";
+                jQuery.get("http://localhost:4242/api/item/" + id, function(data, textStatus, jqXHR) {
+                    console.log(data.payload[0].infos);
+                    var a = 0;
+                    while (data.payload[0].infos[a]) {
+                        res += data.payload[0].infos[a];
+                        a++;
+                    }
+                    $("#show").html(res);
+                });
+            }
+        </script>
+
+    </body>
+</html>

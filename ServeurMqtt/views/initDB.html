@@ -119,7 +119,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 19, "name": "Cafeteria Diderot"},
+        data: {"identifiant": 19, "name": "Cafeteria Diderot", "type":"ru"},
         success: function(data, textStatus, jqXHR) {
             diderot19_id = data.payload._id;
             if (data.payload.name) {
@@ -135,7 +135,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 18, "name": "Diderot : Entracte"},
+        data: {"identifiant": 18, "name": "Diderot : Entracte", "type":"ru"},
         success: function(data, textStatus, jqXHR) {
             diderot18_id = data.payload._id;
             if (data.payload.name) {
@@ -150,7 +150,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 46, "name": "Diderot : Administractif"},
+        data: {"identifiant": 46, "name": "Diderot : Administractif", "type":"ru"},
         success: function(data, textStatus, jqXHR) {
             diderot46_id = data.payload._id;
             if (data.payload.name) {
@@ -166,7 +166,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 17, "name": "Diderot : Traditionnel (2 salles)"},
+        data: {"identifiant": 17, "name": "Diderot : Traditionnel (2 salles)", "type":"ru"},
         success: function(data, textStatus, jqXHR) {
             diderot17_id = data.payload._id;
             if (data.payload.name) {
@@ -196,7 +196,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 4, "name": "Condillac : Traditionnel"},
+        data: {"identifiant": 4, "name": "Condillac : Traditionnel"},
         success: function(data, textStatus, jqXHR) {
             condillac4_id = data.payload._id;
             if (data.payload.name) {
@@ -228,7 +228,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 3, "name": "barnave : Traditionnel (2 salles)"},
+        data: {"identifiant": 3, "name": "barnave : Traditionnel (2 salles)"},
         success: function(data, textStatus, jqXHR) {
             barnave3_id = data.payload._id;
             if (data.payload.name) {
@@ -245,7 +245,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 13, "name": "barnave : Cafeteria"},
+        data: {"identifiant": 13, "name": "barnave : Cafeteria"},
         success: function(data, textStatus, jqXHR) {
             barnave13_id = data.payload._id;
             if (data.payload.name) {
@@ -261,7 +261,7 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"id_crous": 24, "name": "barnave : Framboisière"},
+        data: {"identifiant": 24, "name": "barnave : Framboisière"},
         success: function(data, textStatus, jqXHR) {
             barnave24_id = data.payload._id;
             if (data.payload.name) {
