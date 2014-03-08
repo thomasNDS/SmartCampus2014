@@ -69,7 +69,7 @@ crousClient.on('message', function(topic, message) {
         var id2search = parseInt((topic.match(/[0-9]+/))[0]);
 
 //      Search in DB the item coresponding
-        ItemModel.findOne({id_crous: id2search}, function(err, doc) {
+        ItemModel.findOne({identifiant: id2search}, function(err, doc) {
             console.log(doc);
             if (!doc) {
                 console.log("Could not load Document");

@@ -22,7 +22,8 @@ var Item = new Schema({
     position: {type: String},
     room_number: {type: Number},
     Sensors_data: [Sensors_data],
-    id_crous: Number,
+    identifiant: Number,
+    type: String,
     infos: []
 });
 
