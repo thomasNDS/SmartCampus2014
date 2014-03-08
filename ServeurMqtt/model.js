@@ -21,7 +21,9 @@ var Item = new Schema({
     name: {type: String},
     position: {type: String},
     room_number: {type: Number},
-    Sensors_data: [Sensors_data]
+    Sensors_data: [Sensors_data],
+    id_crous: Number,
+    infos: []
 });
 
 var Event = new Schema({

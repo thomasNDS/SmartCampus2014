@@ -52,8 +52,14 @@ mongoose.connect(addrmongo, function(err) {
 
 var crousClient = mqtt.createClient(1883, 'localhost');
 
+//17,3,4,24,46,18,19
 crousClient.subscribe('menu_crous_3');
+crousClient.subscribe('menu_crous_4');
 crousClient.subscribe('menu_crous_17');
+crousClient.subscribe('menu_crous_18');
+crousClient.subscribe('menu_crous_19');
+crousClient.subscribe('menu_crous_24');
+crousClient.subscribe('menu_crous_46');
 
 crousClient.on('message', function(topic, message) {
     console.log("-----------------\n message= " + message);
@@ -63,7 +69,7 @@ crousClient.on('message', function(topic, message) {
         var id2search = parseInt((topic.match(/[0-9]+/))[0]);
 
 //      Search in DB the item coresponding
-        ItemModel.findOne({id_crous: 3}, function(err, doc) {
+        ItemModel.findOne({id_crous: id2search}, function(err, doc) {
             console.log(doc);
             if (!doc) {
                 console.log("Could not load Document");
@@ -72,8 +78,8 @@ crousClient.on('message', function(topic, message) {
             else {
 //              We find the document and we update it's infos
 //              infos coresponding to menus of the week
-                console.log(message.match(/#/));
-                doc.infos = ["toto"];
+                console.log(message.split(/@/));
+                doc.infos = message.split(/@/);
                 console.log("update");
                 doc.save(function(err) {
                     if (err)
