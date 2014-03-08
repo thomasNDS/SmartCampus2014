@@ -50,26 +50,43 @@ mongoose.connect(addrmongo, function(err) {
 /////// MQTT  //////////////////
 ////////////////////////////////
 
-client = mqtt.createClient(1883, 'localhost');
+var crousClient = mqtt.createClient(1883, 'localhost');
 
-client.subscribe('barnave');
-var i = 12;
-client.on('message', function(topic, message) {
-    console.log(message);
+crousClient.subscribe('menu_crous_3');
+crousClient.subscribe('menu_crous_17');
 
-		  EntityModel.findOne({ name : topic }, function(err, p) {
-		  if (!p)
-			return (new Error('Could not load Document'));
-		  else {
-            p.items = message;
-			p.save(function(err) {
-			  if (err)
-				console.log('error')
-			  else
-				console.log('\n success'+topic)
-			});
-		  }
-    });
+crousClient.on('message', function(topic, message) {
+    console.log("-----------------\n message= " + message);
+    //verify it's a crous topic
+    if (/menu_crous/.test(topic)) {
+//        Extract from the topic name the ID
+        var id2search = parseInt((topic.match(/[0-9]+/))[0]);
+
+//      Search in DB the item coresponding
+        ItemModel.findOne({id_crous: 3}, function(err, doc) {
+            console.log(doc);
+            if (!doc) {
+                console.log("Could not load Document");
+                return (new Error('Could not load Document'));
+            }
+            else {
+//              We find the document and we update it's infos
+//              infos coresponding to menus of the week
+                console.log(message.match(/#/));
+                doc.infos = ["toto"];
+                console.log("update");
+                doc.save(function(err) {
+                    if (err)
+                        console.log('\n\n !!! ERROR with ' + topic);
+                    else
+                        console.log('\n update success for ' + topic);
+                });
+            }
+        });
+        console.log("--------------")
+    } else {
+        console.log("no topic found");
+    }
 });
 //////////////
 
@@ -91,8 +108,8 @@ app.all('*', function(req, res, next) {
 });
 
 
-app.get('/api',routes.help);
-app.get('/help',routes.help);
+app.get('/api', routes.help);
+app.get('/help', routes.help);
 app.get('/', routes.index);
 
 var mers = require('mers');

@@ -1,0 +1,210 @@
+<style>
+    html{margin:0;padding:0}body{font:75% georgia,sans-serif;line-height:1.88889;color:#555753;background:#fff;margin:0;padding:0;margin-left:45px}p{margin-top:0;text-align:justify}h3{font:italic normal 1.4em georgia,sans-serif;letter-spacing:1px;margin-bottom:0;color:#7D775C}a:link{font-weight:700;text-decoration:none;color:#B7A5DF}a:visited{font-weight:700;text-decoration:none;color:#D4CDDC}a:active,a:hover{text-decoration:underline;color:#9685BA}.ok{color:#fff;background:#90ee90;font-weight:800}.no{color:#fff;background:red;font-weight:800}
+</style>
+<h1>
+<a name="init-database" class="anchor" href="#init-database"><span class="octicon octicon-link"></span></a>Init database</h1>
+
+<pre><code>http://localhost:4242/initDB.html
+</code></pre>
+<a href='/initDB.html'> Init my Database </a> (Do it only one time !)
+
+<h1>
+<a name="mongo-usage" class="anchor" href="#mongo-usage"><span class="octicon octicon-link"></span></a>mongo usage</h1>
+
+
+<h2>
+<a name="mongo" class="anchor" href="#mongo"><span class="octicon octicon-link"></span></a>mongo</h2>
+
+<pre><code>mongo
+use Client
+db
+</code></pre>
+
+<p>To delete all database:</p>
+<code>
+    use Client
+    db.dropDatabase()
+</code>
+
+<p>More info about mongo shell: <a href="http://docs.mongodb.org/manual/tutorial/getting-started/">http://docs.mongodb.org/manual/tutorial/getting-started/</a></p>
+
+<h1>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h1>
+
+<p>Show all entities </p>
+<p>http://localhost:4242/api/entity/ </p>
+
+<p>Show an entity $id</p>
+<p>http://localhost:4242/api/entity/$id/ </p>
+
+<p>Show infos of entity $id</p>
+<p>http://localhost:4242/api/entity/$id/infos </p>
+
+<p>Show the first info of entity $id</p>
+<p>http://localhost:4242/api/entity/$id/infos/0 </p>
+
+<p>Show the first info of entity $id</p>
+<p>http://localhost:4242/api/entity/$id/infos/0/uneInfo </p>
+
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>Some examples available in /view
+    post.html
+    get.html
+    getone.html
+    update.html
+    delete.html</p>
+
+<h3>
+<a name="pagination" class="anchor" href="#pagination"><span class="octicon octicon-link"></span></a>Pagination</h3>
+
+<p>Pagination is also supported via skip= and limit= query params.</p>
+
+<pre><code>http://localhost:4242/api/entity/$id?skip=10&amp;limit=10
+</code></pre>
+
+<h3>
+<a name="population" class="anchor" href="#population"><span class="octicon octicon-link"></span></a>Population</h3>
+
+<p>Mongoose populate is supported, but this will be changing shortly to allow for more
+fine grained controll over population.  Currently you can do</p>
+
+<pre><code>http://localhost:4242/api/entity?populate=items
+</code></pre>
+
+<p>or to specify particular fields.</p>
+
+<pre><code>http://localhost:4242/api/entity?skip=10&amp;populate[items]=name,type
+</code></pre>
+
+<h3>
+<a name="filter" class="anchor" href="#filter"><span class="octicon octicon-link"></span></a>Filter</h3>
+
+<p>Filtering is available for strings. </p>
+
+<pre><code>http://localhost:4242/api/entity?filter[name]=iae
+</code></pre>
+
+<p>Also you can and or nor the filters by using + (and) - (nor)  or nothing or
+    http://localhost:4242/api/entity?filter[-name]=C
+    http://localhost:4242/api/entity?filter[+name]=iae&amp;filter[-type]=p</p>
+
+<p>To filter all String fields that have a C in them</p>
+
+<pre><code>http://localhost:4242/api/entity?filter=C
+</code></pre>
+
+<h3>
+<a name="sorting" class="anchor" href="#sorting"><span class="octicon octicon-link"></span></a>Sorting</h3>
+
+<p>Sorting is supported 1 ascending -1 ascending.</p>
+
+<p>http://localhost:4242/api/entity?sort=title:1,date:-1</p>
+
+<h3>
+<a name="transformer" class="anchor" href="#transformer"><span class="octicon octicon-link"></span></a>Transformer</h3>
+
+<p>Transformers can be registered on startup.  A simple TransformerFactory is
+included.  Something that takes security into account could be added.  Currently
+this is only supported on the get operations.   May change the responses to post
+to send location, though I find that pretty inconvient.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">'/api'</span><span class="p">,</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mers'</span><span class="p">).</span><span class="nx">rest</span><span class="p">({</span>
+    <span class="nx">mongoose</span><span class="o">:</span><span class="nx">mongoose</span><span class="p">,</span>
+    <span class="nx">transformers</span><span class="o">:</span><span class="p">{</span>
+           <span class="nx">renameid</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">Model</span><span class="p">,</span> <span class="nx">label</span><span class="p">){</span>
+            <span class="c1">//do some setup but return function.</span>
+              <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+                <span class="nx">obj</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+                <span class="k">delete</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+                <span class="c1">//don't forget to return the object.  Null will filter it from the results.</span>
+                <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+              <span class="p">}</span>
+           <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}));</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>to get results transformered just add</p>
+
+<pre><code> http://localhost:4242/api/entity?transform=renameid
+</code></pre>
+
+<p>It handles  get/put/post/delete I'll add some docs on that some day, but pretty much as you expect, or I expect anyways.
+see tests/routes-mocha.js for examples.</p>
+
+<h3>
+<a name="static-finders" class="anchor" href="#static-finders"><span class="octicon octicon-link"></span></a>Static Finders</h3>
+
+<p>It should also be able to be used with Class finders. Now handles class finders. Note: They must return  a query object.
+They are passed the query object and the rest of the url. All of the populate's, filters, transforms should work.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="cm">/**</span>
+<span class="cm"> * Note this must return a query object.</span>
+<span class="cm"> * @param q</span>
+<span class="cm"> * @param term</span>
+<span class="cm"> */</span>
+<span class="nx">BlogPostSchema</span><span class="p">.</span><span class="nx">statics</span><span class="p">.</span><span class="nx">findTitleLike</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">findTitleLike</span><span class="p">(</span><span class="nx">q</span><span class="p">,</span> <span class="nx">term</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="s1">'title'</span><span class="o">:</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">q</span><span class="p">.</span><span class="nx">title</span> <span class="o">||</span> <span class="nx">term</span><span class="p">,</span> <span class="s1">'i'</span><span class="p">)});</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<p>So you can get the url</p>
+
+<pre><code>http://localhost:4242/api/entity/finder/findTitleLike?title=term
+</code></pre>
+
+<p>or</p>
+
+<pre><code>http://localhost:4242/api/entity/finder/findTitleLike/term
+</code></pre>
+
+<h3>
+<a name="error-handlingerror" class="anchor" href="#error-handlingerror"><span class="octicon octicon-link"></span></a>[Error Handling][error]</h3>
+
+<p>To create a custom error handler</p>
+
+<div class="highlight highlight-javascript"><pre>   <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="err">'</span><span class="o">/</span><span class="nx">rest</span><span class="p">,</span> <span class="nx">rest</span><span class="p">({</span>
+         <span class="nx">error</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+               <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+                   <span class="nx">status</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="nx">error</span><span class="o">:</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span>
+               <span class="p">});</span>
+           <span class="p">}).</span><span class="nx">rest</span><span class="p">());</span>
+
+</pre></div>
+
+<h3>
+<a name="custom-transformers" class="anchor" href="#custom-transformers"><span class="octicon octicon-link"></span></a>Custom Transformers</h3>
+
+<p>You can transform your results by adding a custom transformer and or adding a new TransformerFactory</p>
+
+<div class="highlight highlight-javascript"><pre>   <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="err">'</span><span class="o">/</span><span class="nx">rest</span><span class="p">,</span> <span class="nx">rest</span><span class="p">({</span>
+         <span class="nx">transformers</span> <span class="o">:</span><span class="p">{</span>
+          <span class="nx">cooltranform</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">Model</span><span class="p">,</span> <span class="nx">label</span><span class="p">){</span>
+             <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+                    <span class="nx">obj</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+                    <span class="k">delete</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span> <span class="c1">//returning null removes it from the output</span>
+             <span class="p">}</span>
+          <span class="p">}</span> <span class="p">}).</span><span class="nx">rest</span><span class="p">());</span>
+
+</pre></div>
+
+<h3>
+<a name="selecting" class="anchor" href="#selecting"><span class="octicon octicon-link"></span></a>Selecting</h3>
+
+<p>Selecting support is upcoming, but for now you can do it in finders</p>
+
+<div class="highlight highlight-javascript"><pre> <span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Schema</span><span class="p">({</span>
+   <span class="nx">username</span><span class="o">:</span><span class="nb">String</span><span class="p">,</span>
+   <span class="nx">birthdate</span><span class="o">:</span><span class="nb">Date</span>
+ <span class="p">});</span>
+ <span class="nx">User</span><span class="p">.</span><span class="nx">statics</span><span class="p">.</span><span class="nx">selectJustIdAndUsername</span>  <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">find</span><span class="p">({}).</span><span class="nx">select</span><span class="p">(</span><span class="s1">'_id username'</span><span class="p">);</span>
+ <span class="p">}</span>
+
+</pre></div></article>
