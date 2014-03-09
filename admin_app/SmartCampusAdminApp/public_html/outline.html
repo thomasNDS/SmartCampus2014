@@ -19,9 +19,6 @@ and open the template in the editor.
         <!--<script type="text/javascript" src="js/libs/jquery/jqxbuttons.js"></script>-->
         <!--<script type="text/javascript" src="js/libs/jquery/jqxsplitter.js"></script>-->
         <!--<script type="text/javascript" src="js/libs/jquery/jquery-ui-1.10.4.custom.js"></script>-->
-
-        <script>
-        </script>
     </head>
 
     <body>
@@ -66,8 +63,8 @@ and open the template in the editor.
                             function displayPanel(link) {
 
                                 $.ajax({
-                                    url: link + '.html', // La ressource ciblée
-                                    type: 'GET', // Le type de la requête HTTP.
+                                    url: link + '.html',
+                                    type: 'GET',
                                     dataType: 'html',
                                     success: function(src, status) {
                                         $("#leftpanel").html(src);
@@ -90,38 +87,8 @@ and open the template in the editor.
                             $("#rights").click(function() {
                                 displayPanel('rights');
                             });
-
-
-
-
-
-
-
-
-
-                            ////////////////////////////////////////////////////
-
-
-
-                            function foo() {
-                                $.ajax({
-                                    url: 'http://localhost:8080/openhab.app?sitemap=simon', // La ressource ciblée
-                                    type: 'GET', // Le type de la requête HTTP.
-                                    dataType: 'html',
-                                    success: function(src, status) {
-                                        alert(src + ' / ' + status);
-                                        $("#leftpanel").html(src);
-                                    },
-                                    error: function(result, status, error) {
-                                        $("#leftpanel").html('');
-                                        alert(error + ' / ' + status);
-                                    }
-                                });
-                            }
-
+                           
                         </script>
-
-                        <button onclick="foo()">hey</button>
 
                     </div>
                 </div>
