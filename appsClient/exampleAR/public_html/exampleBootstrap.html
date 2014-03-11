@@ -343,32 +343,8 @@ and open the template in the editor.
              * Fonction pour charger le tableau des elements
              */
             function loadEntities() {
-//                var elem0 = {
-//                    "name": "POLYTECH",
-//                    "type": "Université UJF",
-//                    "subElements": [
-//                        {"title": "Information", "content": "POLYTECH GRENOBLE est l'école d'ingénieurs de l'UNIVERSITE JOSEPH FOURIER.C\n\
-//        ’est une grande école habilitée par la Commission des Titres d’Ingénieur, labelisée IDEFI (Initiatives d'Excellence en Formations Innovantes). Comme toutes les autres écoles du RESEAU POLYTECH, elle s’appuie sur un fort partenariat avec le monde de l’entreprise"},
-//                        {"title": "Horaire", "content": "12h:55    22h45"},
-//                        {"title": "Casier", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."}
-//                    ]
-//                };
-//
-//                var elem4 = {
-//                    "name": "BU",
-//                    "type": "Université UJF",
-//                    "subElements": [
-//                        {"title": "Information", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."},
-//                        {"title": "Horaire", "content": "12h:55    22h45"}
-//                    ]
-//                };
-//                entitiesArray[0] = elem0;
-//                entitiesArray[4] = elem4;
-
-//                loadFromDB();
-
-
                 var entities;
+                //Requete pour get toutes les entités de la BD
                 jQuery.ajax({
                     type: 'GET',
                     async: false,
@@ -379,6 +355,7 @@ and open the template in the editor.
                     }
                 });
 
+                //On les stocke dans un tableau
                 for (var i = 0; i < entities.payload.length; i++) {
                     entitiesArray[i] = entities.payload[i];
                 }
@@ -391,6 +368,11 @@ and open the template in the editor.
 
             }
 
+            /*
+             * Charger les items d'une entite
+             * @param {type} entity
+             * @returns {loadItemsOfEntity.items}
+             */
             function loadItemsOfEntity(entity) {
                 var items;
                 entity.items.forEach(function(item) {
@@ -399,6 +381,11 @@ and open the template in the editor.
                 return items;
             }
 
+            /*
+             * Charge les elements d'un item (Requete)
+             * @param {type} objElem
+             * @returns {undefined}
+             */
             function loadItemById(id) {
                 var item;
                 jQuery.ajax({
@@ -411,6 +398,20 @@ and open the template in the editor.
                     }
                 });
                 return item;
+            }
+
+            function loadComById(id) {
+                var com;
+                jQuery.ajax({
+                    type: 'GET',
+                    async: false,
+                    url: 'http://localhost:4242/api/comment/' + id,
+                    success: function(data) {
+                        console.dir(data.payload[0]);
+                        com = data.payload[0];
+                    }
+                });
+                return com;
             }
 
             /*
@@ -433,8 +434,8 @@ and open the template in the editor.
                 //Onglet Description
                 var tabTitle = "";
                 var tabContent = "";
-                tabTitle = "<li class=\"active\"><a href=\"#tabbedPan0\" data-toggle=\"tab\">Description</a></li>";
-                tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan0\">" + objElem.description + "</div>";
+                tabTitle = "<li class=\"active\"><a href=\"#tabbedPanDesc\" data-toggle=\"tab\">Description</a></li>";
+                tabContent = "<div class=\"tab-pane active\" id=\"tabbedPanDesc\">" + objElem.description + "</div>";
                 $("#tabsPanel").append(tabTitle);
                 $("#contentTabs").append(tabContent);
 
@@ -474,7 +475,7 @@ and open the template in the editor.
 //                        //On met en active le premier
 //                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
 //                    } else {
-                    tabTitle = "<li><a href=\"#tabbedPan" + (index+1) + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
+                    tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
 //                    }
                     $("#tabsPanel").append(tabTitle);
 
@@ -485,11 +486,25 @@ and open the template in the editor.
 //                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
 //                        firstElementSelected = true;
 //                    } else {
-                    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (index+1) + "\">" + itemLoaded.description + "</div>";
+                    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
 //                    }
                     $("#contentTabs").append(tabContent);
 
                 });
+
+                //Onglet Com
+                var coms = objElem.comments;
+                if (coms.length > 0) {
+                    tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
+                    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
+                    objElem.comments.forEach(function(comId) {
+                        var com = loadComById(comId);
+                        tabContent += "<div>" + com.date + " - " + com.value + "</div>";
+                    });
+                    tabContent += "</div>";
+                    $("#tabsPanel").append(tabTitle);
+                    $("#contentTabs").append(tabContent);
+                }
 
             }
 
