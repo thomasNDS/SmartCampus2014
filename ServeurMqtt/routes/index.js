@@ -15,7 +15,7 @@ exports.json = function(req, res) {
 };
 
 exports.test_init = function(req, res) {
-    EntityModel.findOne({name: "UPMF"}, function(err, doc) {
+    AdministratorModel.findOne({name: "guelorgette"}, function(err, doc) {
         console.log(doc);
         if (!doc) {
             console.log("DB not init");
