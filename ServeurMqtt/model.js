@@ -1,3 +1,8 @@
+/*
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
+ */
 
 //////////////////////////////////
 //Definition of a schema /////////

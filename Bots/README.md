@@ -33,4 +33,4 @@ Some example of parsing documents with bot or simple mqtt client are available i
 Licencing
 ---------------------
 
-All the repository bot is under MIT licence
+ MIT licence

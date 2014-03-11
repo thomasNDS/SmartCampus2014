@@ -1,6 +1,9 @@
 #! /usr/bin/python2.7
 # -*-coding:Utf-8 -*
 # pip install paho-mqtt
+#
+#  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+# License MIT
 
 import httplib
 from BeautifulSoup import BeautifulSoup

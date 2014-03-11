@@ -18,8 +18,9 @@ Project
 
 The project contains:
 * A Server MQTT with Mongo DB
-* A HTML5 client aplication
+* A HTML5 client application
 
 Licensing
 ===========
-GPL
+
+MIT
