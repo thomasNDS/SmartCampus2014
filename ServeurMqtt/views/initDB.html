@@ -85,6 +85,9 @@ License MIT-->
                 async: false,
                 cache: false
             });
+        } else {
+            $("#entity").html("<span class='no'> ERROR BD already init !  </span> <br> To remove : mongo<br> use Client<br> db.dropDatabase();");
+
         }
     });
 </script>
