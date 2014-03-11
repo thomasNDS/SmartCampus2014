@@ -115,7 +115,6 @@ app.all('*', function(req, res, next) {
     next();
 });
 
-
 app.get('/api', routes.help);
 app.get('/help', routes.help);
 app.get('/', routes.index);
