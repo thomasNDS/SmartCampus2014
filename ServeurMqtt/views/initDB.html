@@ -17,8 +17,8 @@
         url: "http://localhost:4242/api/entity",
         type: 'POST',
         data: {"name": "Polytech Grenoble",
-            "comment": "L’École Polytechnique de l'université Grenoble-I, plus communément appelée Polytech Grenoble (anciennement ISTG), est l'école d'ingénieurs de l'Université Joseph Fourier. Elle est située près de la mairie de Saint-Martin-d’Hères, à quelques centaines de mètres du domaine universitaire de Saint-Martin-d’Hères et Gières. Polytech Grenoble appartient au réseau Polytech qui regroupe treize écoles d'ingénieurs universitaires dans toute la France.",
-            "type": "ecole",
+            "description": "L’École Polytechnique de l'université Grenoble-I, plus communément appelée Polytech Grenoble (anciennement ISTG), est l'école d'ingénieurs de l'Université Joseph Fourier. Elle est située près de la mairie de Saint-Martin-d’Hères, à quelques centaines de mètres du domaine universitaire de Saint-Martin-d’Hères et Gières. Polytech Grenoble appartient au réseau Polytech qui regroupe treize écoles d'ingénieurs universitaires dans toute la France.",
+            "type": "Ecole d'ingénieur",
             "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
         },
         success: function(data, textStatus, jqXHR) {
@@ -38,8 +38,9 @@
         url: "http://localhost:4242/api/entity",
         type: 'POST',
         data: {"name": "UPMF",
-            "comment": "L’université Pierre-Mendès-France - Grenoble (aussi appelée UPMF ou Grenoble-II), nommée ainsi en l'honneur de Pierre Mendès France, est une université française rattachée à l'Académie de Grenoble. Elle est principalement implantée dans la ville de Grenoble mais certains de ses sites sont délocalisés, notamment à Valence.",
-            "type": "université", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
+            "description": "L’université Pierre-Mendès-France - Grenoble (aussi appelée UPMF ou Grenoble-II), nommée ainsi en l'honneur de Pierre Mendès France, est une université française rattachée à l'Académie de Grenoble. Elle est principalement implantée dans la ville de Grenoble mais certains de ses sites sont délocalisés, notamment à Valence.",
+            "type": "Université", 
+            "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
         success: function(data, textStatus, jqXHR) {
             console.log(data.payload);
             upmf_id = data.payload._id;
@@ -53,8 +54,9 @@
         url: "http://localhost:4242/api/entity",
         type: 'POST',
         data: {"name": "IAE",
-            "comment": "Les IAE sont des composantes des universités françaises, hors IAE Paris qui a un statut à part. Ils ont pour mission le développement de la recherche et de la formation supérieure en gestion au sein des universités. Les IAE constituent un modèle qui s'inspire de celui des Business schools anglo-saxonnes.",
-            "type": "école", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
+            "description": "Les IAE sont des composantes des universités françaises, hors IAE Paris qui a un statut à part. Ils ont pour mission le développement de la recherche et de la formation supérieure en gestion au sein des universités. Les IAE constituent un modèle qui s'inspire de celui des Business schools anglo-saxonnes.",
+            "type": "Ecole", 
+            "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
         success: function(data, textStatus, jqXHR) {
             console.log(data.payload);
             iae_id = data.payload._id;
@@ -68,9 +70,10 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/entity",
         type: 'POST',
-        data: {"name": "université Stendhal",
-            "comment": "L'université Stendhal-Grenoble 3 (plus communément appelée université Stendhal ou parfois aussi appelée Grenoble-3), propose des enseignements de langues et de cultures étrangères, de littératures anciennes et modernes, de sciences du langage et de communication, des Arts du Spectacle. Traditionnellement formatrice d'enseignants, professeurs des écoles, professeurs certifiés ou agrégés de l'enseignement secondaire, l'Université Stendhal s'est depuis longtemps ouverte à d'autres débouchés, notamment vers les métiers de la culture, de la communication et des média, ainsi que, plus récemment, vers les métiers du journalisme.",
-            "type": "université", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
+        data: {"name": "Université Stendhal",
+            "description": "L'université Stendhal-Grenoble 3 (plus communément appelée université Stendhal ou parfois aussi appelée Grenoble-3), propose des enseignements de langues et de cultures étrangères, de littératures anciennes et modernes, de sciences du langage et de communication, des Arts du Spectacle. Traditionnellement formatrice d'enseignants, professeurs des écoles, professeurs certifiés ou agrégés de l'enseignement secondaire, l'Université Stendhal s'est depuis longtemps ouverte à d'autres débouchés, notamment vers les métiers de la culture, de la communication et des média, ainsi que, plus récemment, vers les métiers du journalisme.",
+            "type": "Université", 
+            "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
         success: function(data, textStatus, jqXHR) {
             console.log(data.payload);
             stendhal_id = data.payload._id;
@@ -86,6 +89,8 @@
 <script>
     jQuery.post("http://localhost:4242/api/entity", {
         "name": "tram A",
+        "description" : "Tramway Grenoble, ligne A",
+        "type" : "Tramway",
         "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
@@ -93,6 +98,8 @@
     });
     jQuery.post("http://localhost:4242/api/entity", {
         "name": "tram B",
+        "description" : "Tramway Grenoble, ligne B",
+        "type" : "Tramway",
         "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
@@ -100,6 +107,8 @@
     });
     jQuery.post("http://localhost:4242/api/entity", {
         "name": "tram C",
+        "description" : "Tramway Grenoble, ligne C",
+        "type" : "Tramway",
         "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
@@ -119,7 +128,10 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 19, "name": "Cafeteria Diderot", "type":"ru"},
+        data: {"identifiant": 19, 
+            "name": "Cafeteria",
+            "description" : "Cafet' du Diderot",
+            "type":"Salle"},
         success: function(data, textStatus, jqXHR) {
             diderot19_id = data.payload._id;
             if (data.payload.name) {
@@ -135,7 +147,9 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 18, "name": "Diderot : Entracte", "type":"ru"},
+        data: {"identifiant": 18, 
+            "name": "Entracte", 
+            "type":"Salle"},
         success: function(data, textStatus, jqXHR) {
             diderot18_id = data.payload._id;
             if (data.payload.name) {
@@ -150,7 +164,9 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 46, "name": "Diderot : Administractif", "type":"ru"},
+        data: {"identifiant": 46, 
+            "name": "Administractif", 
+            "type":"Salle"},
         success: function(data, textStatus, jqXHR) {
             diderot46_id = data.payload._id;
             if (data.payload.name) {
@@ -166,7 +182,10 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 17, "name": "Diderot : Traditionnel (2 salles)", "type":"ru"},
+        data: {"identifiant": 17, 
+            "name": "Traditionnel (2 salles)", 
+            "description" : "Manger des légumes au RU, oui oui oui oui !",
+            "type":"Salle"},
         success: function(data, textStatus, jqXHR) {
             diderot17_id = data.payload._id;
             if (data.payload.name) {
@@ -181,6 +200,8 @@
 
     jQuery.post("http://localhost:4242/api/entity", {
         "name": "Diderot",
+        "description" : "Restaurant Universitaire",
+        "type" : "Restaurant Universitaire",
         "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id]
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
@@ -196,7 +217,11 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 4, "name": "Condillac : Traditionnel"},
+        data: {"identifiant": 4, 
+            "name": "Traditionnel",
+            "description" : "Salle traditionnelle de Condillac",
+            "type" : "Salle"
+        },
         success: function(data, textStatus, jqXHR) {
             condillac4_id = data.payload._id;
             if (data.payload.name) {
@@ -209,8 +234,10 @@
         cache: false
     });
     jQuery.post("http://localhost:4242/api/entity", {
-        "name": "condillac",
-        "items": [condillac4_id]
+        "name": "Condillac",
+        "items": [condillac4_id],
+        "description" : "Restaurant Universitaire du Campus de Grenoble",
+        "type" : "Restaurant Universitaire"
     }, function(data, textStatus, jqXHR) {
         console.log(data.payload);
         if (data.payload.name) {
@@ -228,7 +255,9 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 3, "name": "barnave : Traditionnel (2 salles)"},
+        data: {"identifiant": 3, 
+            "name": "Traditionnelles (2 salles)", 
+            "description" : "Miam j'adore les légumes des salles traditionnelles"},
         success: function(data, textStatus, jqXHR) {
             barnave3_id = data.payload._id;
             if (data.payload.name) {
@@ -245,7 +274,9 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 13, "name": "barnave : Cafeteria"},
+        data: {"identifiant": 13, 
+            "name": "Cafeteria", 
+            "description" : "Viendez manger des pizzas super bonnes de la mort qui tue à la Cafet'!!"},
         success: function(data, textStatus, jqXHR) {
             barnave13_id = data.payload._id;
             if (data.payload.name) {
@@ -261,7 +292,9 @@
     jQuery.ajax({
         url: "http://localhost:4242/api/item",
         type: 'POST',
-        data: {"identifiant": 24, "name": "barnave : Framboisière"},
+        data: {"identifiant": 24, 
+            "name": "Framboisière", 
+            "description" : "La Framboisière c'est trop bon, J'adore !!"},
         success: function(data, textStatus, jqXHR) {
             barnave24_id = data.payload._id;
             if (data.payload.name) {
@@ -274,7 +307,9 @@
         cache: false
     });
     jQuery.post("http://localhost:4242/api/entity", {
-        "name": "barnave",
+        "name": "Barnave",
+        "description" : "Restaurant Universitaire du Campus de Grenoble",
+        "type" : "Restaurant Universitaire",
         "items": [barnave24_id, barnave13_id, barnave3_id]
     }, function(data, textStatus, jqXHR) {
         if (data.payload.name) {
