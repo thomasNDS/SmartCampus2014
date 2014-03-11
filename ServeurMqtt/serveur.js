@@ -1,5 +1,7 @@
 /*
  * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
  */
 
 var addrmongo = 'mongodb://localhost:27017/Client';
@@ -117,6 +119,7 @@ app.all('*', function(req, res, next) {
 app.get('/api', routes.help);
 app.get('/help', routes.help);
 app.get('/', routes.index);
+app.get('/is-init', routes.test_init);
 
 var mers = require('mers');
 app.use('/api', mers({uri: addrmongo}).rest());
