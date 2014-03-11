@@ -16,12 +16,26 @@ and open the template in the editor.
         <p>Droits</p>
         <p>
             <label>Select list</label>
-            <select id="myList" class="form-control">
-                <option value = "1">one</option>
-                <option value = "2">two</option>
-                <option value = "3">three</option>
-                <option value = "4">four</option>
+            <select id="admins_list" class="form-control">
             </select>
         </p>
+        <script type="text/javascript">
+            $.getJSON('http://localhost:4242/api/administrator/',
+                    function(data) {
+                        var admin = 0;
+                        while (data.payload[admin]) {
+                            var name = data.payload[admin].first_name + ' ' + data.payload[admin].name;
+                            $("#admins_list").append(
+                                    "<option value=\""
+                                    + name.replace(' ', '_')
+                                    + "\">"
+                                    + name
+                                    + "</option>"
+                                    );
+                            admin++;
+                        }
+                    }
+            );
+        </script>
     </body>
 </html>

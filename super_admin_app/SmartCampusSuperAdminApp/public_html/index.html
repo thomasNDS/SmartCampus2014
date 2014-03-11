@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>SmartCampus | Super Admin</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <!--<link href="css/style.css" rel="stylesheet" type="text/css">-->
+        <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
+    </head>
+    <body>
+        <div>
+            <table id="table_entities" class="table table-condensed table-striped">
+                <caption>Entités</caption>
+                <thead>
+                    <tr>
+                        <th>Entité</th>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Items</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="table_entities_body">
+                </tbody>
+            </table>
+            <table id="table_items" class="table table-striped table-condensed">
+                <caption>Items</caption>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody id="table_items_body">
+                </tbody>
+            </table>
+        </div>
+
+        <script type="text/javascript">
+            $.getJSON('http://localhost:4242/api/entity/',
+                    function(data) {
+                        var entity = 0;
+                        while (data.payload[entity]) {
+                            var name = data.payload[entity].name.replace(" ", "_");
+                            $("#table_entities_body").append(
+                                    "<tr>"
+                                    + "<th>" + data.payload[entity].name + "</th>"
+                                    + "<td>" + data.payload[entity]._id + "</td>"
+                                    + "<td>" + data.payload[entity].type + "</td>"
+                                    + "<td><a href=\"#\" onclick=\"foo('" + data.payload[entity]._id + "')\">" + "Items<a/></td>"
+                                    + "<td><button type=\"button\" class=\"btn btn-default\">Supprimer</button><td>"
+                                    + "</tr>"
+                                    );
+                            entity++;
+                        }
+                    }
+            );
+            function foo(entity) {
+                $.getJSON('http://localhost:4242/api/entity/' + entity,
+                        function(data) {
+                            var item = 0;
+                            while (data.payload[0].items[item]) {
+                                $("#table_items_body").append(data.payload[0].items[item]);
+                                item++;
+                            }
+                        });
+            }
+        </script>
+    </body>
+</html>

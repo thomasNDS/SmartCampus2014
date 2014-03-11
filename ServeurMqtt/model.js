@@ -1,3 +1,8 @@
+/*
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
+ */
 
 //////////////////////////////////
 //Definition of a schema /////////
@@ -6,9 +11,10 @@ var ObjectId = Schema.ObjectId;
 console.log("model");
 
 var Entity = new Schema({
-    id: String,
+    id: ObjectId,
     name: String,
     type: String,
+    description : String,
     comments: [Comment],
     administrators: [Administrator],
     events: [Event],
@@ -24,7 +30,8 @@ var Item = new Schema({
     Sensors_data: [Sensors_data],
     identifiant: Number,
     type: String,
-    infos: []
+    infos: [],
+    description : String
 });
 
 var Event = new Schema({
