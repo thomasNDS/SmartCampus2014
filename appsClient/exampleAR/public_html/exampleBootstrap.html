@@ -49,14 +49,14 @@ and open the template in the editor.
             isPanelDisplayed = false;
 
             //Tableau contenant les différents éléments 
-            elementsArray = new Array();
+            entitiesArray = new Array();
 
             $(window).ready(function() {
 
                 scrollBarWidth = 0;//getScrollerWidth();
                 menuHeight = $("#menu").height() + 5;
-                console.log("sc : " + scrollBarWidth);
-                console.log("menu height : " + $("#menu").height());
+//                console.log("sc : " + scrollBarWidth);
+//                console.log("menu height : " + $("#menu").height());
 
                 ////////////////////////
                 //// GESTION CAMERA ////
@@ -270,7 +270,8 @@ and open the template in the editor.
                 }
 
                 //On cherche l'element actuellement detecte dans le tableau via un id
-                elemDetected = elementsArray[currentPanelMarker];
+                var elemDetected = entitiesArray[currentPanelMarker];
+
                 //Construction du panel d'info en fonction de l'element
                 buildPanel(elemDetected);
                 $("#informationPanel").css("display", "block");
@@ -282,10 +283,10 @@ and open the template in the editor.
              * Ouverture du pop en fonction du batiment detecté
              * @returns {undefined}
              */
-            function showPopUp(idElem) {
-                var elem = elementsArray[idElem];
+            function showPopUp(curMarker) {
+                var elem = entitiesArray[curMarker];
                 var textTitle = elem.name;
-                var textBody = elem.subElements[0].content;
+                var textBody = elem.description;
                 var textType = elem.type;
                 $("#popUpTitle").html(textTitle);
                 $("#popUpContent").html(textBody);
@@ -341,40 +342,75 @@ and open the template in the editor.
             /*
              * Fonction pour charger le tableau des elements
              */
-            function loadElements() {
-                var elem0 = {
-                    "name": "POLYTECH",
-                    "type": "Université UJF",
-                    "subElements": [
-                        {"title": "Information", "content": "POLYTECH GRENOBLE est l'école d'ingénieurs de l'UNIVERSITE JOSEPH FOURIER.C\n\
-        ’est une grande école habilitée par la Commission des Titres d’Ingénieur, labelisée IDEFI (Initiatives d'Excellence en Formations Innovantes). Comme toutes les autres écoles du RESEAU POLYTECH, elle s’appuie sur un fort partenariat avec le monde de l’entreprise"},
-                        {"title": "Horaire", "content": "12h:55    22h45"},
-                        {"title": "Casier", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."}
-                    ]
-                };
+            function loadEntities() {
+//                var elem0 = {
+//                    "name": "POLYTECH",
+//                    "type": "Université UJF",
+//                    "subElements": [
+//                        {"title": "Information", "content": "POLYTECH GRENOBLE est l'école d'ingénieurs de l'UNIVERSITE JOSEPH FOURIER.C\n\
+//        ’est une grande école habilitée par la Commission des Titres d’Ingénieur, labelisée IDEFI (Initiatives d'Excellence en Formations Innovantes). Comme toutes les autres écoles du RESEAU POLYTECH, elle s’appuie sur un fort partenariat avec le monde de l’entreprise"},
+//                        {"title": "Horaire", "content": "12h:55    22h45"},
+//                        {"title": "Casier", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."}
+//                    ]
+//                };
+//
+//                var elem4 = {
+//                    "name": "BU",
+//                    "type": "Université UJF",
+//                    "subElements": [
+//                        {"title": "Information", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."},
+//                        {"title": "Horaire", "content": "12h:55    22h45"}
+//                    ]
+//                };
+//                entitiesArray[0] = elem0;
+//                entitiesArray[4] = elem4;
 
-                var elem4 = {
-                    "name": "BU",
-                    "type": "Université UJF",
-                    "subElements": [
-                        {"title": "Information", "content": "Lorem ipsum dolor sit amet, charetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero."},
-                        {"title": "Horaire", "content": "12h:55    22h45"}
-                    ]
-                };
-                elementsArray[0] = elem0;
-                elementsArray[4] = elem4;
-                
-                loadFromDB();
+//                loadFromDB();
+
+
+                var entities;
+                jQuery.ajax({
+                    type: 'GET',
+                    async: false,
+                    url: 'http://localhost:4242/api/entity',
+                    success: function(data) {
+                        console.dir(data);
+                        entities = data;
+                    }
+                });
+
+                for (var i = 0; i < entities.payload.length; i++) {
+                    entitiesArray[i] = entities.payload[i];
+                }
+//                var tmp = entitiesArray[entities.payload.length - 1];
+//                entitiesArray[entities.payload.length - 1] = entitiesArray[0];
+//                entitiesArray[0] = tmp;
+
+//                loadItemById(entitiesArray[9].items[0]);
+
 
             }
-            
-            function loadFromDB(){
-                jQuery.get("http://localhost:4242/api/administrator", function(data, textStatus, jqXHR) {
-                    console.log("Get response:");
-                    console.dir(data);
-                    console.log(textStatus);
-                    console.dir(jqXHR);
+
+            function loadItemsOfEntity(entity) {
+                var items;
+                entity.items.forEach(function(item) {
+                    items.push(loadItemById(item.id));
                 });
+                return items;
+            }
+
+            function loadItemById(id) {
+                var item;
+                jQuery.ajax({
+                    type: 'GET',
+                    async: false,
+                    url: 'http://localhost:4242/api/item/' + id,
+                    success: function(data) {
+                        console.dir(data.payload[0]);
+                        item = data.payload[0];
+                    }
+                });
+                return item;
             }
 
             /*
@@ -394,33 +430,63 @@ and open the template in the editor.
                 //Titre du panel info
                 $("#informationTitle").html(objElem.name);
 
+                //Onglet Description
+                var tabTitle = "";
+                var tabContent = "";
+                tabTitle = "<li class=\"active\"><a href=\"#tabbedPan0\" data-toggle=\"tab\">Description</a></li>";
+                tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan0\">" + objElem.description + "</div>";
+                $("#tabsPanel").append(tabTitle);
+                $("#contentTabs").append(tabContent);
+
                 //Booleen pour avoir le premier element active
                 var firstElementSelected = false;
 
-                objElem.subElements.forEach(function(entry, index) {
+                objElem.items.forEach(function(itemId, index) {
 //                    console.log("---");
 //                    console.log("Titre " + entry.title);
 //                    console.log(" Contenu " + entry.content);
 
                     //Creation d'un onglet
-                    var tabTitle = "";
-                    if (!firstElementSelected) {
-                        //On met en active le premier
-                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
-                    } else {
-                        tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
-                    }
+//                    var tabTitle = "";
+//                    if (!firstElementSelected) {
+//                        //On met en active le premier
+//                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
+//                    } else {
+//                        tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
+//                    }
+//                    $("#tabsPanel").append(tabTitle);
+//
+//                    //Creation du contenu de l'onglet
+//                    var tabContent = "";
+//                    if (!firstElementSelected) {
+//                        //Active le premier
+//                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
+//                        firstElementSelected = true;
+//                    } else {
+//                        tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
+//                    }
+//                    $("#contentTabs").append(tabContent);
+
+                    var itemLoaded = loadItemById(itemId);
+
+//                    var tabTitle = "";
+//                    if (!firstElementSelected) {
+//                        //On met en active le premier
+//                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
+//                    } else {
+                    tabTitle = "<li><a href=\"#tabbedPan" + (index+1) + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
+//                    }
                     $("#tabsPanel").append(tabTitle);
 
                     //Creation du contenu de l'onglet
-                    var tabContent = "";
-                    if (!firstElementSelected) {
-                        //Active le premier
-                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
-                        firstElementSelected = true;
-                    } else {
-                        tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
-                    }
+//                    var tabContent = "";
+//                    if (!firstElementSelected) {
+//                        //Active le premier
+//                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
+//                        firstElementSelected = true;
+//                    } else {
+                    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (index+1) + "\">" + itemLoaded.description + "</div>";
+//                    }
                     $("#contentTabs").append(tabContent);
 
                 });
@@ -511,7 +577,7 @@ and open the template in the editor.
         </div>
 
         <script>
-            loadElements();
+            loadEntities();
         </script>
     </body>
 </html>
