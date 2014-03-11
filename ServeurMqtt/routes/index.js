@@ -15,11 +15,10 @@ exports.json = function(req, res) {
 };
 
 exports.test_init = function(req, res) {
-    var resultat = false;
-    EntityModel.findOne({name: "barnave"}, function(err, doc) {
+    EntityModel.findOne({name: "UPMF"}, function(err, doc) {
         console.log(doc);
         if (!doc) {
-            console.log("Could not load Document");
+            console.log("DB not init");
             res.json(false);
         }
         else {

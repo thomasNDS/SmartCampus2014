@@ -32,6 +32,7 @@ void loop()
        Serial.print(i);
        Serial.println();
        
+	   //pour l'instant, valeurs jusqu'à 999
        if (i < 10) {
          lc.setDigit(0,0,i,false);
        } else if (i < 100) {

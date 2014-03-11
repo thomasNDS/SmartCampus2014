@@ -51,49 +51,57 @@ mongoose.connect(addrmongo, function(err) {
 ////////////////////////////////
 /////// MQTT  //////////////////
 ////////////////////////////////
-
-var crousClient = mqtt.createClient(1883, 'localhost');
+EntityModel.findOne({name: "UPMF"}, function(err, doc) {
+    console.log("==START MQTT==");
+    if (!doc) {
+        console.log("\n\nMQTT fail => init DB !\n\n");
+    }
+    else {
+        res = true;
+        var crousClient = mqtt.createClient(1883, 'localhost');
 
 //17,3,4,24,46,18,19
-crousClient.subscribe('menu_crous_3');
-crousClient.subscribe('menu_crous_4');
-crousClient.subscribe('menu_crous_17');
-crousClient.subscribe('menu_crous_18');
-crousClient.subscribe('menu_crous_19');
-crousClient.subscribe('menu_crous_24');
-crousClient.subscribe('menu_crous_46');
+        crousClient.subscribe('menu_crous_3');
+        crousClient.subscribe('menu_crous_4');
+        crousClient.subscribe('menu_crous_17');
+        crousClient.subscribe('menu_crous_18');
+        crousClient.subscribe('menu_crous_19');
+        crousClient.subscribe('menu_crous_24');
+        crousClient.subscribe('menu_crous_46');
 
-crousClient.on('message', function(topic, message) {
-    console.log("-----------------\n message= " + message);
-    //verify it's a crous topic
-    if (/menu_crous/.test(topic)) {
+        crousClient.on('message', function(topic, message) {
+            console.log("-----------------\n message= " + message);
+            //verify it's a crous topic
+            if (/menu_crous/.test(topic)) {
 //        Extract from the topic name the ID
-        var id2search = parseInt((topic.match(/[0-9]+/))[0]);
+                var id2search = parseInt((topic.match(/[0-9]+/))[0]);
 
 //      Search in DB the item coresponding
-        ItemModel.findOne({identifiant: id2search}, function(err, doc) {
-            console.log(doc);
-            if (!doc) {
-                console.log("Could not load Document");
-                return (new Error('Could not load Document'));
-            }
-            else {
+                ItemModel.findOne({identifiant: id2search}, function(err, doc) {
+                    console.log(doc);
+                    if (!doc) {
+                        console.log("Could not load Document");
+                        return (new Error('Could not load Document'));
+                    }
+                    else {
 //              We find the document and we update it's infos
 //              infos coresponding to menus of the week
-                console.log(message.split(/@/));
-                doc.infos = message.split(/@/);
-                console.log("update");
-                doc.save(function(err) {
-                    if (err)
-                        console.log('\n\n !!! ERROR with ' + topic);
-                    else
-                        console.log('\n update success for ' + topic);
+                        console.log(message.split(/@/));
+                        doc.infos = message.split(/@/);
+                        console.log("update");
+                        doc.save(function(err) {
+                            if (err)
+                                console.log('\n\n !!! ERROR with ' + topic);
+                            else
+                                console.log('\n update success for ' + topic);
+                        });
+                    }
                 });
+                console.log("--------------");
+            } else {
+                console.log("no topic found");
             }
         });
-        console.log("--------------")
-    } else {
-        console.log("no topic found");
     }
 });
 //////////////
@@ -114,7 +122,6 @@ app.all('*', function(req, res, next) {
         return res.send(200);
     next();
 });
-
 
 app.get('/api', routes.help);
 app.get('/help', routes.help);
