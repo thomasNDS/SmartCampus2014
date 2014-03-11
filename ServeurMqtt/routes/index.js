@@ -16,17 +16,16 @@ exports.json = function(req, res) {
 
 exports.test_init = function(req, res) {
     var resultat = false;
-    ItemModel.findOne({name: "barnave"}, function(err, doc) {
+    EntityModel.findOne({name: "barnave"}, function(err, doc) {
         console.log(doc);
         if (!doc) {
             console.log("Could not load Document");
-            res.json(200, {message: false});
+            res.json(false);
         }
         else {
-            res.json(200, {message: true});
+            res.json(true);
         }
     });
-    res.json(200, {message: resultat});
 };
 
 exports.administrator = require("./administrator.js");

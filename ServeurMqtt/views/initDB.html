@@ -13,109 +13,109 @@ License MIT-->
 <h2>Buildings</h2>
 <div id="entity"></div>
 <script>
-     jQuery.get("http://localhost:4242/api/entity", function(data, textStatus, jqXHR) {
-        console.log("Get response:");
-        console.dir(data);
-        console.log(textStatus);
-        console.dir(jqXHR);
-    });
-    
     var polytech_id = "a";
     var upmf_id = "b";
     var iae_id = "c";
     var stendhal_id = "d";
+    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
+        if (!data) {
+            jQuery.ajax({
+                url: "http://localhost:4242/api/entity",
+                type: 'POST',
+                data: {"name": "Polytech Grenoble",
+                    "comment": "L’École Polytechnique de l'université Grenoble-I, plus communément appelée Polytech Grenoble (anciennement ISTG), est l'école d'ingénieurs de l'Université Joseph Fourier. Elle est située près de la mairie de Saint-Martin-d’Hères, à quelques centaines de mètres du domaine universitaire de Saint-Martin-d’Hères et Gières. Polytech Grenoble appartient au réseau Polytech qui regroupe treize écoles d'ingénieurs universitaires dans toute la France.",
+                    "type": "ecole",
+                    "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
+                },
+                success: function(data, textStatus, jqXHR) {
+                    console.log(data.payload);
+                    polytech_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/entity",
-        type: 'POST',
-        data: {"name": "Polytech Grenoble",
-            "comment": "L’École Polytechnique de l'université Grenoble-I, plus communément appelée Polytech Grenoble (anciennement ISTG), est l'école d'ingénieurs de l'Université Joseph Fourier. Elle est située près de la mairie de Saint-Martin-d’Hères, à quelques centaines de mètres du domaine universitaire de Saint-Martin-d’Hères et Gières. Polytech Grenoble appartient au réseau Polytech qui regroupe treize écoles d'ingénieurs universitaires dans toute la France.",
-            "type": "ecole",
-            "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-        },
-        success: function(data, textStatus, jqXHR) {
-            console.log(data.payload);
-            polytech_id = data.payload._id;
-            if (data.payload.name) {
-                $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
+            jQuery.ajax({
+                url: "http://localhost:4242/api/entity",
+                type: 'POST',
+                data: {"name": "UPMF",
+                    "comment": "L’université Pierre-Mendès-France - Grenoble (aussi appelée UPMF ou Grenoble-II), nommée ainsi en l'honneur de Pierre Mendès France, est une université française rattachée à l'Académie de Grenoble. Elle est principalement implantée dans la ville de Grenoble mais certains de ses sites sont délocalisés, notamment à Valence.",
+                    "type": "université", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
+                success: function(data, textStatus, jqXHR) {
+                    console.log(data.payload);
+                    upmf_id = data.payload._id;
+                    $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                },
+                async: false,
+                cache: false
+            });
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/entity",
-        type: 'POST',
-        data: {"name": "UPMF",
-            "comment": "L’université Pierre-Mendès-France - Grenoble (aussi appelée UPMF ou Grenoble-II), nommée ainsi en l'honneur de Pierre Mendès France, est une université française rattachée à l'Académie de Grenoble. Elle est principalement implantée dans la ville de Grenoble mais certains de ses sites sont délocalisés, notamment à Valence.",
-            "type": "université", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
-        success: function(data, textStatus, jqXHR) {
-            console.log(data.payload);
-            upmf_id = data.payload._id;
-            $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        },
-        async: false,
-        cache: false
-    });
-
-    jQuery.ajax({
-        url: "http://localhost:4242/api/entity",
-        type: 'POST',
-        data: {"name": "IAE",
-            "comment": "Les IAE sont des composantes des universités françaises, hors IAE Paris qui a un statut à part. Ils ont pour mission le développement de la recherche et de la formation supérieure en gestion au sein des universités. Les IAE constituent un modèle qui s'inspire de celui des Business schools anglo-saxonnes.",
-            "type": "école", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
-        success: function(data, textStatus, jqXHR) {
-            console.log(data.payload);
-            iae_id = data.payload._id;
-            $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        },
-        async: false,
-        cache: false
-    });
+            jQuery.ajax({
+                url: "http://localhost:4242/api/entity",
+                type: 'POST',
+                data: {"name": "IAE",
+                    "comment": "Les IAE sont des composantes des universités françaises, hors IAE Paris qui a un statut à part. Ils ont pour mission le développement de la recherche et de la formation supérieure en gestion au sein des universités. Les IAE constituent un modèle qui s'inspire de celui des Business schools anglo-saxonnes.",
+                    "type": "école", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
+                success: function(data, textStatus, jqXHR) {
+                    console.log(data.payload);
+                    iae_id = data.payload._id;
+                    $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                },
+                async: false,
+                cache: false
+            });
 
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/entity",
-        type: 'POST',
-        data: {"name": "université Stendhal",
-            "comment": "L'université Stendhal-Grenoble 3 (plus communément appelée université Stendhal ou parfois aussi appelée Grenoble-3), propose des enseignements de langues et de cultures étrangères, de littératures anciennes et modernes, de sciences du langage et de communication, des Arts du Spectacle. Traditionnellement formatrice d'enseignants, professeurs des écoles, professeurs certifiés ou agrégés de l'enseignement secondaire, l'Université Stendhal s'est depuis longtemps ouverte à d'autres débouchés, notamment vers les métiers de la culture, de la communication et des média, ainsi que, plus récemment, vers les métiers du journalisme.",
-            "type": "université", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
-        success: function(data, textStatus, jqXHR) {
-            console.log(data.payload);
-            stendhal_id = data.payload._id;
-            $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        },
-        async: false,
-        cache: false
+            jQuery.ajax({
+                url: "http://localhost:4242/api/entity",
+                type: 'POST',
+                data: {"name": "université Stendhal",
+                    "comment": "L'université Stendhal-Grenoble 3 (plus communément appelée université Stendhal ou parfois aussi appelée Grenoble-3), propose des enseignements de langues et de cultures étrangères, de littératures anciennes et modernes, de sciences du langage et de communication, des Arts du Spectacle. Traditionnellement formatrice d'enseignants, professeurs des écoles, professeurs certifiés ou agrégés de l'enseignement secondaire, l'Université Stendhal s'est depuis longtemps ouverte à d'autres débouchés, notamment vers les métiers de la culture, de la communication et des média, ainsi que, plus récemment, vers les métiers du journalisme.",
+                    "type": "université", "infos": [{"uneInfo": "tata"}, {"test": "test2"}]},
+                success: function(data, textStatus, jqXHR) {
+                    console.log(data.payload);
+                    stendhal_id = data.payload._id;
+                    $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                },
+                async: false,
+                cache: false
+            });
+        }
     });
 </script>
 
 <h2>Tram</h2>
 <div id="tram"></div>
 <script>
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "tram A",
-        "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-    });
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "tram B",
-        "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-    });
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "tram C",
-        "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
+        if (!data) {
+            jQuery.post("http://localhost:4242/api/entity", {
+                "name": "tram A",
+                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
+            }, function(data, textStatus, jqXHR) {
+                console.log(data.payload);
+                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+            });
+            jQuery.post("http://localhost:4242/api/entity", {
+                "name": "tram B",
+                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
+            }, function(data, textStatus, jqXHR) {
+                console.log(data.payload);
+                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+            });
+            jQuery.post("http://localhost:4242/api/entity", {
+                "name": "tram C",
+                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
+            }, function(data, textStatus, jqXHR) {
+                console.log(data.payload);
+                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+            });
+        }
     });
 </script>
 
@@ -127,172 +127,175 @@ License MIT-->
     var diderot18_id = "";
     var diderot46_id = "";
     var diderot17_id = "";
+    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
+        if (!data) {
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 19, "name": "Cafeteria Diderot", "type": "ru"},
+                success: function(data, textStatus, jqXHR) {
+                    diderot19_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 19, "name": "Cafeteria Diderot", "type":"ru"},
-        success: function(data, textStatus, jqXHR) {
-            diderot19_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 18, "name": "Diderot : Entracte", "type": "ru"},
+                success: function(data, textStatus, jqXHR) {
+                    diderot18_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 46, "name": "Diderot : Administractif", "type": "ru"},
+                success: function(data, textStatus, jqXHR) {
+                    diderot46_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 18, "name": "Diderot : Entracte", "type":"ru"},
-        success: function(data, textStatus, jqXHR) {
-            diderot18_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 46, "name": "Diderot : Administractif", "type":"ru"},
-        success: function(data, textStatus, jqXHR) {
-            diderot46_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 17, "name": "Diderot : Traditionnel (2 salles)", "type": "ru"},
+                success: function(data, textStatus, jqXHR) {
+                    diderot17_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 17, "name": "Diderot : Traditionnel (2 salles)", "type":"ru"},
-        success: function(data, textStatus, jqXHR) {
-            diderot17_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
+            jQuery.post("http://localhost:4242/api/entity", {
+                "name": "Diderot",
+                "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id]
+            }, function(data, textStatus, jqXHR) {
+                console.log(data.payload);
+                if (data.payload.name) {
+                    $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                } else {
+                    $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                }
+            });
 
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "Diderot",
-        "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        if (data.payload.name) {
-            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        } else {
-            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-        }
-    });
+            ///////////////////////////////////////////////CONDILLAC/////////////////////////////////////////
+            var condillac4_id = "";
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 4, "name": "Condillac : Traditionnel"},
+                success: function(data, textStatus, jqXHR) {
+                    condillac4_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
+            jQuery.post("http://localhost:4242/api/entity", {
+                "name": "condillac",
+                "items": [condillac4_id]
+            }, function(data, textStatus, jqXHR) {
+                console.log(data.payload);
+                if (data.payload.name) {
+                    $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                } else {
+                    $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                }
+            });
 
-    ///////////////////////////////////////////////CONDILLAC/////////////////////////////////////////
-    var condillac4_id = "";
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 4, "name": "Condillac : Traditionnel"},
-        success: function(data, textStatus, jqXHR) {
-            condillac4_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "condillac",
-        "items": [condillac4_id]
-    }, function(data, textStatus, jqXHR) {
-        console.log(data.payload);
-        if (data.payload.name) {
-            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        } else {
-            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-        }
-    });
+            /////////////////////////////BARNAVE //////////////////////////////////////////
+            var barnave13_id = "";
+            var barnave24_id = "";
+            var barnave3_id = "";
 
-    /////////////////////////////BARNAVE //////////////////////////////////////////
-    var barnave13_id = "";
-    var barnave24_id = "";
-    var barnave3_id = "";
-
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 3, "name": "barnave : Traditionnel (2 salles)"},
-        success: function(data, textStatus, jqXHR) {
-            barnave3_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 3, "name": "barnave : Traditionnel (2 salles)"},
+                success: function(data, textStatus, jqXHR) {
+                    barnave3_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
 
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 13, "name": "barnave : Cafeteria"},
-        success: function(data, textStatus, jqXHR) {
-            barnave13_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 13, "name": "barnave : Cafeteria"},
+                success: function(data, textStatus, jqXHR) {
+                    barnave13_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
 
-    jQuery.ajax({
-        url: "http://localhost:4242/api/item",
-        type: 'POST',
-        data: {"identifiant": 24, "name": "barnave : Framboisière"},
-        success: function(data, textStatus, jqXHR) {
-            barnave24_id = data.payload._id;
-            if (data.payload.name) {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            } else {
-                $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            }
-        },
-        async: false,
-        cache: false
-    });
-    jQuery.post("http://localhost:4242/api/entity", {
-        "name": "barnave",
-        "items": [barnave24_id, barnave13_id, barnave3_id]
-    }, function(data, textStatus, jqXHR) {
-        if (data.payload.name) {
-            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        } else {
-            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+            jQuery.ajax({
+                url: "http://localhost:4242/api/item",
+                type: 'POST',
+                data: {"identifiant": 24, "name": "barnave : Framboisière"},
+                success: function(data, textStatus, jqXHR) {
+                    barnave24_id = data.payload._id;
+                    if (data.payload.name) {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    } else {
+                        $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    }
+                },
+                async: false,
+                cache: false
+            });
+            jQuery.post("http://localhost:4242/api/entity", {
+                "name": "barnave",
+                "items": [barnave24_id, barnave13_id, barnave3_id]
+            }, function(data, textStatus, jqXHR) {
+                if (data.payload.name) {
+                    $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                } else {
+                    $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                }
+            });
         }
     });
 </script>
@@ -300,47 +303,51 @@ License MIT-->
 <h2>Administrators</h2>
 <div id="admin"></div>
 <script>
-    jQuery.post("http://localhost:4242/api/administrator", {
-        "first_name": "nicolas",
-        "name": "husson",
-        "entity": [stendhal_id]
-    }, function(data, textStatus, jqXHR) {
-        if (data.payload._id)
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + "<span class='ok'> OK </span> <br>");
-        else
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + "<span class='no'> ERROR </span> <br>");
+    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
+        if (!data) {
+            jQuery.post("http://localhost:4242/api/administrator", {
+                "first_name": "nicolas",
+                "name": "husson",
+                "entity": [stendhal_id]
+            }, function(data, textStatus, jqXHR) {
+                if (data.payload._id)
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + "<span class='ok'> OK </span> <br>");
+                else
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + "<span class='no'> ERROR </span> <br>");
 
-    });
-    jQuery.post("http://localhost:4242/api/administrator", {
-        "first_name": "thomas",
-        "name": "nunes",
-        "entity": [iae_id]
-    }, function(data, textStatus, jqXHR) {
-        if (data.payload._id)
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        else
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-    });
+            });
+            jQuery.post("http://localhost:4242/api/administrator", {
+                "first_name": "thomas",
+                "name": "nunes",
+                "entity": [iae_id]
+            }, function(data, textStatus, jqXHR) {
+                if (data.payload._id)
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                else
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+            });
 
-    jQuery.post("http://localhost:4242/api/administrator", {
-        "first_name": "simon",
-        "name": "planfs",
-        "entity": [polytech_id]
-    }, function(data, textStatus, jqXHR) {
-        if (data.payload._id)
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        else
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-    });
-    jQuery.post("http://localhost:4242/api/administrator", {
-        "first_name": "laurene",
-        "name": "guelorgette",
-        "entity": [polytech_id]
-    }, function(data, textStatus, jqXHR) {
-        if (data.payload._id)
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-        else
-            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+            jQuery.post("http://localhost:4242/api/administrator", {
+                "first_name": "simon",
+                "name": "planfs",
+                "entity": [polytech_id]
+            }, function(data, textStatus, jqXHR) {
+                if (data.payload._id)
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                else
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+            });
+            jQuery.post("http://localhost:4242/api/administrator", {
+                "first_name": "laurene",
+                "name": "guelorgette",
+                "entity": [polytech_id]
+            }, function(data, textStatus, jqXHR) {
+                if (data.payload._id)
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                else
+                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+            });
+        }
     });
 </script>
 <h1>Usage</h1>
