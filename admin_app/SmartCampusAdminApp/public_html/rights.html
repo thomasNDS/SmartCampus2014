@@ -14,22 +14,34 @@ and open the template in the editor.
     </head>
     <body>
         <p>Droits</p>
-        <p>
-            <label>Select list</label>
-            <select id="admins_list" class="form-control">
-            </select>
-        </p>
+
+        <p><label>Select admin</label></p>
+        <div class="row">
+            <div class="col-md-4">
+                <select id="admins_list" class="form-control" style="width: 10em">
+                </select>
+            </div>
+            <div class="col-md-1">
+                <p>actif <input type="checkbox" name="checkbox" value="checkbox"></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="admin_descr" class="col-md-5">
+                
+            </div>
+        </div>
+
         <script type="text/javascript">
             $.getJSON('http://localhost:4242/api/administrator/',
                     function(data) {
                         var admin = 0;
                         while (data.payload[admin]) {
-                            var name = data.payload[admin].first_name + ' ' + data.payload[admin].name;
                             $("#admins_list").append(
                                     "<option value=\""
-                                    + name.replace(' ', '_')
+                                    + data.payload[admin]._id
                                     + "\">"
-                                    + name
+                                    + data.payload[admin].first_name + ' ' + data.payload[admin].name
                                     + "</option>"
                                     );
                             admin++;

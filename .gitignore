@@ -85,3 +85,4 @@ coverage.xml
 docs/_build/
 
 *~
+/super_admin_app/SmartCampusSuperAdminApp/nbproject/private/

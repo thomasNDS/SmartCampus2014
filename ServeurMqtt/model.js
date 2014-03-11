@@ -56,7 +56,8 @@ var Mesure = new Schema({
 
 var Comment = new Schema({
     id: ObjectId,
-    value: String
+    value: String,
+    date: {type: Date, default: Date.now}
 });
 
 var Administrator = new Schema({
