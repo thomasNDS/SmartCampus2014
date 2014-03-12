@@ -359,12 +359,6 @@ and open the template in the editor.
                 for (var i = 0; i < entities.payload.length; i++) {
                     entitiesArray[i] = entities.payload[i];
                 }
-//                var tmp = entitiesArray[entities.payload.length - 1];
-//                entitiesArray[entities.payload.length - 1] = entitiesArray[0];
-//                entitiesArray[0] = tmp;
-
-//                loadItemById(entitiesArray[9].items[0]);
-
 
             }
 
@@ -400,6 +394,11 @@ and open the template in the editor.
                 return item;
             }
 
+            /*
+             * Charge un commentaire à partir de son id
+             * @param {type} id
+             * @returns {unresolved}
+             */
             function loadComById(id) {
                 var com;
                 jQuery.ajax({
@@ -409,9 +408,75 @@ and open the template in the editor.
                     success: function(data) {
                         console.dir(data.payload[0]);
                         com = data.payload[0];
+                    },
+                    error: function(err) {
+                        console.log(err);
                     }
                 });
                 return com;
+            }
+
+            /*
+             * Ajout d'un commentaire 'comment' à un entite d'id 'entityId'
+             * @param {type} objElem
+             * @returns {undefined}
+             */
+            function addComment(entityId, comment) {
+                console.log(entityId, comment);
+                var com;
+                jQuery.ajax({
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        entityId: entityId,
+                        commentValue: comment
+                    },
+                    url: 'http://localhost:4242/add_comment',
+                    success: function(data) {
+                        console.log("Comment created" + data);
+                    },
+                    error: function(err) {
+                        console.log("Loupé :P");
+                        console.log(err);
+                    }
+                });
+                refreshEntity(entityId);
+                return com;
+            }
+
+            /*
+             * Fonction pour mettre à jour une entité d'id "entityId"
+             * @param {type} objElem
+             * @returns {undefined}
+             */
+            function refreshEntity(entityId) {
+                var i = 0;
+                var isFound = false;
+                var indexEntity;
+                //Recupere l'index de l'entite dans le tableau
+                while (i < entitiesArray.length && !isFound) {
+                    if (entitiesArray[i]._id === entityId) {
+                        isFound = true;
+                        console.log("found");
+                        indexEntity = i;
+                    }
+                    i++;
+                }
+                //Mise a jour de l'entite dans le tableau
+                jQuery.ajax({
+                    type: 'GET',
+                    async: false,
+                    url: 'http://localhost:4242/api/entity/' + entityId,
+                    success: function(data) {
+                        console.log("maj de l'elem");
+                        console.dir(data);
+                        entitiesArray[indexEntity] = data.payload[0];
+                    }
+                });
+                
+                //Rebuild du panel pour mettre à jour l'item commentaire
+                //@TODO : Optimiser (rechargement d'un seul item)
+                buildPanel(entitiesArray[indexEntity]);
             }
 
             /*
@@ -439,72 +504,37 @@ and open the template in the editor.
                 $("#tabsPanel").append(tabTitle);
                 $("#contentTabs").append(tabContent);
 
-                //Booleen pour avoir le premier element active
-                var firstElementSelected = false;
-
+                //Onglets Items
                 objElem.items.forEach(function(itemId, index) {
-//                    console.log("---");
-//                    console.log("Titre " + entry.title);
-//                    console.log(" Contenu " + entry.content);
-
-                    //Creation d'un onglet
-//                    var tabTitle = "";
-//                    if (!firstElementSelected) {
-//                        //On met en active le premier
-//                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
-//                    } else {
-//                        tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + entry.title + "</a></li>";
-//                    }
-//                    $("#tabsPanel").append(tabTitle);
-//
-//                    //Creation du contenu de l'onglet
-//                    var tabContent = "";
-//                    if (!firstElementSelected) {
-//                        //Active le premier
-//                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
-//                        firstElementSelected = true;
-//                    } else {
-//                        tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + entry.content + "</div>";
-//                    }
-//                    $("#contentTabs").append(tabContent);
 
                     var itemLoaded = loadItemById(itemId);
 
-//                    var tabTitle = "";
-//                    if (!firstElementSelected) {
-//                        //On met en active le premier
-//                        tabTitle = "<li class=\"active\"><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
-//                    } else {
                     tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
-//                    }
                     $("#tabsPanel").append(tabTitle);
 
-                    //Creation du contenu de l'onglet
-//                    var tabContent = "";
-//                    if (!firstElementSelected) {
-//                        //Active le premier
-//                        tabContent = "<div class=\"tab-pane active\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
-//                        firstElementSelected = true;
-//                    } else {
                     tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
-//                    }
                     $("#contentTabs").append(tabContent);
 
                 });
 
                 //Onglet Com
                 var coms = objElem.comments;
-                if (coms.length > 0) {
+
                     tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
+                    $("#tabsPanel").append(tabTitle);
+
                     tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
                     objElem.comments.forEach(function(comId) {
                         var com = loadComById(comId);
                         tabContent += "<div>" + com.date + " - " + com.value + "</div>";
                     });
+                    //Div pour bouton addComment
+                    console.log("id" + objElem._id + "!!!!");
+                    tabContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
+
                     tabContent += "</div>";
-                    $("#tabsPanel").append(tabTitle);
+
                     $("#contentTabs").append(tabContent);
-                }
 
             }
 

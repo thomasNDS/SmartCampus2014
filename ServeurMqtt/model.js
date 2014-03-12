@@ -70,6 +70,7 @@ var Administrator = new Schema({
 });
 
 // models
+var EventModel = mongoose.model('Event', Event);
 var ItemModel = mongoose.model('Item', Item);
 var EntityModel = mongoose.model('Entity', Entity);
 var AdministratorModel = mongoose.model('Administrator', Administrator);

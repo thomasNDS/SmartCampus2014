@@ -10,14 +10,10 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="css/footable.core.css" rel="stylesheet" type="text/css">
-        <link href="css/footable.metro.css" rel="stylesheet" type="text/css">
-        <!--<link href="css/style.css" rel="stylesheet" type="text/css">-->
         <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
-        <script type="text/javascript" src="js/libs/jquery/footable.js"></script>
     <body>
-        <div>         
-            <table id="table_entities" class="footable table table-striped table-condensed">
+        <div>
+            <table id="table_entities" class="table table-striped table-condensed">
                 <caption><h1>Entités</h1></caption>
                 <thead>
                     <tr>
@@ -33,75 +29,15 @@ and open the template in the editor.
                 </tbody>
             </table>
 
-            <div id="panel_item">
-            </div>
+            <div id="panel_item"></div>
+
+            <div id="panel_modif_entity"></div>
+
+            <div id="panel_modif_item"></div>
+
         </div>
 
-        <script type="text/javascript">
-            $.getJSON('http://localhost:4242/api/entity/',
-                    function(data) {
-                        var entity = 0;
-                        while (data.payload[entity]) {
-                            $("#table_entities_body").append(
-                                    "<tr>"
-                                    + "<th>" + data.payload[entity].name + "</th>"
-                                    + "<td>" + data.payload[entity]._id + "</td>"
-                                    + "<td>" + data.payload[entity].type + "</td>"
-                                    + "<td><a href=\"#\" onclick=\"printItem('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "')\">" + "Items<a/></td>"
-                                    + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteEntity('" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
-                                    + "<td><a href=\"#\" title=\"Modifier\" onclick=\"\"><i class=\"glyphicon glyphicon-pencil\"></i></a><td>"
-                                    + "</tr>"
-                                    );
-                            entity++;
-                        }
-                    }
-            );
-            function deleteEntity(entity) {
-                jQuery.ajax({
-                    url: "http://localhost:4242/api/entity/" + entity,
-                    type: "DELETE",
-                    success: function(data, textStatus, jqXHR) {
-                        console.log("Post resposne:");
-                        console.dir(data);
-                        console.log(textStatus);
-                        console.dir(jqXHR);
-                    }
-                });
-            }
-            function printItem(entity, entity_name) {
-                $("#panel_item").html("<table id=\"table_items\" class=\"footable table table-striped table-condensed\">"
-                    +"<caption id=\"table_items_caption\"><h1>Items</h1></caption>"
-                    +"<thead>"
-                    +    "<tr>"
-                    +        "<th>Identifiant</th>"
-                    +        "<th>Nom</th>"
-                    +        "<th>Description</th>"
-                    +    "</tr>"
-                    +"</thead>"
-                    +"<tbody id=\"table_items_body\">"
-                    +"</tbody>"
-                    +"</table>");
-                $("#table_items_caption").html("<h1>Items de " + entity_name + "</h1>");
-                $("#table_items_body").html('');
-                $.getJSON('http://localhost:4242/api/entity/' + entity,
-                        function(dataEntity) {
-                            var item = 0;
-                            while (dataEntity.payload[0].items[item]) {
-                                $.getJSON('http://localhost:4242/api/item/' + dataEntity.payload[0].items[item],
-                                        function(dataItem) {
-                                            $("#table_items_body").append(
-                                                    "<tr>"
-                                                    + "<td>" + dataItem.payload[0].identifiant + "</td>"
-                                                    + "<td>" + dataItem.payload[0].name + "</td>"
-                                                    + "<td>" + dataItem.payload[0].description + "</td>"
-                                                    + "</tr>"
-                                                    );
-                                        }
-                                );
-                                item++;
-                            }
-                        });
-            }
-        </script>
+        <script type="text/javascript" src="js/admin.js"></script>
+
     </body>
 </html>
