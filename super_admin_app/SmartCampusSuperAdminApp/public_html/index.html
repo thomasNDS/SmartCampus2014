@@ -38,17 +38,19 @@ and open the template in the editor.
         </div>
 
         <script type="text/javascript">
+
+            // print entities and commands on them
             $.getJSON('http://localhost:4242/api/entity/',
                     function(data) {
                         var entity = 0;
                         while (data.payload[entity]) {
                             $("#table_entities_body").append(
-                                    "<tr>"
+                                    "<tr id=\"tr_" + data.payload[entity]._id + "\">"
                                     + "<th>" + data.payload[entity].name + "</th>"
                                     + "<td>" + data.payload[entity]._id + "</td>"
                                     + "<td>" + data.payload[entity].type + "</td>"
-                                    + "<td><a href=\"#\" onclick=\"printItem('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "')\">" + "Items<a/></td>"
-                                    + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteEntity('" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
+                                    + "<td><a href=\"#panel_item\" onclick=\"printItem('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "')\">" + "Items<a/></td>"
+                                    + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteEntity('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "', '" + "tr_" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
                                     + "<td><a href=\"#\" title=\"Modifier\" onclick=\"\"><i class=\"glyphicon glyphicon-pencil\"></i></a><td>"
                                     + "</tr>"
                                     );
@@ -56,31 +58,37 @@ and open the template in the editor.
                         }
                     }
             );
-            function deleteEntity(entity) {
-                jQuery.ajax({
-                    url: "http://localhost:4242/api/entity/" + entity,
-                    type: "DELETE",
-                    success: function(data, textStatus, jqXHR) {
-                        console.log("Post resposne:");
-                        console.dir(data);
-                        console.log(textStatus);
-                        console.dir(jqXHR);
-                    }
-                });
+    
+            // remove entity from the database
+            // (line: tr id to remove from the DOM)
+            function deleteEntity(entity, entity_name, line) {
+                console.log(line);
+                if (confirm("Supprimer " + entity_name + " ?")) {
+                    console.log("if");
+                    jQuery.ajax({
+                        url: "http://localhost:4242/api/entity/" + entity,
+                        type: "DELETE",
+                        success: function() {
+                            $("#"+line).remove();
+                        }
+                    });
+                }
             }
+            
+            // print one item
             function printItem(entity, entity_name) {
                 $("#panel_item").html("<table id=\"table_items\" class=\"footable table table-striped table-condensed\">"
-                    +"<caption id=\"table_items_caption\"><h1>Items</h1></caption>"
-                    +"<thead>"
-                    + "<tr>"
-                    + "<th>Identifiant</th>"
-                    + "<th>Nom</th>"
-                    + "<th>Description</th>"
-                    + "</tr>"
-                    +"</thead>"
-                    +"<tbody id=\"table_items_body\">"
-                    +"</tbody>"
-                    +"</table>");
+                        + "<caption id=\"table_items_caption\"><h1>Items</h1></caption>"
+                        + "<thead>"
+                        + "<tr>"
+                        + "<th>Identifiant</th>"
+                        + "<th>Nom</th>"
+                        + "<th>Description</th>"
+                        + "</tr>"
+                        + "</thead>"
+                        + "<tbody id=\"table_items_body\">"
+                        + "</tbody>"
+                        + "</table>");
                 $("#table_items_caption").html("<h1>Items de " + entity_name + "</h1>");
                 $("#table_items_body").html('');
                 $.getJSON('http://localhost:4242/api/entity/' + entity,
