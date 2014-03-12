@@ -85,15 +85,16 @@ and open the template in the editor.
                 $("#table_items_body").html('');
                 $.getJSON('http://localhost:4242/api/entity/' + entity,
                         function(dataEntity) {
+                            console.log(dataEntity.payload.items[0]);
                             var item = 0;
-                            while (dataEntity.payload[0].items[item]) {
-                                $.getJSON('http://localhost:4242/api/item/' + dataEntity.payload[0].items[item],
+                            while (dataEntity.payload.items[item]) {
+                                $.getJSON('http://localhost:4242/api/item/' + dataEntity.payload.items[item],
                                         function(dataItem) {
                                             $("#table_items_body").append(
                                                     "<tr>"
-                                                    + "<td>" + dataItem.payload[0].identifiant + "</td>"
-                                                    + "<td>" + dataItem.payload[0].name + "</td>"
-                                                    + "<td>" + dataItem.payload[0].description + "</td>"
+                                                    + "<td>" + dataItem.payload.identifiant + "</td>"
+                                                    + "<td>" + dataItem.payload.name + "</td>"
+                                                    + "<td>" + dataItem.payload.description + "</td>"
                                                     + "</tr>"
                                                     );
                                         }
