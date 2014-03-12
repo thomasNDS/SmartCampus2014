@@ -19,7 +19,6 @@ License MIT-->
     var stendhal_id = "d";
     var com1_id = "";
     var com2_id = "";
-
     jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
         if (!data) {
 
@@ -38,7 +37,6 @@ License MIT-->
                 async: false,
                 cache: false
             });
-            
             jQuery.ajax({
                 url: "http://localhost:4242/api/comment",
                 type: 'POST',
@@ -54,7 +52,6 @@ License MIT-->
                 async: false,
                 cache: false
             });
-
             jQuery.ajax({url: "http://localhost:4242/api/entity",
                 type: 'POST',
                 data: {"name": "Polytech Grenoble",
@@ -99,7 +96,7 @@ License MIT-->
                     "description": "Les IAE sont des composantes des universités françaises, hors IAE Paris qui a un statut à part. Ils ont pour mission le développement de la recherche et de la formation supérieure en gestion au sein des universités. Les IAE constituent un modèle qui s'inspire de celui des Business schools anglo-saxonnes.",
                     "type": "Ecole",
                     "infos": [{"uneInfo": "tata"}, {"test": "test2"}],
-                    "comments": [com1_id,com2_id]},
+                    "comments": [com1_id, com2_id]},
                 success: function(data, textStatus, jqXHR) {
                     console.log(data.payload);
                     iae_id = data.payload._id;
@@ -128,8 +125,7 @@ License MIT-->
         } else {
             $("#entity").html("<span class='no'> ERROR BD already init !  </span> <br> To remove : mongo<br> use Client<br> db.dropDatabase();");
         }
-    });
-</script>
+    });</script>
 
 <h2>Tram</h2>
 <div id="tram"></div>
@@ -164,8 +160,7 @@ License MIT-->
                 $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
             });
         }
-    });
-</script>
+    });</script>
 
 <h2>RU</h2>
 <div id="ru"></div>
@@ -248,7 +243,7 @@ License MIT-->
                     $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
                 }
             });
-            console.log(diderot17_id +"   "+ diderot18_id+"   "+ diderot19_id+"   "+ diderot46_id)
+            console.log(diderot17_id + "   " + diderot18_id + "   " + diderot19_id + "   " + diderot46_id)
             ///////////////////////////////////////////////CONDILLAC/////////////////////////////////////////
             var condillac4_id = "";
             jQuery.ajax({
@@ -351,8 +346,7 @@ License MIT-->
                 }
             });
         }
-    });
-</script>
+    });</script>
 
 <h2>Administrators</h2>
 <div id="admin"></div>
@@ -389,16 +383,33 @@ License MIT-->
                 else
                     $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
             });
-            jQuery.post("http://localhost:4242/api/administrator", {
-                "first_name": "laurene",
-                "name": "guelorgette",
-                "entity": [polytech_id]
-            }, function(data, textStatus, jqXHR) {
-                if (data.payload._id)
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                else
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+            jQuery.ajax({
+                url: "http://localhost:4242/api/administrator",
+                type: 'POST',
+                data: {
+                    "first_name": "laurene",
+                    "name": "guelorgette",
+                    "entity": [polytech_id]
+                },
+                success: function(data, textStatus, jqXHR) {
+                    if (data.payload._id)
+                        $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    else
+                        $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                },
+                async: false,
+                cache: false
             });
+//            jQuery.post("http://localhost:4242/api/administrator", {
+//                "first_name": "laurene",
+//                "name": "guelorgette",
+//                "entity": [polytech_id]
+//            }, function(data, textStatus, jqXHR) {
+//                if (data.payload._id)
+//                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//                else
+//                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+//            });
         }
     });
 </script>
