@@ -45,7 +45,7 @@ and open the template in the editor.
                             $("#table_entities_body").append(
                                     "<tr>"
                                     + "<th>" + data.payload[entity].name + "</th>"
-                                    + "<td>" + data.payload[entity].id + "</td>"
+                                    + "<td>" + data.payload[entity]._id + "</td>"
                                     + "<td>" + data.payload[entity].type + "</td>"
                                     + "<td><a href=\"#\" onclick=\"printItem('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "')\">" + "Items<a/></td>"
                                     + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteEntity('" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
