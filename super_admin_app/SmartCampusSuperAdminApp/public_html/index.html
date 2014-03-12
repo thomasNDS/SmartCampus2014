@@ -16,7 +16,7 @@ and open the template in the editor.
         <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="js/libs/jquery/footable.js"></script>
     <body>
-        <div>         
+        <div>
             <table id="table_entities" class="footable table table-striped table-condensed">
                 <caption><h1>Entités</h1></caption>
                 <thead>
@@ -72,11 +72,11 @@ and open the template in the editor.
                 $("#panel_item").html("<table id=\"table_items\" class=\"footable table table-striped table-condensed\">"
                     +"<caption id=\"table_items_caption\"><h1>Items</h1></caption>"
                     +"<thead>"
-                    +    "<tr>"
-                    +        "<th>Identifiant</th>"
-                    +        "<th>Nom</th>"
-                    +        "<th>Description</th>"
-                    +    "</tr>"
+                    + "<tr>"
+                    + "<th>Identifiant</th>"
+                    + "<th>Nom</th>"
+                    + "<th>Description</th>"
+                    + "</tr>"
                     +"</thead>"
                     +"<tbody id=\"table_items_body\">"
                     +"</tbody>"
@@ -85,7 +85,6 @@ and open the template in the editor.
                 $("#table_items_body").html('');
                 $.getJSON('http://localhost:4242/api/entity/' + entity,
                         function(dataEntity) {
-                            console.log(dataEntity.payload.items[0]);
                             var item = 0;
                             while (dataEntity.payload.items[item]) {
                                 $.getJSON('http://localhost:4242/api/item/' + dataEntity.payload.items[item],
