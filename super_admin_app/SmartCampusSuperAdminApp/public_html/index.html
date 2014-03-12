@@ -35,6 +35,9 @@ and open the template in the editor.
 
             <div id="panel_item">
             </div>
+
+            <div id="panel_modif_entity">
+            </div>
         </div>
 
         <script type="text/javascript">
@@ -51,7 +54,7 @@ and open the template in the editor.
                                     + "<td>" + data.payload[entity].type + "</td>"
                                     + "<td><a href=\"#panel_item\" onclick=\"printItem('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "')\">" + "Items<a/></td>"
                                     + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteEntity('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "', '" + "tr_" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
-                                    + "<td><a href=\"#\" title=\"Modifier\" onclick=\"\"><i class=\"glyphicon glyphicon-pencil\"></i></a><td>"
+                                    + "<td><a href=\"#\" title=\"Modifier\" onclick=\"modifyEntity('" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-pencil\"></i></a><td>"
                                     + "</tr>"
                                     );
                             entity++;
@@ -124,6 +127,36 @@ and open the template in the editor.
                     });
                 }
             }
+
+            function modifyEntity(entity_id) {
+                $.getJSON('http://localhost:4242/api/entity/' + entity_id,
+                        function(data) {
+                            $("#panel_modif_entity").html("<form role=\"form\" onSubmit=\"return setChanges('" + entity_id + "')\">"
+                                    + "<p><label>Nom : </label for=\"area_name\"><textarea name=\"area_name\" id=\"area_name\" rows='1' cols='50'>" + data.payload.name + "</textarea></p>"
+                                    + "<p><label>Type : </label for=\"area_type\"><textarea name=\"area_type\" id=\"area_type\" rows='1' cols='50'>" + data.payload.type + "</textarea></p>"
+//                                    + "<input type=\"submit\" value=\"Envoyer\" />"
+                                    + "<button type=\"button\" onclick=\"setChanges('" + entity_id + "')\">OK</button>"
+                                    + "</form>"
+                                    );
+                        });
+            }
+
+            function setChanges(entity_id) {
+                $.ajax({
+                    url: "http://localhost:4242/api/entity/" + entity_id,
+                    type: "PUT",
+                    data: {
+                        "name": $("#area_name").val(),
+                        "type": $("#area_type").val()
+                    },
+                    success: function() {
+                        console.log('update success');
+                    }
+                }
+                );
+                return true;
+            }
+
         </script>
     </body>
 </html>
