@@ -58,23 +58,21 @@ and open the template in the editor.
                         }
                     }
             );
-    
+
             // remove entity from the database
             // (line: tr id to remove from the DOM)
             function deleteEntity(entity, entity_name, line) {
-                console.log(line);
                 if (confirm("Supprimer " + entity_name + " ?")) {
-                    console.log("if");
                     jQuery.ajax({
                         url: "http://localhost:4242/api/entity/" + entity,
                         type: "DELETE",
                         success: function() {
-                            $("#"+line).remove();
+                            $("#" + line).remove();
                         }
                     });
                 }
             }
-            
+
             // print one item
             function printItem(entity, entity_name) {
                 $("#panel_item").html("<table id=\"table_items\" class=\"footable table table-striped table-condensed\">"
@@ -84,6 +82,7 @@ and open the template in the editor.
                         + "<th>Identifiant</th>"
                         + "<th>Nom</th>"
                         + "<th>Description</th>"
+                        + "<th>Supprimer</th>"
                         + "</tr>"
                         + "</thead>"
                         + "<tbody id=\"table_items_body\">"
@@ -98,10 +97,11 @@ and open the template in the editor.
                                 $.getJSON('http://localhost:4242/api/item/' + dataEntity.payload.items[item],
                                         function(dataItem) {
                                             $("#table_items_body").append(
-                                                    "<tr>"
+                                                    "<tr id=\"tr_" + dataItem.payload._id + "\">"
                                                     + "<td>" + dataItem.payload.identifiant + "</td>"
                                                     + "<td>" + dataItem.payload.name + "</td>"
                                                     + "<td>" + dataItem.payload.description + "</td>"
+                                                    + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
                                                     + "</tr>"
                                                     );
                                         }
@@ -109,6 +109,20 @@ and open the template in the editor.
                                 item++;
                             }
                         });
+            }
+
+            // remove item from the database
+            // (line: tr id to remove from the DOM)
+            function deleteItem(item, item_name, line) {
+                if (confirm("Supprimer " + item_name + " ?")) {
+                    jQuery.ajax({
+                        url: "http://localhost:4242/api/item/" + item,
+                        type: "DELETE",
+                        success: function() {
+                            $("#" + line).remove();
+                        }
+                    });
+                }
             }
         </script>
     </body>
