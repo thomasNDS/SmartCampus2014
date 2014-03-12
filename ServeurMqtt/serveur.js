@@ -58,7 +58,6 @@ mongoose.connect(addrmongo, function(err) {
 //    }
 //    else {
 var crousClient = mqtt.createClient(1883, 'localhost');
-vareventClient = mqtt.createClient(1883, 'localhost');
 //17,3,4,24,46,18,19
 crousClient.subscribe('menu_crous_3');
 crousClient.subscribe('menu_crous_4');
@@ -101,6 +100,81 @@ crousClient.on('message', function(topic, message) {
         console.log("no topic found");
     }
 });
+
+var eventClient = mqtt.createClient(1883, 'localhost');
+eventClient.subscribe('crous_event');
+var CrousEntityWhoSubscribe = ["Barnave", "Diderot","Condillac"]
+eventClient.on('message', function(topic, message) {
+
+    tabEvent = message.split(/@/);
+    for (var key in tabEvent) {
+
+        (function(key) {
+            EventModel.findOne({"description": tabEvent[key]}, function(err, doc) {
+                if (err) {
+                    throw err;
+                } else
+                if (doc) {
+                    console.log("Already in DB !");
+                } else {
+                    for (var entitySub in CrousEntityWhoSubscribe) {
+                        EntityModel.findOne({name: CrousEntityWhoSubscribe[entitySub]}, function(err, doc) {
+                            if (!doc) {
+                                console.log("Could not load Document");
+                            } else {
+                                console.log(tabEvent[key])
+                                var event = new EventModel({
+                                    name: key,
+                                    description: tabEvent[key]
+                                });
+                                event.save(function(err) {
+                                    if (!err) {
+                                        return console.log("created");
+                                    } else {
+                                        return console.log(err);
+                                    }
+                                });
+                                doc.events.push(event._id);
+                                doc.save(function(err) {
+                                    if (err)
+                                        console.log('\n\n !!! ERROR with ' + topic);
+                                    else
+                                        console.log('\n update success for ' + topic);
+                                });
+                            }
+                        });
+                    }
+                }
+//        });
+            });
+        })(key);
+    }
+
+
+//    console.log("-----------------\n message= " + message);
+    //      Search in DB the item coresponding
+//    ItemModel.findOne({identifiant: id2search}, function(err, doc) {
+//        console.log(doc);
+//        if (!doc) {
+//            console.log("Could not load Document");
+//            return (new Error('Could not load Document'));
+//        }
+//        else {
+////              We find the document and we update it's infos
+////              infos coresponding to menus of the week
+//            console.log(message.split(/@/));
+//            doc.infos = message.split(/@/);
+//            console.log("update");
+//            doc.save(function(err) {
+//                if (err)
+//                    console.log('\n\n !!! ERROR with ' + topic);
+//                else
+//                    console.log('\n update success for ' + topic);
+//            });
+//        }
+    console.log("--------------");
+//    });
+});
 //    }
 //});
 //////////////
@@ -121,15 +195,12 @@ app.all('*', function(req, res, next) {
         return res.send(200);
     next();
 });
-
 app.get('/api', routes.help);
 app.get('/help', routes.help);
 app.get('/', routes.index);
 app.get('/is-init', routes.test_init);
-
 var mers = require('mers');
 app.use('/api', mers({uri: addrmongo}).rest());
-
 //Run the server
 http.createServer(app).listen(4242, function() {
     console.log("\n Start on http://localhost:4242 \n");
