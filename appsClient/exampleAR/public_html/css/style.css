@@ -196,4 +196,9 @@ body {
     display: none;
     background-color : white;
     border-radius : 6px;
+    padding-bottom: 5px;
+}
+
+.commentBtn {
+    text-align: center;
 }
