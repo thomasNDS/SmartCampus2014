@@ -372,61 +372,14 @@ License MIT-->
 <script>
     jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
         if (!data) {
-<<<<<<< HEAD
-            jQuery.post("http://localhost:4242/api/administrator", {
-                "first_name": "nicolas",
-                "name": "husson",
-                "login": "nicolas",
-                "password": "password",
-                "entity": [stendhal_id]
-            }, function(data, textStatus, jqXHR) {
-                if (data.payload._id)
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + "<span class='ok'> OK </span> <br>");
-                else
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + "<span class='no'> ERROR </span> <br>");
-            });
-            jQuery.post("http://localhost:4242/api/administrator", {
-                "first_name": "thomas",
-                "name": "nunes",
-                "login": "thomas",
-                "password": "password",
-                "entity": [iae_id]
-            }, function(data, textStatus, jqXHR) {
-                if (data.payload._id)
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                else
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            });
-            jQuery.post("http://localhost:4242/api/administrator", {
-                "first_name": "simon",
-                "name": "planfs",
-                "login": "planfs",
-                "password": "password",
-                "entity": [polytech_id]
-            }, function(data, textStatus, jqXHR) {
-                if (data.payload._id)
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                else
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-            });
-            jQuery.post("http://localhost:4242/api/administrator", {
-                "first_name": "laurene",
-                "name": "guelorgette",
-                "login": "guelorgette",
-                "password": "password",
-                "entity": [polytech_id]
-            }, function(data, textStatus, jqXHR) {
-                if (data.payload._id)
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                else
-                    $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
-=======
             jQuery.ajax({
                 url: "http://localhost:4242/api/administrator",
                 type: 'POST',
                 data: {
                     "first_name": "nicolas",
                     "name": "husson",
+                    "login": "nicolas",
+                    "password": "password",
                     "entity": [stendhal_id]
                 }, success: function(data, textStatus, jqXHR) {
                     if (data.payload._id)
@@ -443,6 +396,8 @@ License MIT-->
                 data: {
                     "first_name": "thomas",
                     "name": "nunes",
+                    "login": "thomas",
+                    "password": "password",
                     "entity": [iae_id]
                 }, success: function(data, textStatus, jqXHR) {
                     if (data.payload._id)
@@ -459,6 +414,8 @@ License MIT-->
                 data: {
                     "first_name": "simon",
                     "name": "planfs",
+                    "login": "simon",
+                    "password": "password",
                     "entity": [polytech_id]
                 }, success: function(data, textStatus, jqXHR) {
                     if (data.payload._id)
@@ -475,6 +432,8 @@ License MIT-->
                 data: {
                     "first_name": "laurene",
                     "name": "guelorgette",
+                    "login": "laurene",
+                    "password": "password",
                     "entity": [polytech_id]
                 },
                 success: function(data, textStatus, jqXHR) {
@@ -485,7 +444,6 @@ License MIT-->
                 },
                 async: false,
                 cache: false
->>>>>>> 3ef3d4cea21d171494c619f2a1d6f3cf41cf8650
             });
         }
     });
