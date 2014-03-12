@@ -126,6 +126,7 @@ app.get('/api', routes.help);
 app.get('/help', routes.help);
 app.get('/', routes.index);
 app.get('/is-init', routes.test_init);
+app.post('/add_comment', routes.add_comment);
 
 var mers = require('mers');
 app.use('/api', mers({uri: addrmongo}).rest());
