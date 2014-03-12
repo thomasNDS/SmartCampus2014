@@ -21,6 +21,10 @@
     "express" : "3.4.8",
     "restify" : "2.6.1",
     "mongoose" : "3.8.7",
-    "mongoose-schema-extend" : "0.1.7" 
+    "mongoose-schema-extend" : "0.1.7",
+    "passport" : "0.2.0" ,
+    "passport-local" : "1.0.0" ,
+    "connect-flash" : "~0.1.1", 
+    "bcrypt-nodejs" : "latest" 
   }
 }

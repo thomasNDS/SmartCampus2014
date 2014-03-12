@@ -9,11 +9,10 @@ exports.index = function(req, res) {
 };
 exports.help = function(req, res) {
     res.render('doc.html');
-}
+};
 exports.json = function(req, res) {
     res.json(200, {message: "Welcome in our site ! , see /help if needed"});
 };
-
 exports.test_init = function(req, res) {
     AdministratorModel.findOne({name: "guelorgette"}, function(err, doc) {
         console.log(doc);
@@ -29,3 +28,4 @@ exports.test_init = function(req, res) {
 
 exports.administrator = require("./administrator.js");
 exports.building = require("./building.js");
+exports.authenticate = require("./authenticate.js");
