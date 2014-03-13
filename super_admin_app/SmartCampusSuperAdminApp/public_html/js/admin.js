@@ -24,6 +24,56 @@ $.getJSON('http://localhost:4242/api/entity/',
         }
 );
 
+function addEntity() {
+    $("#panel_add_entity").html("<h1>Ajout d'une entité</h1>"
+            + "<form role=\"form\" onSubmit=\"finalizeAddEntity()\">"
+            + "<div class=\"row\">"
+            + "     <div class=\"col-md-1\">"
+            + "         <label class=\"label label-info\">Nom : </label for=\"add_entity_area_name\">"
+            + "     </div>"
+            + "     <div class=\"col-md-2\">"
+            + "         <textarea name=\"add_entity_area_name\" id=\"add_entity_area_name\" rows='1' cols='50'></textarea>"
+            + "     </div>"
+            + "</div>"
+            + "<div class=\"row\">"
+            + "     <div class=\"col-md-1\">"
+            + "         <label class=\"label label-info\">Type : </label for=\"add_entity_area_type\">"
+            + "     </div>"
+            + "     <div class=\"col-md-2\">"
+            + "         <textarea name=\"add_entity_area_type\" id=\"add_entity_area_type\" rows='1' cols='50'></textarea>"
+            + "     </div>"
+            + "</div>"
+            + "<div class=\"row\">"
+            + "     <div class=\"col-md-1\">"
+            + "         <label class=\"label label-info\">Description : </label for=\"add_entity_area_description\">"
+            + "     </div>"
+            + "     <div class=\"col-md-2\">"
+            + "         <textarea name=\"add_entity_area_description\" id=\"add_entity_area_description\" rows='5' cols='50'></textarea>"
+            + "     </div>"
+            + "</div>"
+            + "<button type=\"button\" class=\"btn\" onclick=\"finalizeAddEntity()\">OK</button>"
+            + "</form>"
+            );
+}
+
+function finalizeAddEntity() {
+    console.log($("#add_entity_area_name").val()+"\n"+$("#add_entity_area_type").val()+"\n"+$("#add_entity_area_description").val());
+    $.ajax({
+        url: "http://localhost:4242/api/entity/",
+        type: "POST",
+        data: {
+            "name": $("#add_entity_area_name").val(),
+            "type": $("#add_entity_area_type").val(),
+            "description": $("#add_entity_area_description").val()
+        },
+        success: function() {
+            alert('Ajout pris en compte.');
+            location.reload();
+        }
+    }
+    );
+}
+
 // remove entity from the database
 // (line: tr id to remove from the DOM)
 function deleteEntity(entity, entity_name, line) {
@@ -43,13 +93,13 @@ function printItem(entity, entity_name) {
     $("#panel_item").html("<table id=\"table_items\" class=\"table table-striped table-condensed\">"
             + "<caption id=\"table_items_caption\"><h1>Items</h1></caption>"
             + "<thead>"
-            + "<tr>"
-            + "<th>Identifiant</th>"
-            + "<th>Nom</th>"
-            + "<th>Description</th>"
-            + "<th>Supprimer</th>"
-            + "<th>Modifier</th>"
-            + "</tr>"
+            + " <tr>"
+            + "     <th>Identifiant</th>"
+            + "     <th>Nom</th>"
+            + "     <th>Description</th>"
+            + "     <th>Supprimer</th>"
+            + "     <th>Modifier</th>"
+            + " </tr>"
             + "</thead>"
             + "<tbody id=\"table_items_body\">"
             + "</tbody>"
@@ -97,11 +147,31 @@ function modifyEntity(entity_id) {
             function(data) {
                 $("#panel_modif_entity").html("<h1>Modification de <span class=\"label label-primary\">" + data.payload.name + "</span></h1>"
                         + "<form role=\"form\" onSubmit=\"setEntityChanges('" + entity_id + "')\">"
-                        + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Nom : </label for=\"entity_area_name\"></div><div class=\"col-md-2\"><textarea name=\"entity_area_name\" id=\"entity_area_name\" rows='1' cols='50'>" + data.payload.name + "</textarea></div></div>"
-                        + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Type : </label for=\"entity_area_type\"></div><div class=\"col-md-2\"><textarea name=\"entity_area_type\" id=\"entity_area_type\" rows='1' cols='50'>" + data.payload.type + "</textarea></div></div>"
-                        + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Description : </label for=\"entity_area_description\"></div><div class=\"col-md-2\"><textarea name=\"entity_area_description\" id=\"entity_area_description\" rows='5' cols='50'>" + data.payload.description + "</textarea></div></div>"
+                        + "     <div class=\"row\">"
+                        + "         <div class=\"col-md-1\">"
+                        + "             <label class=\"label label-info\" for=\"entity_area_name\">Nom : </label>"
+                        + "         </div>"
+                        + "         <div class=\"col-md-2\">"
+                        + "             <textarea name=\"entity_area_name\" id=\"entity_area_name\" rows='1' cols='50'>" + data.payload.name + "</textarea>"
+                        + "         </div>"
+                        + "     </div>"
+                        + "     <div class=\"row\"><div class=\"col-md-1\">"
+                        + "         <label class=\"label label-info\" for=\"entity_area_type\">Type : </label>"
+                        + "     </div>"
+                        + "     <div class=\"col-md-2\">"
+                        + "         <textarea name=\"entity_area_type\" id=\"entity_area_type\" rows='1' cols='50'>" + data.payload.type + "</textarea>"
+                        + "     </div>"
+                        + " </div>"
+                        + " <div class=\"row\">"
+                        + "     <div class=\"col-md-1\">"
+                        + "         <label class=\"label label-info\" for=\"entity_area_description\">Description : </label>"
+                        + "     </div>"
+                        + "     <div class=\"col-md-2\">"
+                        + "         <textarea name=\"entity_area_description\" id=\"entity_area_description\" rows='5' cols='50'>" + data.payload.description + "</textarea>"
+                        + "     </div>"
+                        + " </div>"
                         + "<button type=\"button\" class=\"btn\" onclick=\"setEntityChanges('" + entity_id + "')\">OK</button>"
-                        + "</div></form>"
+                        + "</form>"
                         );
             });
 }
@@ -129,11 +199,32 @@ function modifyItem(item_id) {
             function(data) {
                 $("#panel_modif_item").html("<h1>Modification de <span class=\"label label-primary\">" + data.payload.name + "</span></h1>"
                         + "<form role=\"form\" onSubmit=\"setItemChanges('" + item_id + "')\">"
-                        + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Nom : </label for=\"item_area_name\"></div><div class=\"col-md-2\"><textarea name=\"item_area_name\" id=\"item_area_name\" rows='1' cols='50'>" + data.payload.name + "</textarea></div></div>"
-                        + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Identifiant : </label for=\"item_area_identifiant\"></div><div class=\"col-md-2\"><textarea name=\"item_area_identifiant\" id=\"item_area_identifiant\" rows='1' cols='50'>" + data.payload.identifiant + "</textarea></div></div>"
-                        + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Description : </label for=\"item_area_description\"></div><div class=\"col-md-2\"><textarea name=\"item_area_description\" id=\"item_area_description\" rows='5' cols='50'>" + data.payload.description + "</textarea></div></div>"
-                        + "<button type=\"button\" class=\"btn\" onclick=\"setItemChanges('" + item_id + "')\">OK</button>"
-                        + "</div></form>"
+                        + "     <div class=\"row\">"
+                        + "         <div class=\"col-md-1\">"
+                        + "             <label class=\"label label-info\" for=\"item_area_name\">Nom : </label>"
+                        + "         </div>"
+                        + "         <div class=\"col-md-2\">"
+                        + "             <textarea name=\"item_area_name\" id=\"item_area_name\" rows='1' cols='50'>" + data.payload.name + "</textarea>"
+                        + "         </div>"
+                        + "     </div>"
+                        + "     <div class=\"row\">"
+                        + "         <div class=\"col-md-1\">"
+                        + "             <label class=\"label label-info\" for=\"item_area_identifiant\">Identifiant : </label>"
+                        + "         </div>"
+                        + "         <div class=\"col-md-2\">"
+                        + "             <textarea name=\"item_area_identifiant\" id=\"item_area_identifiant\" rows='1' cols='50'>" + data.payload.identifiant + "</textarea>"
+                        + "         </div>"
+                        + "     </div>"
+                        + "     <div class=\"row\">"
+                        + "         <div class=\"col-md-1\" for=\"item_area_description\">"
+                        + "             <label class=\"label label-info\">Description : </label>"
+                        + "         </div>"
+                        + "         <div class=\"col-md-2\">"
+                        + "             <textarea name=\"item_area_description\" id=\"item_area_description\" rows='5' cols='50'>" + data.payload.description + "</textarea>"
+                        + "         </div>"
+                        + "     </div>"
+                        + "     <button type=\"button\" class=\"btn\" onclick=\"setItemChanges('" + item_id + "')\">OK</button>"
+                        + "</form>"
                         );
             });
 }
