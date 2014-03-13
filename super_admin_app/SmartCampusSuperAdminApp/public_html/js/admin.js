@@ -57,7 +57,7 @@ function addEntity() {
 }
 
 function finalizeAddEntity() {
-    console.log($("#add_entity_area_name").val()+"\n"+$("#add_entity_area_type").val()+"\n"+$("#add_entity_area_description").val());
+    console.log($("#add_entity_area_name").val() + "\n" + $("#add_entity_area_type").val() + "\n" + $("#add_entity_area_description").val());
     $.ajax({
         url: "http://localhost:4242/api/entity/",
         type: "POST",
@@ -117,7 +117,7 @@ function printItem(entity, entity_name) {
                                         + "<td>" + dataItem.payload.identifiant + "</td>"
                                         + "<td>" + dataItem.payload.name + "</td>"
                                         + "<td>" + dataItem.payload.description + "</td>"
-                                        + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
+                                        + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "', '" + entity + "', '" + item + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
                                         + "<td><a href=\"#\" title=\"Modifier\" onclick=\"modifyItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "')\"><i class=\"glyphicon glyphicon-pencil\"></i></a></td>"
                                         + "</tr>"
                                         );
@@ -130,13 +130,38 @@ function printItem(entity, entity_name) {
 
 // remove item from the database
 // (line: tr id to remove from the DOM)
-function deleteItem(item, item_name, line) {
+function deleteItem(item, item_name, line, entity, no_item) {
     if (confirm("Supprimer " + item_name + " ?")) {
         jQuery.ajax({
             url: "http://localhost:4242/api/item/" + item,
             type: "DELETE",
             success: function() {
                 $("#" + line).remove();
+                $.getJSON('http://localhost:4242/api/entity/' + entity,
+                        function(dataEntity) {
+                            var i = 0, j = 0;
+                            var newItems = {};
+                            while (dataEntity.payload.items[i]) {
+                                if (dataEntity.payload.items[i] !== item) {
+                                    newItems[j] = dataEntity.payload.items[i];
+                                    j++;
+                                }
+                                i++;
+                            }
+                            $.ajax({
+                                url: "http://localhost:4242/api/entity/" + entity,
+                                type: "PUT",
+                                data: {
+                                    "items": newItems
+                                },
+                                success: function() {
+                                    console.log('suppression item: success');
+                                },
+                                error: function() {
+                                    alert('suppression item: error');
+                                }
+                            });
+                        });
             }
         });
     }
