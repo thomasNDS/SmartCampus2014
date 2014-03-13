@@ -16,7 +16,7 @@ http = require('http'),
         mqtt = require('mqtt'),
         Schema = mongoose.Schema,
         restify = require('express-restify-mongoose');
-
+var mers = require('mers');
 var app = express();
 var vm = require('vm');
 
@@ -33,12 +33,12 @@ app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
-    
+
     app.use(express.static(path.join(__dirname, "/public")));
     app.use(express.static(path.join(__dirname, "/views")));
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 
-    
+
 
 });
 app.set('views', __dirname + '/views');
@@ -78,14 +78,30 @@ app.get('/api', routes.help);
 app.get('/help', routes.help);
 app.get('/', routes.index);
 app.get('/is-init', routes.test_init);
-
 //routes for authentication
-app.post('/login',routes.authenticate.login);
-
+app.post('/login', routes.authenticate.login);
 app.post('/add_comment', routes.add_comment);
 
+app.post('/covoiturage', function(req, res) {
+    var dataRes = "OK";
+    var spawn = require('child_process').spawn,
+            pythonProcess = spawn('python', ['script/covoiturage.py', req.body.destination, req.body.day, req.body.month, req.body.year]);
 
-var mers = require('mers');
+    pythonProcess.stdout.on('data', function(data) {
+        console.log('stdout: ' + data);
+        dataRes += data;
+    });
+
+    pythonProcess.stderr.on('data', function(data) {
+        console.log('stderr: ' + data);
+    });
+
+    pythonProcess.on('close', function(code) {
+        console.log('child process exited with code ' + code);
+        res.send("" + dataRes + req.body.destination);
+    });
+});
+
 app.use('/api', mers({uri: addrmongo}).rest());
 //Run the server
 http.createServer(app).listen(4242, function() {

@@ -53,10 +53,10 @@ crousClient.on('message', function(topic, message) {
 });
 
 
-var eventClient = mqtt.createClient(1883, 'localhost');
-eventClient.subscribe('crous_event');
-var CrousEntityWhoSubscribe = ["Barnave", "Diderot", "Condillac"]
-eventClient.on('message', function(topic, message) {
+var eventCrousClient = mqtt.createClient(1883, 'localhost');
+eventCrousClient.subscribe('crous_event');
+var CrousEntityWhoSubscribe = ["Barnave", "Diderot", "Condillac"];
+eventCrousClient.on('message', function(topic, message) {
 
     tabEvent = message.split(/@/);
     for (var key in tabEvent) {
@@ -71,6 +71,57 @@ eventClient.on('message', function(topic, message) {
                 } else {
                     for (var entitySub in CrousEntityWhoSubscribe) {
                         EntityModel.findOne({name: CrousEntityWhoSubscribe[entitySub]}, function(err, doc) {
+                            if (!doc) {
+                                console.log("Could not load Document");
+                            } else {
+                                console.log(tabEvent[key])
+                                var event = new EventModel({
+                                    name: key,
+                                    description: tabEvent[key]
+                                });
+                                event.save(function(err) {
+                                    if (!err) {
+                                        return console.log("created");
+                                    } else {
+                                        return console.log(err);
+                                    }
+                                });
+                                doc.events.push(event._id);
+                                doc.save(function(err) {
+                                    if (err)
+                                        console.log('\n\n !!! ERROR with ' + topic);
+                                    else
+                                        console.log('\n update success for ' + topic);
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+        })(key);
+    }
+});
+
+
+
+var eventUjfClient = mqtt.createClient(1883, 'localhost');
+eventUjfClient.subscribe('ujf_event');
+var ujfEntityWhoSubscribe = ["Polytech Grenoble"];
+eventUjfClient.on('message', function(topic, message) {
+
+    tabEvent = message.split(/@/);
+    for (var key in tabEvent) {
+
+        (function(key) {
+            EventModel.findOne({"description": tabEvent[key]}, function(err, doc) {
+                if (err) {
+                    throw err;
+                } else
+                if (doc) {
+//                    console.log("Already in DB !");
+                } else {
+                    for (var entitySub in ujfEntityWhoSubscribe) {
+                        EntityModel.findOne({name: ujfEntityWhoSubscribe[entitySub]}, function(err, doc) {
                             if (!doc) {
                                 console.log("Could not load Document");
                             } else {
