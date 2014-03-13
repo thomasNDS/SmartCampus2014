@@ -10,14 +10,10 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="css/footable.core.css" rel="stylesheet" type="text/css">
-        <link href="css/footable.metro.css" rel="stylesheet" type="text/css">
-        <!--<link href="css/style.css" rel="stylesheet" type="text/css">-->
         <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
-        <script type="text/javascript" src="js/libs/jquery/footable.js"></script>
     <body>
         <div>
-            <table id="table_entities" class="footable table table-striped table-condensed">
+            <table id="table_entities" class="table table-striped table-condensed">
                 <caption><h1>Entités</h1></caption>
                 <thead>
                     <tr>
@@ -33,133 +29,15 @@ and open the template in the editor.
                 </tbody>
             </table>
 
-            <div id="panel_item">
-            </div>
+            <div id="panel_item"></div>
 
-            <div id="panel_modif_entity">
-            </div>
+            <div id="panel_modif_entity"></div>
+
+            <div id="panel_modif_item"></div>
+
         </div>
 
-        <script type="text/javascript">
+        <script type="text/javascript" src="js/admin.js"></script>
 
-            // print entities and commands on them
-            $.getJSON('http://localhost:4242/api/entity/',
-                    function(data) {
-                        var entity = 0;
-                        while (data.payload[entity]) {
-                            $("#table_entities_body").append(
-                                    "<tr id=\"tr_" + data.payload[entity]._id + "\">"
-                                    + "<th>" + data.payload[entity].name + "</th>"
-                                    + "<td>" + data.payload[entity]._id + "</td>"
-                                    + "<td>" + data.payload[entity].type + "</td>"
-                                    + "<td><a href=\"#panel_item\" onclick=\"printItem('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "')\">" + "Items<a/></td>"
-                                    + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteEntity('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "', '" + "tr_" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
-                                    + "<td><a href=\"#panel_modif_entity\" title=\"Modifier\" onclick=\"modifyEntity('" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-pencil\"></i></a><td>"
-                                    + "</tr>"
-                                    );
-                            entity++;
-                        }
-                    }
-            );
-
-            // remove entity from the database
-            // (line: tr id to remove from the DOM)
-            function deleteEntity(entity, entity_name, line) {
-                if (confirm("Supprimer " + entity_name + " ?")) {
-                    jQuery.ajax({
-                        url: "http://localhost:4242/api/entity/" + entity,
-                        type: "DELETE",
-                        success: function() {
-                            $("#" + line).remove();
-                        }
-                    });
-                }
-            }
-
-            // print one item
-            function printItem(entity, entity_name) {
-                $("#panel_item").html("<table id=\"table_items\" class=\"footable table table-striped table-condensed\">"
-                        + "<caption id=\"table_items_caption\"><h1>Items</h1></caption>"
-                        + "<thead>"
-                        + "<tr>"
-                        + "<th>Identifiant</th>"
-                        + "<th>Nom</th>"
-                        + "<th>Description</th>"
-                        + "<th>Supprimer</th>"
-                        + "</tr>"
-                        + "</thead>"
-                        + "<tbody id=\"table_items_body\">"
-                        + "</tbody>"
-                        + "</table>");
-                $("#table_items_caption").html("<h1>Items de " + entity_name + "</h1>");
-                $("#table_items_body").html('');
-                $.getJSON('http://localhost:4242/api/entity/' + entity,
-                        function(dataEntity) {
-                            var item = 0;
-                            while (dataEntity.payload.items[item]) {
-                                $.getJSON('http://localhost:4242/api/item/' + dataEntity.payload.items[item],
-                                        function(dataItem) {
-                                            $("#table_items_body").append(
-                                                    "<tr id=\"tr_" + dataItem.payload._id + "\">"
-                                                    + "<td>" + dataItem.payload.identifiant + "</td>"
-                                                    + "<td>" + dataItem.payload.name + "</td>"
-                                                    + "<td>" + dataItem.payload.description + "</td>"
-                                                    + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
-                                                    + "</tr>"
-                                                    );
-                                        }
-                                );
-                                item++;
-                            }
-                        });
-            }
-
-            // remove item from the database
-            // (line: tr id to remove from the DOM)
-            function deleteItem(item, item_name, line) {
-                if (confirm("Supprimer " + item_name + " ?")) {
-                    jQuery.ajax({
-                        url: "http://localhost:4242/api/item/" + item,
-                        type: "DELETE",
-                        success: function() {
-                            $("#" + line).remove();
-                        }
-                    });
-                }
-            }
-
-            function modifyEntity(entity_id) {
-                $.getJSON('http://localhost:4242/api/entity/' + entity_id,
-                        function(data) {
-                            $("#panel_modif_entity").html("<h1>Modification de " + data.payload.name + "</h1>"
-                                    + "<form role=\"form\" onSubmit=\"setChanges('" + entity_id + "')\">"
-                                    + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Nom : </label for=\"area_name\"></div><div class=\"col-md-2\"><textarea name=\"area_name\" id=\"area_name\" rows='1' cols='50'>" + data.payload.name + "</textarea></div></div>"
-                                    + "<div class=\"row\"><div class=\"col-md-1\"><label class=\"label label-info\">Type : </label for=\"area_type\"></div><div class=\"col-md-2\"><textarea name=\"area_type\" id=\"area_type\" rows='1' cols='50'>" + data.payload.type + "</textarea></div></div>"
-//                                    + "<input type=\"submit\" value=\"Envoyer\" />"
-                                    + "<button type=\"button\" class=\"btn\" onclick=\"setChanges('" + entity_id + "')\">OK</button>"
-                                    + "</div></form>"
-                                    );
-                        });
-            }
-
-            function setChanges(entity_id) {
-                $.ajax({
-                    url: "http://localhost:4242/api/entity/" + entity_id,
-                    type: "PUT",
-                    data: {
-                        "name": $("#area_name").val(),
-                        "type": $("#area_type").val()
-                    },
-                    success: function() {
-                        console.log('update success');
-                        alert('Modification prise en compte.');
-                        location.reload();
-                    }
-                }
-                );
-                return true;
-            }
-
-        </script>
     </body>
 </html>

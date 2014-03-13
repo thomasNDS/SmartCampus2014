@@ -64,6 +64,8 @@ var Administrator = new Schema({
     id: ObjectId,
     name: String,
     first_name: String,
+    login : String,
+    password : String,
     entity: [{type: Schema.Types.ObjectId, ref: 'Entity'}]
 });
 

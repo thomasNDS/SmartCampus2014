@@ -7,6 +7,7 @@
 var addrmongo = 'mongodb://localhost:27017/Client';
 
 var fs = require("fs");
+
 http = require('http'),
         express = require('express'),
         mongoose = require('mongoose'),
@@ -32,8 +33,13 @@ app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
+    
+    app.use(express.static(path.join(__dirname, "/public")));
     app.use(express.static(path.join(__dirname, "/views")));
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
+
+    
+
 });
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -72,6 +78,13 @@ app.get('/api', routes.help);
 app.get('/help', routes.help);
 app.get('/', routes.index);
 app.get('/is-init', routes.test_init);
+
+//routes for authentication
+app.post('/login',routes.authenticate.login);
+
+app.post('/add_comment', routes.add_comment);
+
+
 var mers = require('mers');
 app.use('/api', mers({uri: addrmongo}).rest());
 //Run the server
