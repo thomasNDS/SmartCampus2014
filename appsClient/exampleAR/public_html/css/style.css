@@ -1,6 +1,7 @@
 html {
     background: black;
     color: white;
+    font-size: 62.5%;
 }
 body {
     margin: 0;
@@ -158,6 +159,10 @@ body {
 
 /* ----- end custom tab ------*/
 
+#popUpContent{
+    text-align: center;
+}
+
 #contentTabs{
     padding-top: 7px;
     padding-bottom: 5px;
@@ -200,5 +205,20 @@ body {
 }
 
 .commentBtn {
+    padding-top: 5px;
     text-align: center;
+}
+
+#tabsPanel {
+    font-size: 1.3em;
+}
+
+
+.moreBtn {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.moreBtn > .btn, .commentBtn > .btn {
+    font-size: 1.1em;
 }
