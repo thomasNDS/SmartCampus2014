@@ -329,13 +329,16 @@ and open the template in the editor.
             }
 
             function switchAction() {
-//                showBottomPopUp();
-                currentMarker = 3;
-                showPopUp(currentMarker);
+                window.location='index.html';
             }
             
             function paramaterAction(){
                 currentMarker = 5;
+                showPopUp(currentMarker);
+            }
+            
+            function helpAction(){
+                currentMarker = 3;
                 showPopUp(currentMarker);
             }
 
@@ -597,10 +600,10 @@ and open the template in the editor.
                     <div class="container-fluid">
                         <ul class="nav">
                             <li><a href="#" onclick="paramaterAction();"><i class="icon-white icon-cog"></i> Paramètres</a></li>
-                            <li><a href="#"><i class="icon-white icon-info-sign"></i> Aide</a></li>
+                            <li><a href="#" onclick="helpAction();"><i class="icon-white icon-info-sign"></i> Aide</a></li>
                         </ul>
-                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);">FullScreen</button>
-                        <button class="btn btn-primary pull-right" onclick="switchAction()">Switch</button>
+                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);"><i class="icon-white icon-fullscreen"></i> FullScreen</button>
+                        <button class="btn btn-primary pull-right" onclick="switchAction()"><i class="icon-white icon-map-marker"></i> Carte</button>
                     </div>
                 </div>
             </nav>

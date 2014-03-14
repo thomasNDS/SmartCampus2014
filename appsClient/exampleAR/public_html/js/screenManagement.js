@@ -34,10 +34,10 @@ function exitFullscreen() {
 function manageFullScreen(elementToFullScreened) {
     var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
     if (isFullScreen) {
-        $("#btnFullScreen").html("FullScreen");
+        $("#btnFullScreen").html("<i class=\"icon-white icon-fullscreen\"></i> FullScreen");
         exitFullscreen();
     } else {
         launchFullscreen(elementToFullScreened);
-        $("#btnFullScreen").html("Normal");
+        $("#btnFullScreen").html("<i class=\"icon-white  icon-resize-small\"></i> Normal");
     }
 }
