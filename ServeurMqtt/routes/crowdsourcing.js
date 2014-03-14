@@ -1,7 +1,18 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
  */
 
+average = 5;
 
+exports.voteRu = function(req, res) {
+    console.log("vote ru");
+    average++;
+    res.send("à voter !");
+};
+
+exports.getRu = function(req, res) {
+    console.log("vote ru");
+    res.send("moyenne : " + average);
+};
