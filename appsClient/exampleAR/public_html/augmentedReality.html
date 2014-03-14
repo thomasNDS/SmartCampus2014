@@ -100,11 +100,8 @@ and open the template in the editor.
 
                 //Canvas pour la detection des marqueurs
                 var canvas = document.createElement('canvas');
-//                canvas.width = 320;
-//                canvas.height = 240;
                 canvas.width = $(document).width();// - scrollBarWidth;
                 canvas.height = $(document).height();// - menuHeight;
-//                canvas.style.display = 'block';
 
                 //Canvas pour l'affichage de la video
                 var videoCanvas = document.createElement('canvas');
@@ -227,48 +224,6 @@ and open the template in the editor.
                     $("#contentTabs").css("max-height", maxHeightContentTab);
                 }
 
-
-                function getScrollerWidth() {
-                    var scr = null;
-                    var inn = null;
-                    var wNoScroll = 0;
-                    var wScroll = 0;
-
-                    // Outer scrolling div
-                    scr = document.createElement('div');
-                    scr.style.position = 'absolute';
-                    scr.style.top = '-1000px';
-                    scr.style.left = '-1000px';
-                    scr.style.width = '100px';
-                    scr.style.height = '50px';
-                    // Start with no scrollbar
-                    scr.style.overflow = 'hidden';
-
-                    // Inner content div
-                    inn = document.createElement('div');
-                    inn.style.width = '100%';
-                    inn.style.height = '200px';
-
-                    // Put the inner div in the scrolling div
-                    scr.appendChild(inn);
-                    // Append the scrolling div to the doc
-
-                    document.body.appendChild(scr);
-
-                    // Width of the inner div sans scrollbar
-                    wNoScroll = inn.offsetWidth;
-                    // Add the scrollbar
-                    scr.style.overflow = 'auto';
-                    // Width of the inner div width scrollbar
-                    wScroll = inn.offsetWidth;
-
-                    // Remove the scrolling div from the doc
-                    document.body.removeChild(document.body.lastChild);
-
-                    // Pixel width of the scroller
-                    return (wNoScroll - wScroll);
-                }
-
             });
 
             /*
@@ -329,17 +284,18 @@ and open the template in the editor.
             }
 
             function switchAction() {
-                window.location='index.html';
+                window.location = 'index.html';
             }
-            
-            function paramaterAction(){
+
+            function paramaterAction() {
                 currentMarker = 5;
                 showPopUp(currentMarker);
             }
-            
-            function helpAction(){
-                currentMarker = 3;
-                showPopUp(currentMarker);
+
+            function helpAction() {
+//                currentMarker = 3;
+//                showPopUp(currentMarker);
+                voteTest();
             }
 
             /*
@@ -474,6 +430,26 @@ and open the template in the editor.
                 return com;
             }
 
+            function voteTest() {
+                var vote = 5;
+                console.log("vote = " + vote);
+                jQuery.ajax({
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        value: vote
+                    },
+                    url: "http://" + serverAddress + ":4242/vote/vote_ru2",
+//                    url: 'http://localhost:4242/add_comment',
+                    success: function(data) {
+                        console.log("vote effectué\n" + data);
+                    },
+                    error: function(err) {
+                        console.log(er);
+                    }
+                });
+            }
+
             /*
              * Fonction pour mettre à jour une entité d'id "entityId"
              * @param {type} objElem
@@ -507,8 +483,8 @@ and open the template in the editor.
                 //@TODO : Optimiser (rechargement d'un seul item)
                 buildPanel(entitiesArray[indexEntity]);
             }
-            
-            function checkDescriptionHeight(){
+
+            function checkDescriptionHeight() {
                 console.log($("#entityDescription").css("height"));
             }
 
@@ -542,7 +518,7 @@ and open the template in the editor.
 
                 $("#tabsPanel").append(tabTitle);
                 $("#contentTabs").append(tabContent);
-                
+
                 checkDescriptionHeight();
 
                 //Onglets Items
