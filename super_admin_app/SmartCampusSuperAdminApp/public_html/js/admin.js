@@ -117,7 +117,7 @@ function printItem(entity, entity_name) {
                                         + "<td>" + dataItem.payload.identifiant + "</td>"
                                         + "<td>" + dataItem.payload.name + "</td>"
                                         + "<td>" + dataItem.payload.description + "</td>"
-                                        + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "', '" + entity + "', '" + item + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
+                                        + "<td><a href=\"#\" title=\"Supprimer\" onclick=\"deleteItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "', '" + entity + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
                                         + "<td><a href=\"#\" title=\"Modifier\" onclick=\"modifyItem('" + dataItem.payload._id + "', '" + dataItem.payload.name + "', '" + "tr_" + dataItem.payload._id + "')\"><i class=\"glyphicon glyphicon-pencil\"></i></a></td>"
                                         + "</tr>"
                                         );
@@ -130,7 +130,7 @@ function printItem(entity, entity_name) {
 
 // remove item from the database
 // (line: tr id to remove from the DOM)
-function deleteItem(item, item_name, line, entity, no_item) {
+function deleteItem(item, item_name, line, entity) {
     if (confirm("Supprimer " + item_name + " ?")) {
         jQuery.ajax({
             url: "http://localhost:4242/api/item/" + item,
