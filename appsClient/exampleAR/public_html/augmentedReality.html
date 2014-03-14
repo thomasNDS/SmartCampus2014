@@ -45,7 +45,6 @@ and open the template in the editor.
             currentMarker = null;
             //Marqueur du panel courant
             currentPanelMarker = null;
-
             //APPLI//
 
             //Var booleen pour savoir si un panel est affiché ou non
@@ -55,10 +54,9 @@ and open the template in the editor.
             //Adresse du serveur web
 //            serverAddress = "192.168.1.2";
             serverAddress = "localhost";
-
             $(window).ready(function() {
 
-                scrollBarWidth = 0;//getScrollerWidth();
+                scrollBarWidth = 0; //getScrollerWidth();
                 menuHeight = $("#menu").height() + 5;
 //                console.log("sc : " + scrollBarWidth);
 //                console.log("menu height : " + $("#menu").height());
@@ -80,7 +78,6 @@ and open the template in the editor.
                 video.autoplay = true;
                 video.style.display = 'none';
                 video.controls = true;
-
                 //getUser mutliplateforme
                 navigator.getUserMedia = (navigator.getUserMedia ||
                         navigator.webkitGetUserMedia ||
@@ -100,8 +97,8 @@ and open the template in the editor.
 
                 //Canvas pour la detection des marqueurs
                 var canvas = document.createElement('canvas');
-                canvas.width = $(document).width();// - scrollBarWidth;
-                canvas.height = $(document).height();// - menuHeight;
+                canvas.width = $(document).width(); // - scrollBarWidth;
+                canvas.height = $(document).height(); // - menuHeight;
 
                 //Canvas pour l'affichage de la video
                 var videoCanvas = document.createElement('canvas');
@@ -124,7 +121,6 @@ and open the template in the editor.
                 //Ajout du canvas de video a la page
 //                document.body.appendChild(videoCanvas);
                 $("#backgroundVideo").append(videoCanvas);
-
                 //Fonction appele a chaque interval
                 setInterval(function() {
 
@@ -169,7 +165,6 @@ and open the template in the editor.
 
                     var isPopUpShown = $('#popUpInfos').hasClass('in');
                     var isBottomPopUpShown = $('#bottomPopUp').css("display") === 'block';
-
                     //Exemple de ce qu'on peut faire une fois un marqueur lu
                     //Si on a lu un marqueur on popup pour demander si on veut afficher info de l'element lu?
                     //TODO: possiblement plusieurs marqueurs lu..
@@ -182,8 +177,6 @@ and open the template in the editor.
                         }
                     }
                 }, 15);
-
-
                 /// FULL SCREEN ///
                 //// TODO : Probleme avec le canvas de detection + paysage / portrait resize foireux ////
                 function onResizeHandler(e) {
@@ -195,12 +188,9 @@ and open the template in the editor.
 
                     video.width = window.innerWidth - scrollBarWidth;
                     video.height = window.innerHeight - menuHeight;
-
                     videoCanvas.width = window.innerWidth - scrollBarWidth;
                     videoCanvas.height = window.innerHeight - menuHeight;
-
                     changeMaxHeightContentTabs();
-
 //                    canvas.width = $(document).width();// - scrollBarWidth;
 //                    canvas.height = $(document).height();
 
@@ -225,14 +215,12 @@ and open the template in the editor.
                 }
 
             });
-
             /*
              * Fonction pour afficher le panneau d'information du batiment que l'on a repéré
              */
             function showInfoPanel() {
                 //On enregistre le marqueur
                 currentPanelMarker = currentMarker;
-
                 //Si le panel du bas est affiché
                 if ($("#bottomPopUp").css('display') === 'block') {
                     //On ferme le popUp du bas
@@ -241,11 +229,9 @@ and open the template in the editor.
 
                 //On cherche l'element actuellement detecte dans le tableau via un id
                 var elemDetected = entitiesArray[currentPanelMarker];
-
                 //Construction du panel d'info en fonction de l'element
                 buildPanel(elemDetected);
                 $("#informationPanel").css("display", "block");
-
                 isPanelDisplayed = true;
             }
 
@@ -262,7 +248,6 @@ and open the template in the editor.
                 $("#popUpContent").html(textType + ", voulez-vous l'afficher ?");
 //                $("#popUpContent").html(textBody);
                 $("#bottomPopUpDescription").html("<strong>" + textTitle + "</strong> - " + textType);
-
                 //Si le panel centrale n'est pas affiché, popup centrale
                 //Sinon popUp bottom
                 if (!isPanelDisplayed) {
@@ -288,8 +273,9 @@ and open the template in the editor.
             }
 
             function paramaterAction() {
-                currentMarker = 5;
-                showPopUp(currentMarker);
+//                currentMarker = 5;
+//                showPopUp(currentMarker);
+                getVoteValue();
             }
 
             function helpAction() {
@@ -337,7 +323,6 @@ and open the template in the editor.
                         entities = data;
                     }
                 });
-
                 //On les stocke dans un tableau
                 for (var i = 0; i < entities.payload.length; i++) {
                     entitiesArray[i] = entities.payload[i];
@@ -431,7 +416,11 @@ and open the template in the editor.
             }
 
             function voteTest() {
-                var vote = 5;
+                
+                //recupere le vote choisis
+                var vote = $('input[name="vote"]:checked').val();
+//                var vote = 5;
+                
                 console.log("vote = " + vote);
                 jQuery.ajax({
                     type: 'POST',
@@ -448,6 +437,27 @@ and open the template in the editor.
                         console.log(er);
                     }
                 });
+                
+                //Met a jour la moyenne
+                $("#avgVote").html(getVoteValue());
+            }
+
+            function getVoteValue() {
+                var vote = 0;
+                jQuery.ajax({
+                    type: 'GET',
+                    async: false,
+                    url: "http://" + serverAddress + ":4242/vote/moyenne_ru",
+//                    url: 'http://localhost:4242/add_comment',
+                    success: function(data) {
+                        console.log("resultat = " + data);
+                        vote = data;
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+                return vote;
             }
 
             /*
@@ -478,7 +488,6 @@ and open the template in the editor.
                         entitiesArray[indexEntity] = data.payload[0];
                     }
                 });
-
                 //Rebuild du panel pour mettre à jour l'item commentaire
                 //@TODO : Optimiser (rechargement d'un seul item)
                 buildPanel(entitiesArray[indexEntity]);
@@ -486,6 +495,27 @@ and open the template in the editor.
 
             function checkDescriptionHeight() {
                 console.log($("#entityDescription").css("height"));
+            }
+
+            function activeBtn(){
+                $("#btnVote").attr("disabled", false);
+            }
+
+            function buildVotePanel() {
+                var avg = getVoteValue();
+                console.log(avg);
+                var txtActualAvg = "Estimation queue";
+                var html = "<div id=\"votePanel\">";
+                html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
+                html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Non  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Un peu  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Ca va  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"4\" onclick=\"activeBtn()\"> Pas mal  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"5\" onclick=\"activeBtn()\"> Abusé gros!<br/>";
+                html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest()\" disabled>Alerte les autres :)</button>";
+                html += "</div>";
+                
+                return html;
             }
 
             /*
@@ -501,45 +531,37 @@ and open the template in the editor.
                 /* Clean le panel */
                 cleanChildOfNodeID("tabsPanel");
                 cleanChildOfNodeID("contentTabs");
-
                 //Titre du panel info
                 $("#informationTitle").html(objElem.name);
-
                 //Onglet Description
                 var tabTitle = "";
                 var tabContent = "";
-                tabTitle = "<li class=\"active\"><a href=\"#tabbedPanDesc\" data-toggle=\"tab\">Description</a></li>";
+                tabTitle = "<li class=\"active\"><a href=\"#entityDescription\" data-toggle=\"tab\">Description</a></li>";
                 tabContent = "<div id=\"entityDescription\" class=\"tab-pane active\" id=\"tabbedPanDesc\">";
                 tabContent += objElem.description;
                 console.log("nb cara :" + objElem.description.length);
+                
+                tabContent += buildVotePanel();
+                
                 //Div pour bouton addComment
                 tabContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
                 tabContent += "</div>";
-
                 $("#tabsPanel").append(tabTitle);
                 $("#contentTabs").append(tabContent);
-
                 checkDescriptionHeight();
-
                 //Onglets Items
                 objElem.items.forEach(function(itemId, index) {
 
                     var itemLoaded = loadItemById(itemId);
-
                     tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
                     $("#tabsPanel").append(tabTitle);
-
                     tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
                     $("#contentTabs").append(tabContent);
-
                 });
-
                 //Onglet Com
                 var coms = objElem.comments;
-
                 tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
                 $("#tabsPanel").append(tabTitle);
-
                 tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
                 objElem.comments.forEach(function(comId) {
                     var com = loadComById(comId);
@@ -550,9 +572,7 @@ and open the template in the editor.
 //                console.log("id" + objElem._id + "!!!!");
                 tabContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
                 tabContent += "</div>";
-
                 $("#contentTabs").append(tabContent);
-
             }
 
             /*

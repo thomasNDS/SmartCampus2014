@@ -15,7 +15,6 @@ exports.voteRuGet = function(req, res) {
 };
 
 exports.voteRu2 = function(req, res) {
-    console.log(parseInt(req.body.value) + 2);
     var valueVote = parseInt(req.body.value);
     processAvg(valueVote);
     res.json(true);
@@ -23,7 +22,7 @@ exports.voteRu2 = function(req, res) {
 
 exports.getRu = function(req, res) {
     console.log("vote ru");
-    res.send("moyenne : " + average);
+    res.send(""+average);
 };
 
 function processAvg(newVote){
