@@ -5,10 +5,12 @@
 # License MIT
 
 import httplib
-from BeautifulSoup import BeautifulSoup
+#from BeautifulSoup import BeautifulSoup
 import json
 import time
 import os, sys
+from datetime import datetime
+import paho.mqtt.client as paho
 
 print "DEBUT: "
 #if len(sys.argv) > 4:
@@ -21,21 +23,41 @@ print "DEBUT: "
 def __unicode__(self):
    return unicode(self.title) or u''
 
-site = "www.tag.fr"
+broker = "localhost"
+port = 1883
+
+# Create a MQTT identifier for this process
+mypid = os.getpid()
+pub= "pubclient_"+str(mypid)
+mqttc = paho.Client(pub, False) #nocleanstart
+
+#connect to broker
+mqttc.connect(broker, port, 60)
+
+site = "www.stationmobile.fr"
 
 #Access to our server and get ids of restaurants
 conn = httplib.HTTPConnection(site)  # never http:// and not  end /
-conn.request("GET", "/TPL_CODE/TPL_RECHERCHEHORAIRES/rec_arr/GRENOBLE%2BFLANDRIN-VALMY/179-recherche-d-horaires.htm#tpl_calculItineraireRecHorairesHome")  # launch a Get request
+conn.request("GET", "/stationmobilecore/XML/Horaires/Statique/20140317_SEM_B.json?key=108")  # launch a Get request
 response = conn.getresponse()		            # store the answer
 print response.status, response.reason              # just print the debug, if success
 data = response.read()			            # get the html as a string '<html >...</html>'
-tree = BeautifulSoup(data)			    # string to a tree structure 
+try:
+    decoded = json.loads(data)
+    ids = [3,4,5,6]
+    sens = 0
+    for id in ids:
+        name=decoded["destinations"][sens]["arrets"][id]["nom"]
+        hours= decoded["destinations"][sens]["arrets"][id]["heures"]
+#        for hour in hours:
+#            (h,m)=hour.split(':')
+        
+        topic = "hours_" + name
+        topic = topic.replace(" ","_")
+        topic = topic.replace("'","_")
+        print topic
+        mqttc.publish(topic, (str(hours)).encode('utf-8'), 0, True)                              #qos=0, retain=y
 
-alltag = tree.findAll("tbody")
-#alltag += tree.findAll("li", attrs = {'class':'one-trip clearfix one-trip-even'})
+except (ValueError, KeyError, TypeError):
+    print "JSON format error"
 
-for trip in alltrip:
-    title = str(trip)
-    title = title.replace('href="', 'href="http://'+ site +'/')
-    title = title.replace('src="', 'src="http://'+site)
-    print title
