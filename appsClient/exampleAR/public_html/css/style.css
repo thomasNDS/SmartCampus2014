@@ -37,6 +37,11 @@ body {
     margin-left: 0%;
 }
 
+#map-canvas {
+    width: 50%;
+    height: 500px;
+}
+
 //Ajout pour un offset vertical
 .voffset  { margin-top: 2px; }
 .voffset1 { margin-top: 5px; }
