@@ -4,14 +4,6 @@
  * and open the template in the editor.
  */
 
-//var map = L.map('map').setView([45.19091427, 5.76828361], 14);
-//L.tileLayer('http://{s}.tile.cloudmade.com/ec5901144ac74caeb0bf17aeaeea442f/997/256/{z}/{x}/{y}.png', {
-//    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-//    maxZoom: 18
-//}).addTo(map);
-//// add a marker
-//var marker = L.marker([45.19, 5.77]).addTo(map);
-
 function initialize() {
     var mapOptions = {
         center: new google.maps.LatLng(45.19091427, 5.76828361), // centrer sur le campus de SMH
@@ -53,22 +45,29 @@ function initialize() {
         map.panTo(new google.maps.LatLng(newLat, newLng));
     });
 
+    var pois = [];
+    $.getJSON('http://localhost:4242/api/entity/',
+            function(data) {
+                var entity = 0;
+                while (data.payload[entity]) {
+                    if (data.payload[entity].latitude && data.payload[entity].longitude) {
+                        pois.push({
+                            name: data.payload[entity].name,
+                            lat: data.payload[entity].latitude,
+                            lon: data.payload[entity].longitude
+                        });
+                    }
+                    entity++;
+                }
+                var marker;
+                $.each(pois, function(index, value) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(value.lat, value.lon),
+                        map: map,
+                        title: value.name
+                    });
+                });
+            });
 
-    var latLng = new google.maps.LatLng(45.187778, 5.726945);
-
-    var marker = new google.maps.Marker({
-        position: latLng,
-        map: map,
-        title: "titre"
-                //icon     : "marker.gif"
-    });
-    marker.setMap(map);
-
-    var infoWindow = new google.maps.InfoWindow({
-        content: 'infobulle',
-        position: latLng
-    });
-    infoWindow.setMap(map);
 }
 google.maps.event.addDomListener(window, 'load', initialize);
-
