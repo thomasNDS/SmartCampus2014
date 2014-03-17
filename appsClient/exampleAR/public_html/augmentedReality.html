@@ -45,15 +45,18 @@ and open the template in the editor.
             currentMarker = null;
             //Marqueur du panel courant
             currentPanelMarker = null;
+            //APPLI//
+
             //Var booleen pour savoir si un panel est affiché ou non
             isPanelDisplayed = false;
-
             //Tableau contenant les différents éléments 
             entitiesArray = new Array();
-
+            //Adresse du serveur web
+//            serverAddress = "192.168.1.2";
+            serverAddress = "localhost";
             $(window).ready(function() {
 
-                scrollBarWidth = 0;//getScrollerWidth();
+                scrollBarWidth = 0; //getScrollerWidth();
                 menuHeight = $("#menu").height() + 5;
 //                console.log("sc : " + scrollBarWidth);
 //                console.log("menu height : " + $("#menu").height());
@@ -75,7 +78,6 @@ and open the template in the editor.
                 video.autoplay = true;
                 video.style.display = 'none';
                 video.controls = true;
-
                 //getUser mutliplateforme
                 navigator.getUserMedia = (navigator.getUserMedia ||
                         navigator.webkitGetUserMedia ||
@@ -95,11 +97,8 @@ and open the template in the editor.
 
                 //Canvas pour la detection des marqueurs
                 var canvas = document.createElement('canvas');
-//                canvas.width = 320;
-//                canvas.height = 240;
-                canvas.width = $(document).width();// - scrollBarWidth;
-                canvas.height = $(document).height();// - menuHeight;
-//                canvas.style.display = 'block';
+                canvas.width = $(document).width(); // - scrollBarWidth;
+                canvas.height = $(document).height(); // - menuHeight;
 
                 //Canvas pour l'affichage de la video
                 var videoCanvas = document.createElement('canvas');
@@ -122,7 +121,6 @@ and open the template in the editor.
                 //Ajout du canvas de video a la page
 //                document.body.appendChild(videoCanvas);
                 $("#backgroundVideo").append(videoCanvas);
-
                 //Fonction appele a chaque interval
                 setInterval(function() {
 
@@ -167,7 +165,6 @@ and open the template in the editor.
 
                     var isPopUpShown = $('#popUpInfos').hasClass('in');
                     var isBottomPopUpShown = $('#bottomPopUp').css("display") === 'block';
-
                     //Exemple de ce qu'on peut faire une fois un marqueur lu
                     //Si on a lu un marqueur on popup pour demander si on veut afficher info de l'element lu?
                     //TODO: possiblement plusieurs marqueurs lu..
@@ -180,8 +177,6 @@ and open the template in the editor.
                         }
                     }
                 }, 15);
-
-
                 /// FULL SCREEN ///
                 //// TODO : Probleme avec le canvas de detection + paysage / portrait resize foireux ////
                 function onResizeHandler(e) {
@@ -193,10 +188,9 @@ and open the template in the editor.
 
                     video.width = window.innerWidth - scrollBarWidth;
                     video.height = window.innerHeight - menuHeight;
-
                     videoCanvas.width = window.innerWidth - scrollBarWidth;
                     videoCanvas.height = window.innerHeight - menuHeight;
-
+                    changeMaxHeightContentTabs();
 //                    canvas.width = $(document).width();// - scrollBarWidth;
 //                    canvas.height = $(document).height();
 
@@ -212,57 +206,21 @@ and open the template in the editor.
 
                 //////////////////////
 
-
-                function getScrollerWidth() {
-                    var scr = null;
-                    var inn = null;
-                    var wNoScroll = 0;
-                    var wScroll = 0;
-
-                    // Outer scrolling div
-                    scr = document.createElement('div');
-                    scr.style.position = 'absolute';
-                    scr.style.top = '-1000px';
-                    scr.style.left = '-1000px';
-                    scr.style.width = '100px';
-                    scr.style.height = '50px';
-                    // Start with no scrollbar
-                    scr.style.overflow = 'hidden';
-
-                    // Inner content div
-                    inn = document.createElement('div');
-                    inn.style.width = '100%';
-                    inn.style.height = '200px';
-
-                    // Put the inner div in the scrolling div
-                    scr.appendChild(inn);
-                    // Append the scrolling div to the doc
-
-                    document.body.appendChild(scr);
-
-                    // Width of the inner div sans scrollbar
-                    wNoScroll = inn.offsetWidth;
-                    // Add the scrollbar
-                    scr.style.overflow = 'auto';
-                    // Width of the inner div width scrollbar
-                    wScroll = inn.offsetWidth;
-
-                    // Remove the scrolling div from the doc
-                    document.body.removeChild(document.body.lastChild);
-
-                    // Pixel width of the scroller
-                    return (wNoScroll - wScroll);
+                function changeMaxHeightContentTabs() {
+                    var height = parseInt($("#backgroundVideo").css("height"));
+                    console.log("h " + height);
+                    var maxHeightContentTab = height * (65 / 100);
+                    console.log("max: " + maxHeightContentTab);
+                    $("#contentTabs").css("max-height", maxHeightContentTab);
                 }
 
             });
-
             /*
              * Fonction pour afficher le panneau d'information du batiment que l'on a repéré
              */
             function showInfoPanel() {
                 //On enregistre le marqueur
                 currentPanelMarker = currentMarker;
-
                 //Si le panel du bas est affiché
                 if ($("#bottomPopUp").css('display') === 'block') {
                     //On ferme le popUp du bas
@@ -271,11 +229,9 @@ and open the template in the editor.
 
                 //On cherche l'element actuellement detecte dans le tableau via un id
                 var elemDetected = entitiesArray[currentPanelMarker];
-
                 //Construction du panel d'info en fonction de l'element
                 buildPanel(elemDetected);
                 $("#informationPanel").css("display", "block");
-
                 isPanelDisplayed = true;
             }
 
@@ -289,9 +245,9 @@ and open the template in the editor.
                 var textBody = elem.description;
                 var textType = elem.type;
                 $("#popUpTitle").html(textTitle);
-                $("#popUpContent").html(textBody);
+                $("#popUpContent").html(textType + ", voulez-vous l'afficher ?");
+//                $("#popUpContent").html(textBody);
                 $("#bottomPopUpDescription").html("<strong>" + textTitle + "</strong> - " + textType);
-
                 //Si le panel centrale n'est pas affiché, popup centrale
                 //Sinon popUp bottom
                 if (!isPanelDisplayed) {
@@ -313,7 +269,19 @@ and open the template in the editor.
             }
 
             function switchAction() {
-                showBottomPopUp();
+                window.location = 'index.html';
+            }
+
+            function paramaterAction() {
+//                currentMarker = 5;
+//                showPopUp(currentMarker);
+                getVoteValue();
+            }
+
+            function helpAction() {
+//                currentMarker = 3;
+//                showPopUp(currentMarker);
+                voteTest();
             }
 
             /*
@@ -323,7 +291,7 @@ and open the template in the editor.
                 $("#bottomPopUp").animate({
                     height: "toggle"
                 }, 600, "linear", function() {
-                    console.log("show!!");
+//                    console.log("show!!");
                 });
             }
 
@@ -334,7 +302,7 @@ and open the template in the editor.
                 $("#bottomPopUp").animate({
                     height: "toggle"
                 }, 500, "linear", function() {
-                    console.log("close!!");
+//                    console.log("close!!");
                 });
             }
 
@@ -348,13 +316,13 @@ and open the template in the editor.
                 jQuery.ajax({
                     type: 'GET',
                     async: false,
-                    url: 'http://localhost:4242/api/entity',
+                    url: "http://" + serverAddress + ":4242/api/entity",
+//                    url: 'http://localhost:4242/api/entity',
                     success: function(data) {
                         console.dir(data);
                         entities = data;
                     }
                 });
-
                 //On les stocke dans un tableau
                 for (var i = 0; i < entities.payload.length; i++) {
                     entitiesArray[i] = entities.payload[i];
@@ -385,7 +353,8 @@ and open the template in the editor.
                 jQuery.ajax({
                     type: 'GET',
                     async: false,
-                    url: 'http://localhost:4242/api/item/' + id,
+                    url: "http://" + serverAddress + ":4242/api/item/" + id,
+//                    url: 'http://localhost:4242/api/item/' + id,
                     success: function(data) {
                         console.dir(data.payload[0]);
                         item = data.payload[0];
@@ -404,7 +373,8 @@ and open the template in the editor.
                 jQuery.ajax({
                     type: 'GET',
                     async: false,
-                    url: 'http://localhost:4242/api/comment/' + id,
+                    url: "http://" + serverAddress + ":4242/api/comment/" + id,
+//                    url: 'http://localhost:4242/api/comment/' + id,
                     success: function(data) {
                         console.dir(data.payload[0]);
                         com = data.payload[0];
@@ -431,7 +401,8 @@ and open the template in the editor.
                         entityId: entityId,
                         commentValue: comment
                     },
-                    url: 'http://localhost:4242/add_comment',
+                    url: "http://" + serverAddress + ":4242/add_comment",
+//                    url: 'http://localhost:4242/add_comment',
                     success: function(data) {
                         console.log("Comment created" + data);
                     },
@@ -442,6 +413,51 @@ and open the template in the editor.
                 });
                 refreshEntity(entityId);
                 return com;
+            }
+
+            function voteTest() {
+                
+                //recupere le vote choisis
+                var vote = $('input[name="vote"]:checked').val();
+//                var vote = 5;
+                
+                console.log("vote = " + vote);
+                jQuery.ajax({
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        value: vote
+                    },
+                    url: "http://" + serverAddress + ":4242/vote/vote_ru2",
+//                    url: 'http://localhost:4242/add_comment',
+                    success: function(data) {
+                        console.log("vote effectué\n" + data);
+                    },
+                    error: function(err) {
+                        console.log(er);
+                    }
+                });
+                
+                //Met a jour la moyenne
+                $("#avgVote").html(getVoteValue());
+            }
+
+            function getVoteValue() {
+                var vote = 0;
+                jQuery.ajax({
+                    type: 'GET',
+                    async: false,
+                    url: "http://" + serverAddress + ":4242/vote/moyenne_ru",
+//                    url: 'http://localhost:4242/add_comment',
+                    success: function(data) {
+                        console.log("resultat = " + data);
+                        vote = data;
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+                return vote;
             }
 
             /*
@@ -457,7 +473,6 @@ and open the template in the editor.
                 while (i < entitiesArray.length && !isFound) {
                     if (entitiesArray[i]._id === entityId) {
                         isFound = true;
-                        console.log("found");
                         indexEntity = i;
                     }
                     i++;
@@ -466,17 +481,41 @@ and open the template in the editor.
                 jQuery.ajax({
                     type: 'GET',
                     async: false,
-                    url: 'http://localhost:4242/api/entity/' + entityId,
+                    url: "http://" + serverAddress + ":4242/api/entity/" + entityId,
+//                    url: 'http://localhost:4242/api/entity/' + entityId,
                     success: function(data) {
-                        console.log("maj de l'elem");
                         console.dir(data);
                         entitiesArray[indexEntity] = data.payload[0];
                     }
                 });
-                
                 //Rebuild du panel pour mettre à jour l'item commentaire
                 //@TODO : Optimiser (rechargement d'un seul item)
                 buildPanel(entitiesArray[indexEntity]);
+            }
+
+            function checkDescriptionHeight() {
+                console.log($("#entityDescription").css("height"));
+            }
+
+            function activeBtn(){
+                $("#btnVote").attr("disabled", false);
+            }
+
+            function buildVotePanel() {
+                var avg = getVoteValue();
+                console.log(avg);
+                var txtActualAvg = "Estimation queue";
+                var html = "<div id=\"votePanel\">";
+                html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
+                html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Non  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Un peu  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Ca va  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"4\" onclick=\"activeBtn()\"> Pas mal  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"5\" onclick=\"activeBtn()\"> Abusé gros!<br/>";
+                html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest()\" disabled>Alerte les autres :)</button>";
+                html += "</div>";
+                
+                return html;
             }
 
             /*
@@ -492,50 +531,48 @@ and open the template in the editor.
                 /* Clean le panel */
                 cleanChildOfNodeID("tabsPanel");
                 cleanChildOfNodeID("contentTabs");
-
                 //Titre du panel info
                 $("#informationTitle").html(objElem.name);
-
                 //Onglet Description
                 var tabTitle = "";
                 var tabContent = "";
-                tabTitle = "<li class=\"active\"><a href=\"#tabbedPanDesc\" data-toggle=\"tab\">Description</a></li>";
-                tabContent = "<div class=\"tab-pane active\" id=\"tabbedPanDesc\">" + objElem.description + "</div>";
+                tabTitle = "<li class=\"active\"><a href=\"#entityDescription\" data-toggle=\"tab\">Description</a></li>";
+                tabContent = "<div id=\"entityDescription\" class=\"tab-pane active\" id=\"tabbedPanDesc\">";
+                tabContent += objElem.description;
+                console.log("nb cara :" + objElem.description.length);
+                
+                tabContent += buildVotePanel();
+                
+                //Div pour bouton addComment
+                tabContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
+                tabContent += "</div>";
                 $("#tabsPanel").append(tabTitle);
                 $("#contentTabs").append(tabContent);
-
+                checkDescriptionHeight();
                 //Onglets Items
                 objElem.items.forEach(function(itemId, index) {
 
                     var itemLoaded = loadItemById(itemId);
-
                     tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
                     $("#tabsPanel").append(tabTitle);
-
                     tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
                     $("#contentTabs").append(tabContent);
-
                 });
-
                 //Onglet Com
                 var coms = objElem.comments;
-
-                    tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
-                    $("#tabsPanel").append(tabTitle);
-
-                    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
-                    objElem.comments.forEach(function(comId) {
-                        var com = loadComById(comId);
-                        tabContent += "<div>" + com.date + " - " + com.value + "</div>";
-                    });
-                    //Div pour bouton addComment
-                    console.log("id" + objElem._id + "!!!!");
-                    tabContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
-
-                    tabContent += "</div>";
-
-                    $("#contentTabs").append(tabContent);
-
+                tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
+                $("#tabsPanel").append(tabTitle);
+                tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
+                objElem.comments.forEach(function(comId) {
+                    var com = loadComById(comId);
+                    var date = new Date(com.date);
+                    tabContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
+                });
+                //Div pour bouton addComment
+//                console.log("id" + objElem._id + "!!!!");
+                tabContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
+                tabContent += "</div>";
+                $("#contentTabs").append(tabContent);
             }
 
             /*
@@ -558,11 +595,11 @@ and open the template in the editor.
                 <div class="navbar-inner">
                     <div class="container-fluid">
                         <ul class="nav">
-                            <li><a href="#"><i class="icon-white icon-cog"></i> Paramètres</a></li>
-                            <li><a href="#"><i class="icon-white icon-info-sign"></i> Aide</a></li>
+                            <li><a href="#" onclick="paramaterAction();"><i class="icon-white icon-cog"></i> Paramètres</a></li>
+                            <li><a href="#" onclick="helpAction();"><i class="icon-white icon-info-sign"></i> Aide</a></li>
                         </ul>
-                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);">FullScreen</button>
-                        <button class="btn btn-primary pull-right" onclick="switchAction()">Switch</button>
+                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);"><i class="icon-white icon-fullscreen"></i> FullScreen</button>
+                        <button class="btn btn-primary pull-right" onclick="switchAction()"><i class="icon-white icon-map-marker"></i> Carte</button>
                     </div>
                 </div>
             </nav>
