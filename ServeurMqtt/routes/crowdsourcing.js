@@ -7,7 +7,7 @@
 voteFake = 1;
 average = 0;
 var table_polls = [];
-maxTime = 1800; // time from which polls are ignored
+maxTime = 1800; // time from which polls are ignored (seconds)
 
 //Pour pouvoir faire une action sur le avg sans passer par une requete post (pour test)
 exports.voteRuGet = function(req, res) {
@@ -42,12 +42,6 @@ function processAvg(newPoll) {
         mean += value.poll * currentCoeff;
         coeffsSum += currentCoeff;
     });
-//    $.each(table_polls, function(index, value) {
-//        var delay = (currentTime - value.date) / 1000;
-//        currentCoeff = getCoeff(delay);
-//        mean += value.poll * currentCoeff;
-//        coeffsSum += currentCoeff;
-//    });
     average = mean / coeffsSum;
     updateTable();
 }
@@ -58,7 +52,7 @@ function getCoeff(delay) {
     return (res >= 0 ? res : 0);
 }
 
-// remove polls that are too old
+// remove polls that older than the limit
 function updateTable() {
     var now = new Date();
     while (table_polls.length > 0) {
