@@ -42,6 +42,8 @@ body {
     height: 500px;
 }
 
+#map-canvas img { max-width: none; }
+
 //Ajout pour un offset vertical
 .voffset  { margin-top: 2px; }
 .voffset1 { margin-top: 5px; }

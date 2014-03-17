@@ -4,19 +4,32 @@
  * and open the template in the editor.
  */
 
+var area = {
+    sw: {lat: 45.18361, lon: 5.750477},
+    ne: {lat: 45.20112086, lon: 5.78054667},
+    center: {lat: 45.19091427, lon: 5.76828361},
+    zoom: 14
+};
+var map;
+var IMG_DIR = "images/";
+var ICONS = {
+    "Université": IMG_DIR + "school.png",
+    "Ecole d'ingénieur": IMG_DIR + "school.png",
+    "Tramway" : IMG_DIR + "tramway.png"
+};
+
 function initialize() {
     var mapOptions = {
-        center: new google.maps.LatLng(45.19091427, 5.76828361), // centrer sur le campus de SMH
-        zoom: 15,
+        center: new google.maps.LatLng(area.center.lat, area.center.lon), // centrer sur le campus de SMH
+        zoom: area.zoom,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
     // bounds of the desired area
     var allowedBounds = new google.maps.LatLngBounds(// limites du campus
-            new google.maps.LatLng(45.18575736, 5.75114965),
-            new google.maps.LatLng(45.20112086, 5.78054667)
+            new google.maps.LatLng(area.sw.lat, area.sw.lat),
+            new google.maps.LatLng(area.ne.lat, area.ne.lon)
             );
     var boundLimits = {
         maxLat: allowedBounds.getNorthEast().lat(),
@@ -54,7 +67,8 @@ function initialize() {
                         pois.push({
                             name: data.payload[entity].name,
                             lat: data.payload[entity].latitude,
-                            lon: data.payload[entity].longitude
+                            lon: data.payload[entity].longitude,
+                            type: data.payload[entity].type
                         });
                     }
                     entity++;
@@ -64,7 +78,8 @@ function initialize() {
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(value.lat, value.lon),
                         map: map,
-                        title: value.name
+                        title: value.name,
+                        icon: ICONS[value.type]
                     });
                 });
             });
