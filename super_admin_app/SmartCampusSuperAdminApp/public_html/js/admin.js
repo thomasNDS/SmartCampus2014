@@ -52,6 +52,7 @@ function addEntity() {
             + "     </div>"
             + "</div>"
             + "<button type=\"button\" class=\"btn\" onclick=\"finalizeAddEntity()\">OK</button>"
+            + "<button type=\"button\" class=\"btn\" onclick=\"clearPanel('panel_add_entity')\">Annuler</button>"
             + "</form>"
             );
 }
@@ -196,6 +197,7 @@ function modifyEntity(entity_id) {
                         + "     </div>"
                         + " </div>"
                         + "<button type=\"button\" class=\"btn\" onclick=\"setEntityChanges('" + entity_id + "')\">OK</button>"
+                        + "<button type=\"button\" class=\"btn\" onclick=\"clearPanel('panel_modif_entity')\">Annuler</button>"
                         + "</form>"
                         );
             });
@@ -249,6 +251,7 @@ function modifyItem(item_id) {
                         + "         </div>"
                         + "     </div>"
                         + "     <button type=\"button\" class=\"btn\" onclick=\"setItemChanges('" + item_id + "')\">OK</button>"
+                        + "<button type=\"button\" class=\"btn\" onclick=\"clearPanel('panel_modif_item')\">Annuler</button>"
                         + "</form>"
                         );
             });
@@ -272,3 +275,6 @@ function setItemChanges(item_id) {
     return true;
 }
 
+function clearPanel(panel) {
+    $("#" + panel).html('');
+}
