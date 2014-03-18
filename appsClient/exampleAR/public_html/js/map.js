@@ -15,7 +15,9 @@ var IMG_DIR = "images/";
 var ICONS = {
     "Université": IMG_DIR + "school.png",
     "Ecole d'ingénieur": IMG_DIR + "school.png",
-    "Tramway" : IMG_DIR + "tramway.png"
+    "Tramway": IMG_DIR + "tramway.png",
+    "Commerce": IMG_DIR + "store.png",
+    "Restaurant Universitaire": IMG_DIR + "food.png"
 };
 
 function initialize() {
