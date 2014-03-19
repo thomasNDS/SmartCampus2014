@@ -206,6 +206,7 @@ License MIT-->
                     data: {"name": "Horaires",
                         "description": "Horaires",
                         "identifiantString": "BIBLIOTHEQUES UNIVERSITAIRES",
+                        "type" : "shedule"
                     },
                     success: function(data, textStatus, jqXHR) {
                         jQuery.post("http://localhost:4242/api/entity", {
@@ -227,6 +228,7 @@ License MIT-->
                         "name": "Horaires",
                         "description": "Horaires",
                         "identifiantString": "CONDILLAC UNIVERSITAIRES",
+                        "type" : "shedule"
                     }, success: function(data, textStatus, jqXHR) {
                         $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         jQuery.post("http://localhost:4242/api/entity", {
@@ -247,6 +249,7 @@ License MIT-->
                         "name": "Horaires",
                         "description": "Horaires",
                         "identifiantString": "GABRIEL FAURE",
+                        "type" : "shedule"
                     }, success: function(data, textStatus, jqXHR) {
                         $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         jQuery.post("http://localhost:4242/api/entity", {
@@ -267,6 +270,7 @@ License MIT-->
                         "name": "Horaires",
                         "description": "Horaires",
                         "identifiantString": "Taille UNIVERSITE",
+                        "type" : "shedule"
                     }, success: function(data, textStatus, jqXHR) {
                         $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         jQuery.post("http://localhost:4242/api/entity", {

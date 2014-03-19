@@ -32,10 +32,11 @@ var Item = new Schema({
     room_number: {type: Number},
     Sensors_data: [Sensors_data],
     identifiant: Number,
+    identifiantString: String,
     type: String,
     infos: [],
     description: String,
-    show : Boolean
+    show: Boolean
 });
 
 var Event = new Schema({
