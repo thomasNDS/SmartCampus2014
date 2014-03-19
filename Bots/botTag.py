@@ -20,9 +20,6 @@ print "DEBUT: "
 #    day = sys.argv[2]
 #    month = sys.argv[3]
 #    year = sys.argv[4]
-    
-def __unicode__(self):
-   return unicode(self.title) or u''
 
 broker = "localhost"
 port = 1883
@@ -46,18 +43,32 @@ data = response.read()			            # get the html as a string '<html >...</htm
 try:
     decoded = json.loads(data)
     ids = [3,4,5,6]
-    sens = 0
+
+    globalmess = []
     for id in ids:
-        name=decoded["destinations"][sens]["arrets"][id]["nom"]
-        hours= decoded["destinations"][sens]["arrets"][id]["heures"]
-#        for hour in hours:
-#            (h,m)=hour.split(':')
-        
+        name=decoded["destinations"][0]["arrets"][id]["nom"]
+        hours= decoded["destinations"][0]["arrets"][id]["heures"]
         topic = "hours_" + name
         topic = topic.replace(" ","_")
         topic = topic.replace("'","_")
+        tabHours = []
+        for hour in hours:
+            (h,m)= hour.split(':')
+            tabHours.append(int(h)*60+int(m))
+        hours = str(tabHours)
+        globalmess.append(hours)
+        
+        hours= decoded["destinations"][1]["arrets"][id]["heures"]
+        tabHours = []
+        for hour in hours:
+            (h,m)= hour.split(':')
+            tabHours.append(int(h)*60+int(m))
+        hours = str(tabHours)
+        
+        globalmess.append(hours)
         print topic
-        mqttc.publish(topic, str(hours), 0, True)                              #qos=0, retain=y
+#        print hours
+        mqttc.publish(topic, hours, 0, True)                              #qos=0, retain=y
 
 except (ValueError, KeyError, TypeError):
     print "JSON format error"
