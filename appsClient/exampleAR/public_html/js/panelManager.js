@@ -160,7 +160,7 @@ function voteTest(idEntity) {
         },
         url: "http://" + serverAddress + ":4242/vote/vote_ru2",
         success: function(data) {
-            console.log("vote effectué\n" + data);
+//            console.log("vote effectué\n" + data);
         },
         error: function(err) {
             console.log(er);
@@ -181,7 +181,7 @@ function getVoteValue(idEntity) {
             idEntity: idEntity
         },
         success: function(data) {
-            console.log("vote récupé = " + data);
+//            console.log("vote récupéré = " + data);
             vote = data;
         },
         error: function(err) {
@@ -193,7 +193,7 @@ function getVoteValue(idEntity) {
 }
 
 function checkDescriptionHeight() {
-    console.log($("#entityDescription").css("height"));
+//    console.log($("#entityDescription").css("height"));
 }
 
 function activeBtn() {
@@ -246,7 +246,6 @@ function closePanel() {
  */
 function buildVotePanelQueue(idEntity) {
     var avg = getVoteValue(idEntity);
-    console.log(avg);
     var txtActualAvg = "Estimation queue";
     var html = "<div id=\"votePanel\">";
     html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
@@ -283,7 +282,7 @@ function buildPanel(objElem) {
     tabContent += objElem.description;
 //                console.log("nb cara :" + objElem.description.length);
 
-    console.log("idElem: " + objElem._id);
+//    console.log("idElem: " + objElem._id);
     tabContent += buildVotePanelQueue(objElem._id);
 
     //Div pour bouton addComment
@@ -327,7 +326,7 @@ function buildPanel(objElem) {
  * @returns {undefined}
  */
 function buildEmptyPanel(htmlNodeToAppend) {
-    console.log("Construction Panel vide a : " + htmlNodeToAppend);
+//    console.log("Construction Panel vide a : " + htmlNodeToAppend);
     var panel = "<div id=\"informationPanel\">" +
             "<div class=\"titlePanel\">" +
             "<h3 id=\"informationTitle\"></h3>" +
