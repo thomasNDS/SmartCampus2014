@@ -10,13 +10,13 @@ var table_polls = [];
 maxTime = 1800; // time from which polls are ignored (seconds)
 
 //Pour pouvoir faire une action sur le avg sans passer par une requete post (pour test)
-exports.voteRuGet = function(req, res) {
-    console.log("vote ru");
-    voteFake = (voteFake * 2) % 5;
-    average++;
-    processAvg(voteFake);
-    res.send("à voter ! value = " + voteFake);
-};
+//exports.voteRuGet = function(req, res) {
+//    console.log("vote ru");
+//    voteFake = (voteFake * 2) % 5;
+//    average++;
+//    processAvg(voteFake);
+//    res.send("à voter ! value = " + voteFake);
+//};
 
 //POST
 exports.voteRu2 = function(req, res) {
