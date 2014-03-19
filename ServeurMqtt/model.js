@@ -14,14 +14,17 @@ var Entity = new Schema({
     id: ObjectId,
     name: String,
     type: String,
-    description : String,
+    latitude: Number,
+    longitude: Number,
+    description: String,
     comments: [Comment],
     administrators: [Administrator],
     events: [Event],
     items: [Item],
     infos: [],
     voteValue : {type:Number, default:0},
-    typeCrowdsourcing : String
+    typeCrowdsourcing : String,
+    identifiant: String
 });
 
 var Item = new Schema({
@@ -33,7 +36,8 @@ var Item = new Schema({
     identifiant: Number,
     type: String,
     infos: [],
-    description : String
+    description: String,
+    show : Boolean
 });
 
 var Event = new Schema({
@@ -66,8 +70,8 @@ var Administrator = new Schema({
     id: ObjectId,
     name: String,
     first_name: String,
-    login : String,
-    password : String,
+    login: String,
+    password: String,
     entity: [{type: Schema.Types.ObjectId, ref: 'Entity'}]
 });
 
