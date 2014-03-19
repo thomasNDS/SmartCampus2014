@@ -102,53 +102,77 @@ eventCrousClient.on('message', function(topic, message) {
     }
 });
 
-
-
-var eventUjfClient = mqtt.createClient(1883, 'localhost');
-eventUjfClient.subscribe('ujf_event');
-var ujfEntityWhoSubscribe = ["Polytech Grenoble"];
-eventUjfClient.on('message', function(topic, message) {
-
-    tabEvent = message.split(/@/);
-    for (var key in tabEvent) {
-
-        (function(key) {
-            EventModel.findOne({"description": tabEvent[key]}, function(err, doc) {
-                if (err) {
-                    throw err;
-                } else
-                if (doc) {
-//                    console.log("Already in DB !");
-                } else {
-                    for (var entitySub in ujfEntityWhoSubscribe) {
-                        EntityModel.findOne({name: ujfEntityWhoSubscribe[entitySub]}, function(err, doc) {
-                            if (!doc) {
-                                console.log("Could not load Document");
-                            } else {
-                                console.log(tabEvent[key])
-                                var event = new EventModel({
-                                    name: key,
-                                    description: tabEvent[key]
-                                });
-                                event.save(function(err) {
-                                    if (!err) {
-                                        return console.log("created");
-                                    } else {
-                                        return console.log(err);
-                                    }
-                                });
-                                doc.events.push(event._id);
-                                doc.save(function(err) {
-                                    if (err)
-                                        console.log('\n\n !!! ERROR with ' + topic);
-                                    else
-                                        console.log('\n update success for ' + topic);
-                                });
-                            }
-                        });
-                    }
-                }
-            });
-        })(key);
+var tagClient = mqtt.createClient(1883, 'localhost');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_BIBLIOTHEQUES_UNIVERSITAIRES');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_GABRIEL_FAURE');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES');
+var tagEntityWhoSubscribe = ["", , ""];
+tagClient.on('message', function(topic, message) {
+    console.log(message);
+//}
+//
+//    tabEvent = message.split(/@/);
+//    for (var key in tabEvent) {
+//
+//        (function(key) {
+//            EventModel.findOne({"description": tabEvent[key]}, function(err, doc) {
+//                if (err) {
+//                    throw err;
+//                } else
+//                if (doc) {
+////                    console.log("Already in DB !");
+//                } else {
+    var stop = "";
+    switch (topic) {
+        case 'hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES':
+            stop = "CONDILLAC UNIVERSITAIRES";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_BIBLIOTHEQUES_UNIVERSITAIRES':
+            stop = "BIBLIOTHEQUES UNIVERSITAIRES";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_GABRIEL_FAURE':
+            stop = "GABRIEL FAURE";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES':
+            stop = "Taille UNIVERSITE";
+            break;
     }
+    EntityModel.findOne({name: stop}, function(err, doc) {
+        if (!doc) {
+            console.log("Could not load Document");
+        } else {
+
+
+//                                console.log(tabEvent[key])
+//                                var event = new EventModel({
+//                                    name: key,
+//                                    description: tabEvent[key]
+//                                });
+//                                event.save(function(err) {
+//                                    if (!err) {
+//                                        return console.log("created");
+//                                    } else {
+//                                        return console.log(err);
+//                                    }
+//                                });
+//            doc.events.push(message);
+            if (message !== "undefined") {
+                console.log()
+                myData = JSON.parse(message)
+                    doc.infos = myData;
+                    doc.save(function(err) {
+                        if (err)
+                            console.log('\n\n !!! ERROR with ' + topic);
+                        else
+                            console.log('\n update success for ' + topic);
+                    });
+//                });
+            }
+        }
+    });
+//                }
+//            });
+//        })(key);
+//    }
 });

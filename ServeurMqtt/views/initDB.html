@@ -195,8 +195,7 @@ License MIT-->
                 "name": "BIBLIOTHEQUES UNIVERSITAIRES",
                 "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
                 "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BBIBLIOTHEQUES%2BUNIVERSITAIRESY"
+                "infos": []
             }, function(data, textStatus, jqXHR) {
                 console.log(data.payload);
                 $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
@@ -205,8 +204,7 @@ License MIT-->
                 "name": "CONDILLAC UNIVERSITAIRES",
                 "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
                 "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BCONDILLAC%2BUNIVERSITES"
+                "infos": []
             }, function(data, textStatus, jqXHR) {
                 console.log(data.payload);
                 $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
@@ -215,8 +213,16 @@ License MIT-->
                 "name": "GABRIEL FAURE",
                 "description": "Arret de tram GABRIEL FAURE",
                 "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BGABRIEL%2BFAURE"
+                "infos": []
+            }, function(data, textStatus, jqXHR) {
+                console.log(data.payload);
+                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+            });
+                        jQuery.post("http://localhost:4242/api/entity", {
+                "name": "Taille UNIVERSITE",
+                "description": "Arret de tram Taille UNIVERSITE",
+                "type": "arretTram",
+                "infos": []
             }, function(data, textStatus, jqXHR) {
                 console.log(data.payload);
                 $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");

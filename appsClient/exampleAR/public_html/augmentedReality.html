@@ -555,6 +555,13 @@ and open the template in the editor.
                     var itemLoaded = loadItemById(itemId);
                     tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
                     $("#tabsPanel").append(tabTitle);
+                    var type = itemLoaded.type;
+                    var shedule = "";
+                    if (type && type ==="shedule"){
+                        console.log("infos :");
+                        console.log(itemLoaded.infos);
+                        shedule = "<h3>Horaires</h3>" + itemLoaded.infos ;
+                    }
                     tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
                     $("#contentTabs").append(tabContent);
                 });
