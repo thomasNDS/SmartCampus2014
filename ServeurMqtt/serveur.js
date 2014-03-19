@@ -81,8 +81,8 @@ app.get('/is-init', routes.test_init);
 //routes for authentication
 app.post('/login', routes.authenticate.login);
 
-app.get('/vote/vote_ruG', routes.crowdsourcing.voteRuGet);
-app.get('/vote/moyenne_ru', routes.crowdsourcing.getRu);
+//app.get('/vote/vote_ruG', routes.crowdsourcing.voteRuGet);
+app.post('/vote/moyenne_ru', routes.crowdsourcing.getRu);
 app.post('/vote/vote_ru2', routes.crowdsourcing.voteRu2);
 
 app.post('/add_comment', routes.add_comment);

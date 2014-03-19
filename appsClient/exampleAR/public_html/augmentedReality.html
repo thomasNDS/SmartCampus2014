@@ -1,9 +1,9 @@
-<!DOCTYPE html>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
 -->
+
 <html>
     <head>
         <title>AR - Bootstrap</title>
@@ -231,7 +231,7 @@ and open the template in the editor.
                 var elemDetected = entitiesArray[currentPanelMarker];
                 //Construction du panel d'info en fonction de l'element
                 buildPanel(elemDetected);
-                $("#informationPanel").css("display", "block");
+//                $("#informationPanel").css("display", "block");
                 isPanelDisplayed = true;
             }
 
@@ -263,9 +263,16 @@ and open the template in the editor.
              * Ferme le panel actuellement ouvert
              */
             function closePanel() {
-                currentPanelMarker = null;
+//                currentPanelMarker = null;
                 $("#informationPanel").css("display", "none");
+//                isPanelDisplayed = false;
+//                resetMarkerAndBoolean();
+            }
+            
+            function resetMarkerAndBoolean(){
+                currentPanelMarker = null;
                 isPanelDisplayed = false;
+                closePanel();
             }
 
             function switchAction() {
@@ -317,7 +324,6 @@ and open the template in the editor.
                     type: 'GET',
                     async: false,
                     url: "http://" + serverAddress + ":4242/api/entity",
-//                    url: 'http://localhost:4242/api/entity',
                     success: function(data) {
                         console.dir(data);
                         entities = data;
@@ -354,7 +360,6 @@ and open the template in the editor.
                     type: 'GET',
                     async: false,
                     url: "http://" + serverAddress + ":4242/api/item/" + id,
-//                    url: 'http://localhost:4242/api/item/' + id,
                     success: function(data) {
                         console.dir(data.payload[0]);
                         item = data.payload[0];
@@ -374,7 +379,6 @@ and open the template in the editor.
                     type: 'GET',
                     async: false,
                     url: "http://" + serverAddress + ":4242/api/comment/" + id,
-//                    url: 'http://localhost:4242/api/comment/' + id,
                     success: function(data) {
                         console.dir(data.payload[0]);
                         com = data.payload[0];
@@ -402,7 +406,6 @@ and open the template in the editor.
                         commentValue: comment
                     },
                     url: "http://" + serverAddress + ":4242/add_comment",
-//                    url: 'http://localhost:4242/add_comment',
                     success: function(data) {
                         console.log("Comment created" + data);
                     },
@@ -415,21 +418,21 @@ and open the template in the editor.
                 return com;
             }
 
-            function voteTest() {
-                
+            function voteTest(idEntity) {
+
                 //recupere le vote choisis
                 var vote = $('input[name="vote"]:checked').val();
 //                var vote = 5;
-                
+
                 console.log("vote = " + vote);
                 jQuery.ajax({
                     type: 'POST',
                     async: false,
                     data: {
-                        value: vote
+                        value: vote,
+                        idEntity: idEntity
                     },
                     url: "http://" + serverAddress + ":4242/vote/vote_ru2",
-//                    url: 'http://localhost:4242/add_comment',
                     success: function(data) {
                         console.log("vote effectué\n" + data);
                     },
@@ -437,23 +440,26 @@ and open the template in the editor.
                         console.log(er);
                     }
                 });
-                
+
                 //Met a jour la moyenne
-                $("#avgVote").html(getVoteValue());
+                $("#avgVote").html(getVoteValue(idEntity));
             }
 
-            function getVoteValue() {
+            function getVoteValue(idEntity) {
                 var vote = 0;
                 jQuery.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     async: false,
                     url: "http://" + serverAddress + ":4242/vote/moyenne_ru",
-//                    url: 'http://localhost:4242/add_comment',
+                    data: {
+                        idEntity: idEntity
+                    },
                     success: function(data) {
-                        console.log("resultat = " + data);
+                        console.log("vote récupé = " + data);
                         vote = data;
                     },
                     error: function(err) {
+                        console.log("erreur dans la recup");
                         console.log(err);
                     }
                 });
@@ -482,7 +488,6 @@ and open the template in the editor.
                     type: 'GET',
                     async: false,
                     url: "http://" + serverAddress + ":4242/api/entity/" + entityId,
-//                    url: 'http://localhost:4242/api/entity/' + entityId,
                     success: function(data) {
                         console.dir(data);
                         entitiesArray[indexEntity] = data.payload[0];
@@ -497,34 +502,34 @@ and open the template in the editor.
                 console.log($("#entityDescription").css("height"));
             }
 
-            function activeBtn(){
+            function activeBtn() {
                 $("#btnVote").attr("disabled", false);
             }
 
-            function buildVotePanel() {
-                var avg = getVoteValue();
+            /*
+             * Fonction appelé lors de la construction du panel de vote, type Queue
+             * @param {type} objElem
+             * @returns {undefined}
+             */
+            function buildVotePanelQueue(idEntity) {
+                var avg = getVoteValue(idEntity);
                 console.log(avg);
                 var txtActualAvg = "Estimation queue";
                 var html = "<div id=\"votePanel\">";
                 html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
-                html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Non  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Quasiment pas  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Un peu  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Ca va  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"4\" onclick=\"activeBtn()\"> Pas mal  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"5\" onclick=\"activeBtn()\"> Abusé gros!<br/>";
-                html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest()\" disabled>Alerte les autres :)</button>";
+                html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest('" + idEntity + "')\" disabled>Alerte les autres :)</button>";
                 html += "</div>";
-                
+
                 return html;
             }
 
             /*
              * Chargement d'un objet représentant l'element detecté
-             * Information des différents labels du panel :
-             *      .Titre
-             *      .Onglets
-             *          .Titre onglet
-             *          .Contenu
              */
             function buildPanel(objElem) {
 
@@ -539,10 +544,11 @@ and open the template in the editor.
                 tabTitle = "<li class=\"active\"><a href=\"#entityDescription\" data-toggle=\"tab\">Description</a></li>";
                 tabContent = "<div id=\"entityDescription\" class=\"tab-pane active\" id=\"tabbedPanDesc\">";
                 tabContent += objElem.description;
-                console.log("nb cara :" + objElem.description.length);
-                
-                tabContent += buildVotePanel();
-                
+//                console.log("nb cara :" + objElem.description.length);
+
+                console.log("idElem: " + objElem._id);
+                tabContent += buildVotePanelQueue(objElem._id);
+
                 //Div pour bouton addComment
                 tabContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
                 tabContent += "</div>";
@@ -573,6 +579,30 @@ and open the template in the editor.
                 tabContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
                 tabContent += "</div>";
                 $("#contentTabs").append(tabContent);
+                
+                $("#informationPanel").css("display", "block");
+            }
+
+            /**
+             * Fonction à appeler pour build le panneau d'information vide
+             * A appeler au début
+             * @param {type} htmlNodeToAppend
+             * @returns {undefined}
+             */
+            function buildEmptyPanel(htmlNodeToAppend) {
+                console.log("Construction Panel vide");
+                var panel = "<div id=\"informationPanel\">" +
+                        "<div class=\"titlePanel\">" +
+                        "<h3 id=\"informationTitle\"></h3>" +
+                        "<button class=\"btn btn-primary\" onclick=\"closePanel()\">x</button>" +
+                        "</div>" +
+                        "<div class=\"tabbable tabs-left\">" +
+                        "<ul id=\"tabsPanel\" class=\"nav nav-tabs\">" +
+                        "</ul>" +
+                        "<div id=\"contentTabs\" class=\"tab-content\"></div>" +
+                        "</div>" +
+                        "</div>";
+                $(htmlNodeToAppend).append(panel);
             }
 
             /*
@@ -613,17 +643,17 @@ and open the template in the editor.
                 <div class="row-fluid voffset5">
                     <div id="pageContent" class="span12">
 
-                        <div id="informationPanel">
-                            <div class="titlePanel">
-                                <h3 id="informationTitle"></h3>
-                                <button class="btn btn-primary" onclick="closePanel()">x</button>
-                            </div>
-                            <div class="tabbable tabs-left">
-                                <ul id="tabsPanel" class="nav nav-tabs">
-                                </ul>
-                                <div id="contentTabs" class="tab-content"></div>
-                            </div>
-                        </div>
+                        <!--                        <div id="informationPanel">
+                                                    <div class="titlePanel">
+                                                        <h3 id="informationTitle"></h3>
+                                                        <button class="btn btn-primary" onclick="closePanel()">x</button>
+                                                    </div>
+                                                    <div class="tabbable tabs-left">
+                                                        <ul id="tabsPanel" class="nav nav-tabs">
+                                                        </ul>
+                                                        <div id="contentTabs" class="tab-content"></div>
+                                                    </div>
+                                                </div>-->
 
                     </div>
 
@@ -660,6 +690,7 @@ and open the template in the editor.
 
         <script>
             loadEntities();
+            buildEmptyPanel("#pageContent");
         </script>
     </body>
 </html>

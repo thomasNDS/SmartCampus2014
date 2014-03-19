@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+         <!--Loading Bootstrap--> 
+        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+
+         <!--CSS de la page--> 
+        <link href="css/style.css" rel="stylesheet" type="text/css">
+
+        <script src="js/libs/jquery/jquery.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="js/panelManager.js"></script>
+
+        <script>
+
+
+            $(window).ready(function() {
+                loadEntities();
+                var btn = "<button class=\"btn btn-primary\" onclick=\"buildPanelByIndex(" + 3 + ")\">Ajouter</button>";
+                $("#truc").append(btn);
+                buildEmptyPanel("#test");
+
+            });
+        </script>
+    </head>
+
+    <body>
+        <nav id="menu" class="navbar navbar-static-top navbar-inverse">
+                <div class="navbar-inner">
+                    <div class="container-fluid">
+                        <ul class="nav">
+                            <li><a href="#" onclick="paramaterAction();"><i class="icon-white icon-cog"></i> Paramètres</a></li>
+                            <li><a href="#" onclick="helpAction();"><i class="icon-white icon-info-sign"></i> Aide</a></li>
+                        </ul>
+                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);"><i class="icon-white icon-fullscreen"></i> FullScreen</button>
+                        <button class="btn btn-primary pull-right" onclick="switchAction()"><i class="icon-white icon-map-marker"></i> Carte</button>
+                    </div>
+                </div>
+            </nav>
+        <div id="truc">
+            <div id="test">
+            </div>
+        </div>
+    </body>
+</html>
