@@ -415,18 +415,19 @@ and open the template in the editor.
                 return com;
             }
 
-            function voteTest() {
-                
+            function voteTest(idEntity) {
+
                 //recupere le vote choisis
                 var vote = $('input[name="vote"]:checked').val();
 //                var vote = 5;
-                
+
                 console.log("vote = " + vote);
                 jQuery.ajax({
                     type: 'POST',
                     async: false,
                     data: {
-                        value: vote
+                        value: vote,
+                        idEntity: idEntity
                     },
                     url: "http://" + serverAddress + ":4242/vote/vote_ru2",
 //                    url: 'http://localhost:4242/add_comment',
@@ -437,23 +438,27 @@ and open the template in the editor.
                         console.log(er);
                     }
                 });
-                
+
                 //Met a jour la moyenne
-                $("#avgVote").html(getVoteValue());
+                $("#avgVote").html(getVoteValue(idEntity));
             }
 
-            function getVoteValue() {
+            function getVoteValue(idEntity) {
                 var vote = 0;
                 jQuery.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     async: false,
                     url: "http://" + serverAddress + ":4242/vote/moyenne_ru",
 //                    url: 'http://localhost:4242/add_comment',
+                    data: {
+                        idEntity: idEntity
+                    },
                     success: function(data) {
-                        console.log("resultat = " + data);
+                        console.log("vote récupé = " + data);
                         vote = data;
                     },
                     error: function(err) {
+                        console.log("erreur dans la recup");
                         console.log(err);
                     }
                 });
@@ -497,24 +502,24 @@ and open the template in the editor.
                 console.log($("#entityDescription").css("height"));
             }
 
-            function activeBtn(){
+            function activeBtn() {
                 $("#btnVote").attr("disabled", false);
             }
 
-            function buildVotePanel() {
-                var avg = getVoteValue();
+            function buildVotePanelQueue(idEntity) {
+                var avg = getVoteValue(idEntity);
                 console.log(avg);
                 var txtActualAvg = "Estimation queue";
                 var html = "<div id=\"votePanel\">";
                 html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
-                html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Non  ";
+                html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Quasiment pas  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Un peu  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Ca va  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"4\" onclick=\"activeBtn()\"> Pas mal  ";
                 html += "<input type = \"radio\" name = \"vote\" value = \"5\" onclick=\"activeBtn()\"> Abusé gros!<br/>";
-                html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest()\" disabled>Alerte les autres :)</button>";
+                html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest('" + idEntity + "')\" disabled>Alerte les autres :)</button>";
                 html += "</div>";
-                
+
                 return html;
             }
 
@@ -539,10 +544,11 @@ and open the template in the editor.
                 tabTitle = "<li class=\"active\"><a href=\"#entityDescription\" data-toggle=\"tab\">Description</a></li>";
                 tabContent = "<div id=\"entityDescription\" class=\"tab-pane active\" id=\"tabbedPanDesc\">";
                 tabContent += objElem.description;
-                console.log("nb cara :" + objElem.description.length);
-                
-                tabContent += buildVotePanel();
-                
+//                console.log("nb cara :" + objElem.description.length);
+
+                console.log("idElem: " + objElem._id);
+                tabContent += buildVotePanelQueue(objElem._id);
+
                 //Div pour bouton addComment
                 tabContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
                 tabContent += "</div>";

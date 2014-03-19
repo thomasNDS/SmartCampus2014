@@ -19,7 +19,9 @@ var Entity = new Schema({
     administrators: [Administrator],
     events: [Event],
     items: [Item],
-    infos: []
+    infos: [],
+    voteValue : {type:Number, default:0},
+    typeCrowdsourcing : String
 });
 
 var Item = new Schema({
