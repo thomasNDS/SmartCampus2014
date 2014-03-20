@@ -6,11 +6,14 @@ exports.login = function(req, res) {
         if (err)
             return handleError(err);
         if (admin!=null){
-            console.log("success")
+            req.session.admin = admin;
+            console.log("success");
         }else{
-            console.log("fail")
+            req.session.admin = null;
+            console.log("fail");
         }
-    })
+        res.send('admin: ' + req.session.admin);
+    });
     res.json(true);
     
 };

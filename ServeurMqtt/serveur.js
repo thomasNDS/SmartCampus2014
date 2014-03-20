@@ -39,10 +39,10 @@ app.configure(function() {
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 
 
-
 });
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
+
 
 //////////////////////////////////
 /////// MONGODB  /////////////////

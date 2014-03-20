@@ -268,6 +268,7 @@ function buildPanelByIndex(indexElem) {
  * Chargement d'un objet représentant l'element detecté
  */
 function buildPanel(objElem) {
+    console.log(objElem);
 
     /* Clean le panel */
     cleanChildOfNodeID("tabsPanel");
@@ -284,6 +285,8 @@ function buildPanel(objElem) {
 
 //    console.log("idElem: " + objElem._id);
     tabContent += buildVotePanelQueue(objElem._id);
+    console.log("idElem: " + objElem._id);
+//    tabContent += buildVotePanelQueue(objElem._id);
 
     //Div pour bouton addComment
     tabContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
@@ -295,21 +298,23 @@ function buildPanel(objElem) {
     objElem.items.forEach(function(itemId, index) {
 
         var itemLoaded = loadItemById(itemId);
+        if (itemLoaded) {
         tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
         $("#tabsPanel").append(tabTitle);
         tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
         $("#contentTabs").append(tabContent);
+        }
     });
     //Onglet Com
-    var coms = objElem.comments;
-    tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
-    $("#tabsPanel").append(tabTitle);
-    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
-    objElem.comments.forEach(function(comId) {
-        var com = loadComById(comId);
-        var date = new Date(com.date);
-        tabContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
-    });
+//    var coms = objElem.comments;
+//    tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
+//    $("#tabsPanel").append(tabTitle);
+//    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
+//    objElem.comments.forEach(function(comId) {
+//        var com = loadComById(comId);
+//        var date = new Date(com.date);
+//        tabContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
+//    });
     //Div pour bouton addComment
 //                console.log("id" + objElem._id + "!!!!");
     tabContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
