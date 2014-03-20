@@ -298,21 +298,21 @@ function buildTab(title, content, i) {
  */
 function buildPanel(objElem) {
     console.log(objElem);
-    
+
     /* Clean le panel */
     cleanChildOfNodeID("tabsPanel");
     cleanChildOfNodeID("contentTabs");
-    
+
     //Titre du panel info
     $("#informationTitle").html(objElem.name);
-    
+
     //Onglet Description
     var descriptionContent = objElem.description;
     descriptionContent += buildVotePanelQueue(objElem._id);
     descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
-    
+
     buildTab("Description", descriptionContent, indexTab);
-    
+
     //Onglets Items
     objElem.items.forEach(function(itemId, index) {
         var itemLoaded = loadItemById(itemId);
@@ -320,7 +320,7 @@ function buildPanel(objElem) {
             buildTab(itemLoaded.name, itemLoaded.description, indexTab);
         }
     });
-    
+
     //Onglet Com
     var commentContent = "";
     objElem.comments.forEach(function(comId) {
@@ -366,4 +366,17 @@ function cleanChildOfNodeID(parentNode) {
     while (myNode.firstChild) {
         myNode.removeChild(myNode.firstChild);
     }
+}
+
+function showModalParameters(htmlNodeToAppend) {
+    var modalParam = "<div id=\"popParam\" class=\"modal hide fade\">" +
+            "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
+            "<h3 style=\"text-align:center\">Paramètres</h3>" +
+            "</div>" +
+            "<div id=\"popUpContent\" class=\"modal-body\">" +
+            "Voulez-vous l'afficher ?" +
+            "</div>" +
+            "</div>";
+    $(htmlNodeToAppend).append(modalParam);
+//                $("#popParam").modal('show');                
 }

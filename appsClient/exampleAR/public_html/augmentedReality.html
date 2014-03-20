@@ -13,7 +13,7 @@
         <!-- Loading Bootstrap -->
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
         <!-- CSS de la page -->
         <link href="css/style.css" rel="stylesheet" type="text/css">
@@ -33,11 +33,10 @@
     <body>
         <div id="wrapper">
             <!--MENU-->
-            <nav id="menu" class="navbar navbar-static-top navbar-inverse">
+<!--            <nav id="menu" class="navbar navbar-static-top navbar-inverse">
                 <div class="navbar-inner">
                     <div class="container-fluid">
                         <ul class="nav">
-                            <!--                            <li><a href="#" onclick="showModalParameters('#mainContent');"><i class="icon-white icon-cog"></i> Paramètres</a></li>-->
                             <li><a href="parameters.html" data-target="#popParam" data-toggle="modal"><i class="icon-white icon-cog"></i> Paramètres</a></li>
                             <li><a href="#" onclick="helpAction();"><i class="icon-white icon-info-sign"></i> Aide</a></li>
                         </ul>
@@ -45,8 +44,39 @@
                         <button class="btn btn-primary pull-right" onclick="switchAction()"><i class="icon-white icon-map-marker"></i> Carte</button>
                     </div>
                 </div>
-            </nav>
+            </nav>-->
+            
+            <nav class="navbar navbar-static-top navbar-inverse">
+                <div class="navbar-inner">
+                    <div class="container-fluid"> 
+                        <ul class="nav">
+                            <li><a href="parameters.html" data-target="#popParam" data-toggle="modal"><i class="icon-white fa fa-cog logoFont"></i> <!--Paramètres--></a></li>
+                            <li><a href="#"><i class="icon-white fa fa-info-circle logoFont"></i> <!--Aide--> </a></li>
+                            <li><a href="#"><i class="icon-white fa fa-question-circle logoFont"></i> <!--Aide--> </a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-white fa fa-plus-square logoFont">
+                                        <span class="caret"></span>
+                                    </i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="http://localhost:4242/covoiturage.html">Covoiturage</a></li>
+                                    <li><a href="#">Météo</a></li>
+                                    <li><a href="#">Biographie de S. Planfs</a></li>
+                                </ul>
+                            </li>
+                        </ul>
 
+                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);"><i class="fa icon-white fa-arrows-alt logoFont"></i> </button>      
+                        <button class="btn btn-primary pull-right" onclick="window.location = 'index.html'"><i class="fa icon-white fa-map-marker logoFont"></i> </button>
+                    </div>
+                </div>
+            </nav>
+            
+            <!--MENU-->
+            <div id="principalMenu"></div>   
+            <!-- END MENU-->
+            
             <!--DIV POUR LA VIDEO-->
             <div id="backgroundVideo"></div>
 

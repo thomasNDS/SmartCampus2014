@@ -282,16 +282,4 @@ function closeBottomPopUp() {
     });
 }
 
-function showModalParameters(htmlNodeToAppend) {
-    var modalParam = "<div id=\"popParam\" class=\"modal hide fade\">" +
-            "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
-            "<h3 style=\"text-align:center\">Paramètres</h3>" +
-            "</div>" +
-            "<div id=\"popUpContent\" class=\"modal-body\">" +
-            "Voulez-vous l'afficher ?" +
-            "</div>" +
-            "</div>";
-    $(htmlNodeToAppend).append(modalParam);
-//                $("#popParam").modal('show');                
 
-}
