@@ -14,7 +14,7 @@ menu template for interface
         <!-- Loading Bootstrap -->
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
         <!-- CSS de la page -->
         <link href="css/style.css" rel="stylesheet" type="text/css">
@@ -23,7 +23,6 @@ menu template for interface
         <script type="text/javascript" src="js/screenManagement.js"></script>
         <script type="text/javascript" src="js/panelManager.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
-
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
         <script>
@@ -33,19 +32,28 @@ menu template for interface
     </head>
     <body>
         <div id="wrapper">
-            <!--MENU-->
-            <div id="principalMenu">menu</div>
-            <script>
-                $("#principalMenu").load("templateMenu.html");
-            </script>       
-            <!-- END MENU-->
-            
+            <nav class="navbar navbar-static-top navbar-inverse">
+                <div class="navbar-inner">
+                    <div class="container-fluid"> 
+                        <ul class="nav">
+                            <li><a href="#"><i class="icon-white fa fa-cog logoFont"></i> <!--Paramètres--></a></li>
+                            <li><a href="#"><i class="icon-white fa fa-info-circle logoFont"></i> <!--Aide--> </a></li>
+                            <li><a href="#"><i class="icon-white fa fa-question-circle logoFont"></i> <!--Aide--> </a></li>
+                             
+                        </ul>
+                         
+                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);"><i class="fa icon-white fa-arrows-alt logoFont"></i> </button>      
+                        <button class="btn btn-primary pull-right" onclick="window.location = 'augmentedReality.html'"><i class="fa icon-white fa-video-camera logoFont"></i> </button>
+                    </div>
+                </div>
+            </nav>
+
             <div id="map-canvas"></div>
 
             <script type="text/javascript" src="js/map.js"></script>
             <script type="text/javascript">
-                loadEntities();
-                buildEmptyPanel("#wrapper");
+                            loadEntities();
+                            buildEmptyPanel("#wrapper");
             </script>
 
         </div>
