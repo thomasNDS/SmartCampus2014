@@ -141,13 +141,8 @@ License MIT-->
                         "type": "Ecole",
                         "infos": [],
                         "comments": [com1_id, com2_id]},
-<<<<<<< HEAD
                     "latitude": 45.18451,
                     "longitude": 5.753433,
-=======
-                        "latitude":45.18451,
-                        "longitude":5.753433,
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
                     success: function(data, textStatus, jqXHR) {
                         console.log("popo");
                         polytech_id = data.payload._id;
@@ -164,13 +159,8 @@ License MIT-->
                         "type": "Ecole",
                         "infos": [{"uneInfo": "tata"}, {"test": "test2"}],
                         "comments": [com1_id, com2_id]},
-<<<<<<< HEAD
                     "latitude": 45.19229,
                     "longitude": 5.765716,
-=======
-                        "latitude":45.19229,
-                        "longitude":5.765716,
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
                     success: function(data, textStatus, jqXHR) {
                         console.log("iae");
                         iae_id = data.payload._id;
@@ -187,13 +177,8 @@ License MIT-->
                         "type": "Université",
                         "infos": [{"uneInfo": "tata"}, {"test": "test2"}],
                         "comments": [com1_id],
-<<<<<<< HEAD
                         "latitude": 45.192094,
                         "longitude": 5.772346,
-=======
-                        "latitude":45.192094,
-                        "longitude":5.772346,
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
                     },
                     success: function(data, textStatus, jqXHR) {
 
@@ -212,7 +197,7 @@ License MIT-->
 <h2>Tram</h2>
 <div id="tram"></div>
 <script>
-<<<<<<< HEAD
+
     jQuery.ajax({url: "http://localhost:4242/is-init",
         type: 'GET',
         async: false,
@@ -312,70 +297,6 @@ License MIT-->
                         });
                     }});
             }
-   
-=======
-    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
-        if (!data) {
-            jQuery.post("http://localhost:4242/api/entity", {
-                "name": "BIBLIOTHEQUES UNIVERSITAIRES",
-                "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
-                "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BBIBLIOTHEQUES%2BUNIVERSITAIRESY"
-            }, function(data, textStatus, jqXHR) {
-                console.log(data.payload);
-                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            });
-            jQuery.post("http://localhost:4242/api/entity", {
-                "name": "CONDILLAC UNIVERSITAIRES",
-                "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
-                "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BCONDILLAC%2BUNIVERSITES",
-                "latitude":45.188408,
-                "longitude":5.77361,
-            }, function(data, textStatus, jqXHR) {
-                console.log(data.payload);
-                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            });
-            jQuery.post("http://localhost:4242/api/entity", {
-                "name": "GABRIEL FAURE",
-                "description": "Arret de tram GABRIEL FAURE",
-                "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BGABRIEL%2BFAURE"
-            }, function(data, textStatus, jqXHR) {
-                console.log(data.payload);
-                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            });
-//            jQuery.post("http://localhost:4242/api/entity", {
-//                "name": "tram A",
-//                "description": "Tramway Grenoble, ligne A",
-//                "type": "Tramway",
-//                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-//            }, function(data, textStatus, jqXHR) {
-//                console.log(data.payload);
-//                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-//            });
-//            jQuery.post("http://localhost:4242/api/entity", {
-//                "name": "tram B",
-//                "description": "Tramway Grenoble, ligne B",
-//                "type": "Tramway",
-//                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-//            }, function(data, textStatus, jqXHR) {
-//                console.log(data.payload);
-//                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-//            });
-//            jQuery.post("http://localhost:4242/api/entity", {
-//                "name": "tram C",
-//                "description": "Tramway Grenoble, ligne C",
-//                "type": "Tramway",
-//                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-//            }, function(data, textStatus, jqXHR) {
-//                console.log(data.payload);
-//                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-//            });
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
         }
     });</script>
 
@@ -387,7 +308,6 @@ License MIT-->
     var diderot18_id = "";
     var diderot46_id = "";
     var diderot17_id = "";
-//    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
     jQuery.ajax({
         url: "http://localhost:4242/is-init",
         type: 'GET',
@@ -463,13 +383,9 @@ License MIT-->
                         "description": "Restaurant Universitaire",
                         "type": "Restaurant Universitaire",
                         "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id],
-<<<<<<< HEAD
                         "latitude": 45.191005,
                         "longitude": 5.768699,
-=======
-                        "latitude":45.191005,
-                        "longitude":5.768699,
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
+
                     }, success: function(data, textStatus, jqXHR) {
                         condillac4_id = data.payload._id;
                         if (data.payload.name) {
@@ -511,13 +427,8 @@ License MIT-->
                         "items": [condillac4_id],
                         "description": "Restaurant Universitaire du Campus de Grenoble",
                         "type": "Restaurant Universitaire",
-<<<<<<< HEAD
                         "latitude": 45.188408,
                         "longitude": 5.77361,
-=======
-                        "latitude":45.188408,
-                        "longitude":5.77361,
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
                     }, success: function(data, textStatus, jqXHR) {
                         barnave3_id = data.payload._id;
                         if (data.payload.name) {
@@ -592,13 +503,8 @@ License MIT-->
                         "description": "Restaurant Universitaire du Campus de Grenoble",
                         "type": "Restaurant Universitaire",
                         "items": [barnave24_id, barnave13_id, barnave3_id],
-<<<<<<< HEAD
                         "latitude": 45.190642,
                         "longitude": 5.760729,
-=======
-                        "latitude":45.190642,
-                        "longitude":5.760729,
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
                     }, success: function(data, textStatus, jqXHR) {
                         if (data.payload.name) {
                             $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
