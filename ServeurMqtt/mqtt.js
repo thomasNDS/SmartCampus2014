@@ -133,13 +133,13 @@ tagClient.on('message', function(topic, message) {
             if (message !== "undefined") {
                 console.log()
                 myData = message;
-                    doc.shedule = myData;
-                    doc.save(function(err) {
-                        if (err)
-                            console.log('\n\n !!! ERROR with ' + topic);
-                        else
-                            console.log('\n update success for ' + topic);
-                    });
+                doc.shedule = myData;
+                doc.save(function(err) {
+                    if (err)
+                        console.log('\n\n !!! ERROR with ' + topic);
+                    else
+                        console.log('\n update success for ' + topic);
+                });
 
             }
         }
@@ -202,135 +202,26 @@ eventUjfClient.on('message', function(topic, message) {
 var sensor = mqtt.createClient(1883, 'localhost');
 sensor.subscribe('sensor');
 sensor.on('message', function(topic, message) {
-    //The message follow the regex _id@value
+    //The message follow the regex identifiant@value
     tabInfo = message.split("@");
     //Create the mesure form the sensor
     var newMesure = new MesureModel({
         value: tabInfo[1]
     });
-    Sensors_dataModel.findById(tabInfo[1],function(err,sensor){
-        if(sensor){
-            
-        }else{
-            
+    Sensors_dataModel.findOne({ identifiant : tabInfo[0]}, function(err, sensor) {
+        if (err){
+            //console.log(DB failed);
         }
-    });
-    
-    
-    
-   /* EntityModel.findOne({'name': tabInfo[0]}, 'items', function(err, entity) {
-        if (err) {
-            throw err;
-        } else
-        if (entity) {
-            //console.log("this entity already exist" + entity);
-            //See if the item exist
-            var exist = false;
-            var i = 0;
-            ItemModel.findOne({'name': tabInfo[1], 'room_number': tabInfo[2]}, function(err, item) {
-                //if the item already exist
-                //console.log("value item" + item);
-                if (item) {
-                    //console.log("item already exist");
-                    //verify if the sensor already exist or not
-                    Sensors_dataModel.findOne({'position': tabInfo[3], 'type': tabInfo[4]}, function(err, sensorData) {
-                        //if the sensor does not already exist
-
-                        if (sensorData == null) {
-                            //console.log("create a newSensors Data");
-                            var newSensors_data = new Sensors_dataModel({
-                                type: tabInfo[4],
-                                position: tabInfo[3],
-                                mesure: [newMesure]
-                            });
-                            newSensors_data.save(function(err) {
-                                if (err) // ...
-                                    console.log('Register sensor data in DB failed');
-                                else {
-                                    item.Sensors_data.push(newSensors_data);
-                                    item.save(function(err) {
-                                        if (err) // ...
-                                            console.log('Register mesure in DB failed');
-                                        else {
-                                            entity.items = item;
-                                            entity.save(function(err) {
-                                                if (err)
-                                                    console.log('Register mesure in DB failed')
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        else {
-                            //console.log("add mesure");
-                            //if the sensor already exist
-                            newMesure.save(function(err) {
-                                if (err)
-                                    console.log('Register mesure in DB failed');
-                                else {
-                                    sensorData.mesure.push(newMesure);
-                                    sensorData.save(function(err) {
-                                        if (err) // ...
-                                            console.log('Register mesure in DB failed');
-                                        else {
-                                            item.Sensors_data = sensorData;
-                                            item.save(function(err) {
-                                                if (err)
-                                                    console.log('Register mesure in DB failed')
-                                                else {
-                                                    entity.items = item
-                                                    entity.save(function(err) {
-                                                        if (err)
-                                                            console.log('Register mesure in DB failed')
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-
-                        }
-                    })
-                }
-                //if the item doesn't exist
-                else {
-                    //console.log("item does not exist " );
-                    var newSensors_data = new Sensors_dataModel({
-                        type: tabInfo[4],
-                        position: tabInfo[3],
-                        mesure: [newMesure]
+        if (sensor) {
+            newMesure.save(function(err) {
+                if (!err){  
+                    sensor.mesure = [newMesure._id];
+                    sensor.save(function(err){
+                        if (err)
+                            //console.log("failed to save sensor in db");
                     });
-                    //Create item
-                    var newItem = new ItemModel({
-                        name: tabInfo[1],
-                        position: tabInfo[3], //be carefull!! the positions is the same as the sensor
-                        room_number: tabInfo[2],
-                        Sensors_data: [newSensors_data],
-                        identifiant: entity.items.length + 1,
-                        type: "",
-                        infos: [],
-                        description: ""
-                    });
-
-                    newItem.save(function(err) {
-                        if (err) // ...
-                            console.log('Register item data in DB failed');
-                        else {
-                            entity.items.push(newItem);
-                            entity.save(function(err) {
-                                if (err) // ...
-                                    console.log('Register item data in DB failed');
-                            });
-                        }
-                    });
-
                 }
             });
-        } else {
-            //console.log('The entity does not exist inside the DB')
         }
-    }
-    );*/
+    });
 });

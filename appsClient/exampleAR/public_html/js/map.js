@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+//serverAddress = "localhost";
+serverAddress = "192.168.43.142";
+
 var area = {
     sw: {lat: 45.18361, lon: 5.750477},
     ne: {lat: 45.20112086, lon: 5.78054667},
@@ -62,7 +65,7 @@ function initialize() {
     });
 
     var pois = [];
-    $.getJSON('http://localhost:4242/api/entity/',
+    $.getJSON('http://' + serverAddress + ':4242/api/entity/',
             function(data) {
                 var entity = 0;
                 while (data.payload[entity]) {

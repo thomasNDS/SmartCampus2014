@@ -39,9 +39,20 @@ menu template for interface
                             <li><a href="#"><i class="icon-white fa fa-cog logoFont"></i> <!--Paramètres--></a></li>
                             <li><a href="#"><i class="icon-white fa fa-info-circle logoFont"></i> <!--Aide--> </a></li>
                             <li><a href="#"><i class="icon-white fa fa-question-circle logoFont"></i> <!--Aide--> </a></li>
-                             
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-white fa fa-plus-square logoFont">
+                                        <span class="caret"></span>
+                                    </i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="http://localhost:4242/covoiturage.html">Covoiturage</a></li>
+                                    <li><a href="#">Météo</a></li>
+                                    <li><a href="#">Biographie de S. Planfs</a></li>
+                                </ul>
+                            </li>
                         </ul>
-                         
+
                         <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);"><i class="fa icon-white fa-arrows-alt logoFont"></i> </button>      
                         <button class="btn btn-primary pull-right" onclick="window.location = 'augmentedReality.html'"><i class="fa icon-white fa-video-camera logoFont"></i> </button>
                     </div>
@@ -50,10 +61,18 @@ menu template for interface
 
             <div id="map-canvas"></div>
 
+            <!--DIV QUI CONTIENDRA L'UI-->
+            <div id="mainContent" class="container-fluid">
+                <!-- Tout le contenu dans une row -->
+                <div class="row-fluid voffset5">
+                </div>
+            </div>
+
             <script type="text/javascript" src="js/map.js"></script>
             <script type="text/javascript">
-                            loadEntities();
-                            buildEmptyPanel("#wrapper");
+                loadEntities();
+                buildEmptyPanel("#mainContent");
+                showModalParameters('#mainContent');
             </script>
 
         </div>

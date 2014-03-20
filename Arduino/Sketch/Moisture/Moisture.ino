@@ -12,10 +12,17 @@ void setup() {
 
 void loop() {
   sensorValue = analogRead(sensorPin);
-  tmp = 1023 - sensorValue;
+  tmp = 335 - sensorValue;
+  tmp = (tmp*100)/195;
   sensorValue = tmp;
-  Serial.print("Humidite = "); 
-  Serial.println(sensorValue);
+  Serial.print("Humidite: ");
+  if (sensorValue < 0){
+    sensorValue = 0;
+  }  
+  if (sensorValue > 100){
+    sensorValue = 100; 
+  }
+  Serial.print(sensorValue);
   Serial.println();
   delay(1000); 
 }
