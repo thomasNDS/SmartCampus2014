@@ -110,19 +110,6 @@ tagClient.subscribe('hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES');
 var tagEntityWhoSubscribe = ["", , ""];
 tagClient.on('message', function(topic, message) {
     console.log(message);
-//}
-//
-//    tabEvent = message.split(/@/);
-//    for (var key in tabEvent) {
-//
-//        (function(key) {
-//            EventModel.findOne({"description": tabEvent[key]}, function(err, doc) {
-//                if (err) {
-//                    throw err;
-//                } else
-//                if (doc) {
-////                    console.log("Already in DB !");
-//                } else {
     var stop = "";
     switch (topic) {
         case 'hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES':
@@ -138,28 +125,14 @@ tagClient.on('message', function(topic, message) {
             stop = "Taille UNIVERSITE";
             break;
     }
-    EntityModel.findOne({name: stop}, function(err, doc) {
+    ItemModel.findOne({identifiantString: stop}, function(err, doc) {
         if (!doc) {
             console.log("Could not load Document");
         } else {
 
-
-//                                console.log(tabEvent[key])
-//                                var event = new EventModel({
-//                                    name: key,
-//                                    description: tabEvent[key]
-//                                });
-//                                event.save(function(err) {
-//                                    if (!err) {
-//                                        return console.log("created");
-//                                    } else {
-//                                        return console.log(err);
-//                                    }
-//                                });
-//            doc.events.push(message);
             if (message !== "undefined") {
                 console.log()
-                myData = JSON.parse(message)
+                myData = message;
                     doc.infos = myData;
                     doc.save(function(err) {
                         if (err)
@@ -167,12 +140,8 @@ tagClient.on('message', function(topic, message) {
                         else
                             console.log('\n update success for ' + topic);
                     });
-//                });
+
             }
         }
     });
-//                }
-//            });
-//        })(key);
-//    }
 });

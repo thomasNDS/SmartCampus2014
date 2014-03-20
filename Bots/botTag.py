@@ -41,6 +41,7 @@ response = conn.getresponse()		            # store the answer
 print response.status, response.reason              # just print the debug, if success
 data = response.read()			            # get the html as a string '<html >...</html>'
 try:
+#if 1:
     decoded = json.loads(data)
     ids = [3,4,5,6]
 
@@ -55,20 +56,21 @@ try:
         for hour in hours:
             (h,m)= hour.split(':')
             tabHours.append(int(h)*60+int(m))
-        hours = str(tabHours)
-        globalmess.append(hours)
+            
+#        tabHours= tabHours.sort()
+        globalmess.append(sorted(tabHours))
         
         hours= decoded["destinations"][1]["arrets"][id]["heures"]
         tabHours = []
         for hour in hours:
             (h,m)= hour.split(':')
             tabHours.append(int(h)*60+int(m))
-        hours = str(tabHours)
-        
-        globalmess.append(hours)
+            
+#        tabHours= tabHours.sort()
+        globalmess.append(sorted(tabHours))
+        print globalmess
         print topic
-#        print hours
-        mqttc.publish(topic, hours, 0, True)                              #qos=0, retain=y
+        mqttc.publish(topic, str(globalmess), 0, True)                              #qos=0, retain=y
 
 except (ValueError, KeyError, TypeError):
     print "JSON format error"
