@@ -416,11 +416,11 @@ and open the template in the editor.
             }
 
             function voteTest() {
-                
+
                 //recupere le vote choisis
                 var vote = $('input[name="vote"]:checked').val();
 //                var vote = 5;
-                
+
                 console.log("vote = " + vote);
                 jQuery.ajax({
                     type: 'POST',
@@ -437,7 +437,7 @@ and open the template in the editor.
                         console.log(er);
                     }
                 });
-                
+
                 //Met a jour la moyenne
                 $("#avgVote").html(getVoteValue());
             }
@@ -497,7 +497,7 @@ and open the template in the editor.
                 console.log($("#entityDescription").css("height"));
             }
 
-            function activeBtn(){
+            function activeBtn() {
                 $("#btnVote").attr("disabled", false);
             }
 
@@ -514,7 +514,7 @@ and open the template in the editor.
                 html += "<input type = \"radio\" name = \"vote\" value = \"5\" onclick=\"activeBtn()\"> Abusé gros!<br/>";
                 html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest()\" disabled>Alerte les autres :)</button>";
                 html += "</div>";
-                
+
                 return html;
             }
 
@@ -540,9 +540,9 @@ and open the template in the editor.
                 tabContent = "<div id=\"entityDescription\" class=\"tab-pane active\" id=\"tabbedPanDesc\">";
                 tabContent += objElem.description;
                 console.log("nb cara :" + objElem.description.length);
-                
+
                 tabContent += buildVotePanel();
-                
+
                 //Div pour bouton addComment
                 tabContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
                 tabContent += "</div>";
@@ -557,10 +557,19 @@ and open the template in the editor.
                     $("#tabsPanel").append(tabTitle);
                     var type = itemLoaded.type;
                     var shedule = "";
-                    if (type && type ==="shedule"){
+                    if (type && type === "shedule") {
+//                        sensA = itemLoaded.infos[2] + itemLoaded.infos[3];
+//                        sensA = JSON.parse('[' + sensA + ']')
+//                        sensB = itemLoaded.infos[0] + itemLoaded.infos[1];
+//                        sensB = JSON.parse('[' + sensB + ']')
+//                        sensA.sort();
+//                        sensB.sort();
+                        sens = JSON.parse(itemLoaded.infos[0]);
+                        console.log(sens)
                         console.log("infos :");
-                        console.log(itemLoaded.infos);
-                        shedule = "<h3>Horaires</h3>" + itemLoaded.infos ;
+//                        console.log(sensA);
+//                        console.log(sensB);
+                        shedule = "<h3>Horaires</h3>" + sens[0][0];
                     }
                     tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
                     $("#contentTabs").append(tabContent);
