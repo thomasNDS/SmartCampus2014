@@ -52,6 +52,7 @@ var Sensors_data = new Schema({
     id: ObjectId,
     type: {type: String},
     position: {type: String},
+    identifiant : String,
     mesure: [Mesure]
 });
 
