@@ -80,7 +80,7 @@ License MIT-->
                     type: 'POST',
                     data: {
                         "type": "sons",
-                        "identifiant":"captor1"
+                        "identifiant": "captor1"
                     },
                     success: function(data, textStatus, jqXHR) {
                         sensor_id = data.payload._id;
@@ -121,8 +121,8 @@ License MIT-->
                         "infos": [],
                         "comments": [com1_id],
                         "items": [item_id],
-                        "latitude":45.18972,
-                        "longitude":5.770995,
+                        "latitude": 45.18972,
+                        "longitude": 5.770995,
                     },
                     success: function(data, textStatus, jqXHR) {
                         console.log("upmf");
@@ -141,8 +141,8 @@ License MIT-->
                         "type": "Ecole",
                         "infos": [],
                         "comments": [com1_id, com2_id]},
-                        "latitude":45.18451,
-                        "longitude":5.753433,
+                    "latitude": 45.18451,
+                    "longitude": 5.753433,
                     success: function(data, textStatus, jqXHR) {
                         console.log("popo");
                         polytech_id = data.payload._id;
@@ -159,8 +159,8 @@ License MIT-->
                         "type": "Ecole",
                         "infos": [{"uneInfo": "tata"}, {"test": "test2"}],
                         "comments": [com1_id, com2_id]},
-                        "latitude":45.19229,
-                        "longitude":5.765716,
+                    "latitude": 45.19229,
+                    "longitude": 5.765716,
                     success: function(data, textStatus, jqXHR) {
                         console.log("iae");
                         iae_id = data.payload._id;
@@ -177,11 +177,11 @@ License MIT-->
                         "type": "Université",
                         "infos": [{"uneInfo": "tata"}, {"test": "test2"}],
                         "comments": [com1_id],
-                        "latitude":45.192094,
-                        "longitude":5.772346,
+                        "latitude": 45.192094,
+                        "longitude": 5.772346,
                     },
                     success: function(data, textStatus, jqXHR) {
-                        console.log("stendhal");
+
                         stendhal_id = data.payload._id;
                         $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                     },
@@ -197,70 +197,109 @@ License MIT-->
 <h2>Tram</h2>
 <div id="tram"></div>
 <script>
-    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
-        if (!data) {
-            jQuery.post("http://localhost:4242/api/entity", {
-                "name": "BIBLIOTHEQUES UNIVERSITAIRES",
-                "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
-                "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BBIBLIOTHEQUES%2BUNIVERSITAIRESY"
-            }, function(data, textStatus, jqXHR) {
-                console.log(data.payload);
-                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            });
-            jQuery.post("http://localhost:4242/api/entity", {
-                "name": "CONDILLAC UNIVERSITAIRES",
-                "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
-                "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BCONDILLAC%2BUNIVERSITES",
-                "latitude":45.188408,
-                "longitude":5.77361,
-            }, function(data, textStatus, jqXHR) {
-                console.log(data.payload);
-                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            });
-            jQuery.post("http://localhost:4242/api/entity", {
-                "name": "GABRIEL FAURE",
-                "description": "Arret de tram GABRIEL FAURE",
-                "type": "arretTram",
-                "infos": [],
-                "identifiant": "ST-MARTIN-D%2527HERES%2BGABRIEL%2BFAURE"
-            }, function(data, textStatus, jqXHR) {
-                console.log(data.payload);
-                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-            });
-//            jQuery.post("http://localhost:4242/api/entity", {
-//                "name": "tram A",
-//                "description": "Tramway Grenoble, ligne A",
-//                "type": "Tramway",
-//                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-//            }, function(data, textStatus, jqXHR) {
-//                console.log(data.payload);
-//                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-//            });
-//            jQuery.post("http://localhost:4242/api/entity", {
-//                "name": "tram B",
-//                "description": "Tramway Grenoble, ligne B",
-//                "type": "Tramway",
-//                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-//            }, function(data, textStatus, jqXHR) {
-//                console.log(data.payload);
-//                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-//            });
-//            jQuery.post("http://localhost:4242/api/entity", {
-//                "name": "tram C",
-//                "description": "Tramway Grenoble, ligne C",
-//                "type": "Tramway",
-//                "infos": [{"uneInfo": "tata"}, {"test": "test2"}]
-//            }, function(data, textStatus, jqXHR) {
-//                console.log(data.payload);
-//                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-//            });
+
+    jQuery.ajax({url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+//                var bibli_id = "";
+//                var faure_id = "";
+//                var condillac_id = "";
+//                var taille_id = "";
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {"name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "BIBLIOTHEQUES UNIVERSITAIRES",
+//                        "type": "shedule"
+//                    },
+//                    success: 
+//                            function(data, textStatus, jqXHR) {
+                        jQuery.post("http://localhost:4242/api/entity", {
+                            "name": "BIBLIOTHEQUES UNIVERSITAIRES",
+                            "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
+                            "type": "arretTram",
+                            "infos": [],
+//                            "items": [data.payload._id]
+                        }, function(data, textStatus, jqXHR) {
+                            $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        });
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "CONDILLAC UNIVERSITAIRES",
+//                        "type": "shedule",
+//                        "latitude": 45.188408,
+//                        "longitude": 5.77361,
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        jQuery.post("http://localhost:4242/api/entity", {
+                            "name": "CONDILLAC UNIVERSITAIRES",
+                            "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
+                            "type": "arretTram",
+                            "infos": [],
+                            "items": [data.payload._id],
+                            "latitude": 45.188408,
+                            "longitude": 5.77361,
+                        }, function(data, textStatus, jqXHR) {
+                            $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        });
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "GABRIEL FAURE",
+//                        "type": "shedule"
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        jQuery.post("http://localhost:4242/api/entity", {
+                            "name": "GABRIEL FAURE",
+                            "description": "Arret de tram GABRIEL FAURE",
+                            "type": "arretTram",
+                            "infos": [],
+                            "items": [data.payload._id]
+                        }, function(data, textStatus, jqXHR) {
+                            $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        });
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "Taille UNIVERSITE",
+//                        "type": "shedule"
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        jQuery.post("http://localhost:4242/api/entity", {
+                            "name": "Taille UNIVERSITE",
+                            "description": "Arret de tram Taille UNIVERSITE",
+                            "type": "arretTram",
+                            "infos": [],
+                            "items": [data.payload._id]
+                        }, function(data, textStatus, jqXHR) {
+                            $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        });
+//                    }});
+            }
         }
-    });
-</script>
+    });</script>
 
 <h2>RU</h2>
 <div id="ru"></div>
@@ -270,7 +309,6 @@ License MIT-->
     var diderot18_id = "";
     var diderot46_id = "";
     var diderot17_id = "";
-//    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
     jQuery.ajax({
         url: "http://localhost:4242/is-init",
         type: 'GET',
@@ -346,8 +384,8 @@ License MIT-->
                         "description": "Restaurant Universitaire",
                         "type": "Restaurant Universitaire",
                         "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id],
-                        "latitude":45.191005,
-                        "longitude":5.768699,
+                        "latitude": 45.191005,
+                        "longitude": 5.768699,
                     }, success: function(data, textStatus, jqXHR) {
                         condillac4_id = data.payload._id;
                         if (data.payload.name) {
@@ -389,8 +427,8 @@ License MIT-->
                         "items": [condillac4_id],
                         "description": "Restaurant Universitaire du Campus de Grenoble",
                         "type": "Restaurant Universitaire",
-                        "latitude":45.188408,
-                        "longitude":5.77361,
+                        "latitude": 45.188408,
+                        "longitude": 5.77361,
                     }, success: function(data, textStatus, jqXHR) {
                         barnave3_id = data.payload._id;
                         if (data.payload.name) {
@@ -465,8 +503,8 @@ License MIT-->
                         "description": "Restaurant Universitaire du Campus de Grenoble",
                         "type": "Restaurant Universitaire",
                         "items": [barnave24_id, barnave13_id, barnave3_id],
-                        "latitude":45.190642,
-                        "longitude":5.760729,
+                        "latitude": 45.190642,
+                        "longitude": 5.760729,
                     }, success: function(data, textStatus, jqXHR) {
                         if (data.payload.name) {
                             $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
@@ -490,8 +528,6 @@ License MIT-->
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
-//    }
-//    jQuery.get("http://localhost:4242/is-init", function(data, textStatus, jqXHR) {
             if (!data) {
                 jQuery.ajax({
                     url: "http://localhost:4242/api/administrator",

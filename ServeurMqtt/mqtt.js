@@ -102,7 +102,49 @@ eventCrousClient.on('message', function(topic, message) {
     }
 });
 
+var tagClient = mqtt.createClient(1883, 'localhost');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_BIBLIOTHEQUES_UNIVERSITAIRES');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_GABRIEL_FAURE');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES');
+var tagEntityWhoSubscribe = ["", , ""];
+tagClient.on('message', function(topic, message) {
+    console.log(message);
+    var stop = "";
+    switch (topic) {
+        case 'hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES':
+            stop = "CONDILLAC UNIVERSITAIRES";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_BIBLIOTHEQUES_UNIVERSITAIRES':
+            stop = "BIBLIOTHEQUES UNIVERSITAIRES";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_GABRIEL_FAURE':
+            stop = "GABRIEL FAURE";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES':
+            stop = "Taille UNIVERSITE";
+            break;
+    }
+    EntityModel.findOne({name: stop}, function(err, doc) {
+        if (!doc) {
+            console.log("Could not load Document");
+        } else {
 
+            if (message !== "undefined") {
+                console.log()
+                myData = message;
+                    doc.shedule = myData;
+                    doc.save(function(err) {
+                        if (err)
+                            console.log('\n\n !!! ERROR with ' + topic);
+                        else
+                            console.log('\n update success for ' + topic);
+                    });
+
+            }
+        }
+    });
+});
 
 var eventUjfClient = mqtt.createClient(1883, 'localhost');
 eventUjfClient.subscribe('ujf_event');
@@ -151,4 +193,144 @@ eventUjfClient.on('message', function(topic, message) {
             });
         })(key);
     }
+});
+
+/////////////////////////////
+/////// SENSORS ////////////
+////////////////////////////
+
+var sensor = mqtt.createClient(1883, 'localhost');
+sensor.subscribe('sensor');
+sensor.on('message', function(topic, message) {
+    //The message follow the regex _id@value
+    tabInfo = message.split("@");
+    //Create the mesure form the sensor
+    var newMesure = new MesureModel({
+        value: tabInfo[1]
+    });
+    Sensors_dataModel.findById(tabInfo[1],function(err,sensor){
+        if(sensor){
+            
+        }else{
+            
+        }
+    });
+    
+    
+    
+   /* EntityModel.findOne({'name': tabInfo[0]}, 'items', function(err, entity) {
+        if (err) {
+            throw err;
+        } else
+        if (entity) {
+            //console.log("this entity already exist" + entity);
+            //See if the item exist
+            var exist = false;
+            var i = 0;
+            ItemModel.findOne({'name': tabInfo[1], 'room_number': tabInfo[2]}, function(err, item) {
+                //if the item already exist
+                //console.log("value item" + item);
+                if (item) {
+                    //console.log("item already exist");
+                    //verify if the sensor already exist or not
+                    Sensors_dataModel.findOne({'position': tabInfo[3], 'type': tabInfo[4]}, function(err, sensorData) {
+                        //if the sensor does not already exist
+
+                        if (sensorData == null) {
+                            //console.log("create a newSensors Data");
+                            var newSensors_data = new Sensors_dataModel({
+                                type: tabInfo[4],
+                                position: tabInfo[3],
+                                mesure: [newMesure]
+                            });
+                            newSensors_data.save(function(err) {
+                                if (err) // ...
+                                    console.log('Register sensor data in DB failed');
+                                else {
+                                    item.Sensors_data.push(newSensors_data);
+                                    item.save(function(err) {
+                                        if (err) // ...
+                                            console.log('Register mesure in DB failed');
+                                        else {
+                                            entity.items = item;
+                                            entity.save(function(err) {
+                                                if (err)
+                                                    console.log('Register mesure in DB failed')
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            //console.log("add mesure");
+                            //if the sensor already exist
+                            newMesure.save(function(err) {
+                                if (err)
+                                    console.log('Register mesure in DB failed');
+                                else {
+                                    sensorData.mesure.push(newMesure);
+                                    sensorData.save(function(err) {
+                                        if (err) // ...
+                                            console.log('Register mesure in DB failed');
+                                        else {
+                                            item.Sensors_data = sensorData;
+                                            item.save(function(err) {
+                                                if (err)
+                                                    console.log('Register mesure in DB failed')
+                                                else {
+                                                    entity.items = item
+                                                    entity.save(function(err) {
+                                                        if (err)
+                                                            console.log('Register mesure in DB failed')
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    })
+                }
+                //if the item doesn't exist
+                else {
+                    //console.log("item does not exist " );
+                    var newSensors_data = new Sensors_dataModel({
+                        type: tabInfo[4],
+                        position: tabInfo[3],
+                        mesure: [newMesure]
+                    });
+                    //Create item
+                    var newItem = new ItemModel({
+                        name: tabInfo[1],
+                        position: tabInfo[3], //be carefull!! the positions is the same as the sensor
+                        room_number: tabInfo[2],
+                        Sensors_data: [newSensors_data],
+                        identifiant: entity.items.length + 1,
+                        type: "",
+                        infos: [],
+                        description: ""
+                    });
+
+                    newItem.save(function(err) {
+                        if (err) // ...
+                            console.log('Register item data in DB failed');
+                        else {
+                            entity.items.push(newItem);
+                            entity.save(function(err) {
+                                if (err) // ...
+                                    console.log('Register item data in DB failed');
+                            });
+                        }
+                    });
+
+                }
+            });
+        } else {
+            //console.log('The entity does not exist inside the DB')
+        }
+    }
+    );*/
 });

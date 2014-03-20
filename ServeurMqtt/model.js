@@ -22,6 +22,7 @@ var Entity = new Schema({
     events: [Event],
     items: [Item],
     infos: [],
+    shedule: [],
     voteValue : {type:Number, default:0},
     typeCrowdsourcing : String,
     identifiant: String
@@ -37,7 +38,7 @@ var Item = new Schema({
     type: String,
     infos: [],
     description: String,
-    show : Boolean
+    show: Boolean
 });
 
 var Event = new Schema({

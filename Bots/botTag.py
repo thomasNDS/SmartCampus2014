@@ -11,6 +11,7 @@ import time
 import os, sys
 from datetime import datetime
 import paho.mqtt.client as paho
+import time
 
 print "DEBUT: "
 #if len(sys.argv) > 4:
@@ -19,9 +20,6 @@ print "DEBUT: "
 #    day = sys.argv[2]
 #    month = sys.argv[3]
 #    year = sys.argv[4]
-    
-def __unicode__(self):
-   return unicode(self.title) or u''
 
 broker = "localhost"
 port = 1883
@@ -37,26 +35,42 @@ mqttc.connect(broker, port, 60)
 site = "www.stationmobile.fr"
 
 #Access to our server and get ids of restaurants
-conn = httplib.HTTPConnection(site)  # never http:// and not  end /
-conn.request("GET", "/stationmobilecore/XML/Horaires/Statique/20140317_SEM_B.json?key=108")  # launch a Get request
+conn = httplib.HTTPConnection(site)  # never http:// and not  end /20140319
+conn.request("GET", "/stationmobilecore/XML/Horaires/Statique/"+time.strftime('20%y%m%d',time.localtime())+"_SEM_B.json?key=108")  # launch a Get request
 response = conn.getresponse()		            # store the answer
 print response.status, response.reason              # just print the debug, if success
 data = response.read()			            # get the html as a string '<html >...</html>'
 try:
+#if 1:
     decoded = json.loads(data)
     ids = [3,4,5,6]
-    sens = 0
+
+    globalmess = []
     for id in ids:
-        name=decoded["destinations"][sens]["arrets"][id]["nom"]
-        hours= decoded["destinations"][sens]["arrets"][id]["heures"]
-#        for hour in hours:
-#            (h,m)=hour.split(':')
-        
+        name=decoded["destinations"][0]["arrets"][id]["nom"]
+        hours= decoded["destinations"][0]["arrets"][id]["heures"]
         topic = "hours_" + name
         topic = topic.replace(" ","_")
         topic = topic.replace("'","_")
+        tabHours = []
+        for hour in hours:
+            (h,m)= hour.split(':')
+            tabHours.append(int(h)*60+int(m))
+            
+#        tabHours= tabHours.sort()
+        globalmess.append(sorted(tabHours))
+        
+        hours= decoded["destinations"][1]["arrets"][id]["heures"]
+        tabHours = []
+        for hour in hours:
+            (h,m)= hour.split(':')
+            tabHours.append(int(h)*60+int(m))
+            
+#        tabHours= tabHours.sort()
+        globalmess.append(sorted(tabHours))
+        print globalmess
         print topic
-        mqttc.publish(topic, (str(hours)).encode('utf-8'), 0, True)                              #qos=0, retain=y
+        mqttc.publish(topic, str(globalmess), 0, True)                              #qos=0, retain=y
 
 except (ValueError, KeyError, TypeError):
     print "JSON format error"
