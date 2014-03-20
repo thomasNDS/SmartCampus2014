@@ -125,7 +125,7 @@ tagClient.on('message', function(topic, message) {
             stop = "Taille UNIVERSITE";
             break;
     }
-    ItemModel.findOne({identifiantString: stop}, function(err, doc) {
+    EntityModel.findOne({name: stop}, function(err, doc) {
         if (!doc) {
             console.log("Could not load Document");
         } else {
@@ -133,7 +133,7 @@ tagClient.on('message', function(topic, message) {
             if (message !== "undefined") {
                 console.log()
                 myData = message;
-                    doc.infos = myData;
+                    doc.shedule = myData;
                     doc.save(function(err) {
                         if (err)
                             console.log('\n\n !!! ERROR with ' + topic);

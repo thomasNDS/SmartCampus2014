@@ -121,8 +121,8 @@ License MIT-->
                         "infos": [],
                         "comments": [com1_id],
                         "items": [item_id],
-                        "latitude":45.18972,
-                        "longitude":5.770995,
+                        "latitude": 45.18972,
+                        "longitude": 5.770995,
                     },
                     success: function(data, textStatus, jqXHR) {
                         console.log("upmf");
@@ -204,44 +204,45 @@ License MIT-->
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
-            var bibli_id = "";
-                    var faure_id = "";
-                    var condillac_id = "";
-                    var taille_id = "";
-                    jQuery.ajax({url: "http://localhost:4242/api/item",
-                            async: false,
-                            cache: false,
-                            type: 'POST',
-                            data: {"name": "Horaires",
-                                    "description": "Horaires",
-                                    "identifiantString": "BIBLIOTHEQUES UNIVERSITAIRES",
-                                    "type" : "shedule"
-                            },
-                            success: function(data, textStatus, jqXHR) {
-                                jQuery.post("http://localhost:4242/api/entity", {
-                                    "name": "BIBLIOTHEQUES UNIVERSITAIRES",
-                                    "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
-                                    "type": "arretTram",
-                                    "infos": [],
-                                    "items": [data.payload._id]
-                                }, function(data, textStatus, jqXHR) {
-                                    $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                                });
-                                $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                            }});
-                    jQuery.ajax({url: "http://localhost:4242/api/item",
-                            async: false,
-                            cache: false,
-                            type: 'POST',
-                            data: {
-                            "name": "Horaires",
-                                    "description": "Horaires",
-                                    "identifiantString": "CONDILLAC UNIVERSITAIRES",
-                                    "type" : "shedule",
-                                    "latitude": 45.188408,
-                                    "longitude": 5.77361,
-                            }, success: function(data, textStatus, jqXHR) {
-                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//                var bibli_id = "";
+//                var faure_id = "";
+//                var condillac_id = "";
+//                var taille_id = "";
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {"name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "BIBLIOTHEQUES UNIVERSITAIRES",
+//                        "type": "shedule"
+//                    },
+//                    success: 
+//                            function(data, textStatus, jqXHR) {
+                        jQuery.post("http://localhost:4242/api/entity", {
+                            "name": "BIBLIOTHEQUES UNIVERSITAIRES",
+                            "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
+                            "type": "arretTram",
+                            "infos": [],
+//                            "items": [data.payload._id]
+                        }, function(data, textStatus, jqXHR) {
+                            $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        });
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "CONDILLAC UNIVERSITAIRES",
+//                        "type": "shedule",
+//                        "latitude": 45.188408,
+//                        "longitude": 5.77361,
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         jQuery.post("http://localhost:4242/api/entity", {
                             "name": "CONDILLAC UNIVERSITAIRES",
                             "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
@@ -253,18 +254,18 @@ License MIT-->
                         }, function(data, textStatus, jqXHR) {
                             $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         });
-                    }});
-                    jQuery.ajax({url: "http://localhost:4242/api/item",
-                            async: false,
-                            cache: false,
-                            type: 'POST',
-                            data: {
-                            "name": "Horaires",
-                                    "description": "Horaires",
-                                    "identifiantString": "GABRIEL FAURE",
-                                    "type" : "shedule"
-                            }, success: function(data, textStatus, jqXHR) {
-                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "GABRIEL FAURE",
+//                        "type": "shedule"
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         jQuery.post("http://localhost:4242/api/entity", {
                             "name": "GABRIEL FAURE",
                             "description": "Arret de tram GABRIEL FAURE",
@@ -274,18 +275,18 @@ License MIT-->
                         }, function(data, textStatus, jqXHR) {
                             $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         });
-                    }});
-                    jQuery.ajax({url: "http://localhost:4242/api/item",
-                            async: false,
-                            cache: false,
-                            type: 'POST',
-                            data: {
-                            "name": "Horaires",
-                                    "description": "Horaires",
-                                    "identifiantString": "Taille UNIVERSITE",
-                                    "type" : "shedule"
-                            }, success: function(data, textStatus, jqXHR) {
-                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "Taille UNIVERSITE",
+//                        "type": "shedule"
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         jQuery.post("http://localhost:4242/api/entity", {
                             "name": "Taille UNIVERSITE",
                             "description": "Arret de tram Taille UNIVERSITE",
@@ -295,7 +296,7 @@ License MIT-->
                         }, function(data, textStatus, jqXHR) {
                             $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         });
-                    }});
+//                    }});
             }
         }
     });</script>
@@ -385,7 +386,6 @@ License MIT-->
                         "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id],
                         "latitude": 45.191005,
                         "longitude": 5.768699,
-
                     }, success: function(data, textStatus, jqXHR) {
                         condillac4_id = data.payload._id;
                         if (data.payload.name) {
