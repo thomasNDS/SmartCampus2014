@@ -37,11 +37,7 @@ app.configure(function() {
     app.use(express.static(path.join(__dirname, "/public")));
     app.use(express.static(path.join(__dirname, "/views")));
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 1f4d91f168e9a807be929c9a96bdf36beed41e3a
 });
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
