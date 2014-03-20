@@ -102,7 +102,49 @@ eventCrousClient.on('message', function(topic, message) {
     }
 });
 
+var tagClient = mqtt.createClient(1883, 'localhost');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_BIBLIOTHEQUES_UNIVERSITAIRES');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_GABRIEL_FAURE');
+tagClient.subscribe('hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES');
+var tagEntityWhoSubscribe = ["", , ""];
+tagClient.on('message', function(topic, message) {
+    console.log(message);
+    var stop = "";
+    switch (topic) {
+        case 'hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES':
+            stop = "CONDILLAC UNIVERSITAIRES";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_BIBLIOTHEQUES_UNIVERSITAIRES':
+            stop = "BIBLIOTHEQUES UNIVERSITAIRES";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_GABRIEL_FAURE':
+            stop = "GABRIEL FAURE";
+            break;
+        case 'hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES':
+            stop = "Taille UNIVERSITE";
+            break;
+    }
+    EntityModel.findOne({name: stop}, function(err, doc) {
+        if (!doc) {
+            console.log("Could not load Document");
+        } else {
 
+            if (message !== "undefined") {
+                console.log()
+                myData = message;
+                    doc.shedule = myData;
+                    doc.save(function(err) {
+                        if (err)
+                            console.log('\n\n !!! ERROR with ' + topic);
+                        else
+                            console.log('\n update success for ' + topic);
+                    });
+
+            }
+        }
+    });
+});
 
 var eventUjfClient = mqtt.createClient(1883, 'localhost');
 eventUjfClient.subscribe('ujf_event');

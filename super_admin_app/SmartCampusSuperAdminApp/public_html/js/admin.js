@@ -15,6 +15,14 @@ $.getJSON('http://localhost:4242/api/entity/',
                         + "<td>" + data.payload[entity]._id + "</td>"
                         + "<td>" + data.payload[entity].type + "</td>"
                         + "<td><a href=\"#panel_item\" title=\"Voir les items de l'entité\" onclick=\"printItem('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "')\">" + "<i class=\"glyphicon glyphicon-th\"></i><a/></td>"
+                        + "<td>" + (function() {
+                            if (data.payload[entity].latitude) {
+                                return data.payload[entity].latitude + ", " + data.payload[entity].longitude;
+                            }
+                            else {
+                                return "";
+                            }
+                        })() + "</td>"
                         + "<td><a href=\"#\" title=\"Supprimer l'entité\" onclick=\"deleteEntity('" + data.payload[entity]._id + "', '" + data.payload[entity].name + "', '" + "tr_" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-remove\"></i></a></td>"
                         + "<td><a href=\"#panel_modif_entity\" title=\"Modifier l'entité\" onclick=\"modifyEntity('" + data.payload[entity]._id + "')\"><i class=\"glyphicon glyphicon-pencil\"></i></a><td>"
                         + "</tr>"
@@ -25,11 +33,11 @@ $.getJSON('http://localhost:4242/api/entity/',
 );
 
 function addEntity() {
-    $("#panel_add_entity").html("<h1>Ajout d'une entité</h1>"
+    $("#panel_add_entity").html("<h2>Ajout d'une entité</h2>"
             + "<form role=\"form\" onSubmit=\"finalizeAddEntity()\">"
             + "<div class=\"row\">"
             + "     <div class=\"col-md-1\">"
-            + "         <label class=\"label label-info\">Nom : </label for=\"add_entity_area_name\">"
+            + "         <label class=\"label label-info\" for=\"add_entity_area_name\">Nom : </label>"
             + "     </div>"
             + "     <div class=\"col-md-2\">"
             + "         <textarea name=\"add_entity_area_name\" id=\"add_entity_area_name\" rows='1' cols='50'></textarea>"
@@ -37,7 +45,7 @@ function addEntity() {
             + "</div>"
             + "<div class=\"row\">"
             + "     <div class=\"col-md-1\">"
-            + "         <label class=\"label label-info\">Type : </label for=\"add_entity_area_type\">"
+            + "         <label class=\"label label-info\" for=\"add_entity_area_type\">Type : </label>"
             + "     </div>"
             + "     <div class=\"col-md-2\">"
             + "         <textarea name=\"add_entity_area_type\" id=\"add_entity_area_type\" rows='1' cols='50'></textarea>"
@@ -45,26 +53,42 @@ function addEntity() {
             + "</div>"
             + "<div class=\"row\">"
             + "     <div class=\"col-md-1\">"
-            + "         <label class=\"label label-info\">Description : </label for=\"add_entity_area_description\">"
+            + "         <label class=\"label label-info\" for=\"add_entity_area_description\">Description : </label>"
             + "     </div>"
             + "     <div class=\"col-md-2\">"
             + "         <textarea name=\"add_entity_area_description\" id=\"add_entity_area_description\" rows='5' cols='50'></textarea>"
             + "     </div>"
             + "</div>"
+            + "<div class=\"row\">"
+            + "     <div class=\"col-md-1\">"
+            + "         <label class=\"label label-info\" for=\"add_entity_area_latitude\">Latitude : </label>"
+            + "     </div>"
+            + "     <div class=\"col-md-1\">"
+            + "         <textarea name=\"add_entity_area_latitude\" id=\"add_entity_area_latitude\" rows='1' cols='10'></textarea>"
+            + "     </div>"
+            + "     <div class=\"col-md-1\">"
+            + "         <label class=\"label label-info\" for=\"add_entity_area_longitude\">Longitude : </label>"
+            + "     </div>"
+            + "     <div class=\"col-md-1\">"
+            + "         <textarea name=\"add_entity_area_longitude\" id=\"add_entity_area_longitude\" rows='1' cols='10'></textarea>"
+            + "     </div>"
+            + "</div>"
             + "<button type=\"button\" class=\"btn\" onclick=\"finalizeAddEntity()\">OK</button>"
+            + "<button type=\"button\" class=\"btn\" onclick=\"clearPanel('panel_add_entity')\">Annuler</button>"
             + "</form>"
             );
 }
 
 function finalizeAddEntity() {
-    console.log($("#add_entity_area_name").val() + "\n" + $("#add_entity_area_type").val() + "\n" + $("#add_entity_area_description").val());
     $.ajax({
         url: "http://localhost:4242/api/entity/",
         type: "POST",
         data: {
             "name": $("#add_entity_area_name").val(),
             "type": $("#add_entity_area_type").val(),
-            "description": $("#add_entity_area_description").val()
+            "description": $("#add_entity_area_description").val(),
+            "latitude": $("#add_entity_area_latitude").val(),
+            "longitude": $("#add_entity_area_longitude").val()
         },
         success: function() {
             alert('Ajout pris en compte.');
@@ -91,7 +115,7 @@ function deleteEntity(entity, entity_name, line) {
 // print one item
 function printItem(entity, entity_name) {
     $("#panel_item").html("<table id=\"table_items\" class=\"table table-striped table-condensed\">"
-            + "<caption id=\"table_items_caption\"><h1>Items</h1></caption>"
+            + "<caption id=\"table_items_caption\"><h2>Items</h2></caption>"
             + "<thead>"
             + " <tr>"
             + "     <th>Identifiant</th>"
@@ -104,7 +128,7 @@ function printItem(entity, entity_name) {
             + "<tbody id=\"table_items_body\">"
             + "</tbody>"
             + "</table>");
-    $("#table_items_caption").html("<h1>Items de <span class=\"label label-primary\">" + entity_name + "</span></h1>");
+    $("#table_items_caption").html("<h2>Items de <span class=\"label label-primary\">" + entity_name + "</span></h2>");
     $("#table_items_body").html('');
     $.getJSON('http://localhost:4242/api/entity/' + entity,
             function(dataEntity) {
@@ -154,9 +178,6 @@ function deleteItem(item, item_name, line, entity) {
                                 data: {
                                     "items": newItems
                                 },
-                                success: function() {
-                                    console.log('suppression item: success');
-                                },
                                 error: function() {
                                     alert('suppression item: error');
                                 }
@@ -170,7 +191,7 @@ function deleteItem(item, item_name, line, entity) {
 function modifyEntity(entity_id) {
     $.getJSON('http://localhost:4242/api/entity/' + entity_id,
             function(data) {
-                $("#panel_modif_entity").html("<h1>Modification de <span class=\"label label-primary\">" + data.payload.name + "</span></h1>"
+                $("#panel_modif_entity").html("<h2>Modification de <span class=\"label label-primary\">" + data.payload.name + "</span></h2>"
                         + "<form role=\"form\" onSubmit=\"setEntityChanges('" + entity_id + "')\">"
                         + "     <div class=\"row\">"
                         + "         <div class=\"col-md-1\">"
@@ -195,7 +216,21 @@ function modifyEntity(entity_id) {
                         + "         <textarea name=\"entity_area_description\" id=\"entity_area_description\" rows='5' cols='50'>" + data.payload.description + "</textarea>"
                         + "     </div>"
                         + " </div>"
+                        + "<div class=\"row\">"
+                        + "     <div class=\"col-md-1\">"
+                        + "         <label class=\"label label-info\" for=\"modify_entity_area_latitude\">Latitude : </label>"
+                        + "     </div>"
+                        + "     <div class=\"col-md-1\">"
+                        + "         <textarea name=\"modify_entity_area_latitude\" id=\"modify_entity_area_latitude\" rows='1' cols='10'></textarea>"
+                        + "     </div>"
+                        + "     <div class=\"col-md-1\">"
+                        + "         <label class=\"label label-info\" for=\"modify_entity_area_longitude\">Longitude : </label>"
+                        + "     </div>"
+                        + "     <div class=\"col-md-1\">"
+                        + "         <textarea name=\"modify_entity_area_longitude\" id=\"modify_entity_area_longitude\" rows='1' cols='10'></textarea>"
+                        + "     </div>"
                         + "<button type=\"button\" class=\"btn\" onclick=\"setEntityChanges('" + entity_id + "')\">OK</button>"
+                        + "<button type=\"button\" class=\"btn\" onclick=\"clearPanel('panel_modif_entity')\">Annuler</button>"
                         + "</form>"
                         );
             });
@@ -208,7 +243,9 @@ function setEntityChanges(entity_id) {
         data: {
             "name": $("#entity_area_name").val(),
             "type": $("#entity_area_type").val(),
-            "description": $("#entity_area_description").val()
+            "description": $("#entity_area_description").val(),
+            "latitude": $("#modify_entity_area_latitude").val(),
+            "longitude": $("#modify_entity_area_longitude").val()
         },
         success: function() {
             alert('Modification prise en compte.');
@@ -222,7 +259,7 @@ function setEntityChanges(entity_id) {
 function modifyItem(item_id) {
     $.getJSON('http://localhost:4242/api/item/' + item_id,
             function(data) {
-                $("#panel_modif_item").html("<h1>Modification de <span class=\"label label-primary\">" + data.payload.name + "</span></h1>"
+                $("#panel_modif_item").html("<h2>Modification de <span class=\"label label-primary\">" + data.payload.name + "</span></h2>"
                         + "<form role=\"form\" onSubmit=\"setItemChanges('" + item_id + "')\">"
                         + "     <div class=\"row\">"
                         + "         <div class=\"col-md-1\">"
@@ -249,6 +286,7 @@ function modifyItem(item_id) {
                         + "         </div>"
                         + "     </div>"
                         + "     <button type=\"button\" class=\"btn\" onclick=\"setItemChanges('" + item_id + "')\">OK</button>"
+                        + "<button type=\"button\" class=\"btn\" onclick=\"clearPanel('panel_modif_item')\">Annuler</button>"
                         + "</form>"
                         );
             });
@@ -272,3 +310,6 @@ function setItemChanges(item_id) {
     return true;
 }
 
+function clearPanel(panel) {
+    $("#" + panel).html('');
+}
