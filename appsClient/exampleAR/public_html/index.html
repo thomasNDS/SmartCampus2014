@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+menu template for interface
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
 -->
 <html>
     <head>
@@ -33,21 +34,14 @@ and open the template in the editor.
     <body>
         <div id="wrapper">
             <!--MENU-->
-            <nav class="navbar navbar-static-top navbar-inverse">
-                <div class="navbar-inner">
-                    <div class="container-fluid"> 
-                        <ul class="nav">
-                            <li><a href="#"><i class="icon-white icon-cog"></i> Paramètres</a></li>
-                            <li><a href="#"><i class="icon-white icon-info-sign"></i> Aide</a></li>
-                        </ul>
-                        <button id="btnFullScreen" class="btn btn-primary pull-right" onclick="manageFullScreen(document.documentElement);"><i class="icon-white icon-fullscreen"></i> FullScreen</button>
-                        <button class="btn btn-primary pull-right" onclick="window.location = 'augmentedReality.html'"><i class="icon-white icon-facetime-video"></i> Camera</button>
-                    </div>
-                </div>
-            </nav>
-
-            <div id="map-canvas"></div>
+            <div id="principalMenu">menu</div>
+            <script>
+                $("#principalMenu").load("templateMenu.html");
+            </script>       
+            <!-- END MENU-->
             
+            <div id="map-canvas"></div>
+
             <script type="text/javascript" src="js/map.js"></script>
             <script type="text/javascript">
                 loadEntities();
