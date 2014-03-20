@@ -5,7 +5,8 @@
  */
 
 entitiesArray = new Array();
-serverAddress = "localhost";
+//serverAddress = "localhost";
+serverAddress = "192.168.43.142";
 //Var pour les index des onglets
 indexTab = 0;
 
@@ -307,7 +308,7 @@ function buildPanel(objElem) {
     
     //Onglet Description
     var descriptionContent = objElem.description;
-    descriptionContent = buildVotePanelQueue(objElem._id);
+    descriptionContent += buildVotePanelQueue(objElem._id);
     descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
     
     buildTab("Description", descriptionContent, indexTab);
@@ -321,7 +322,6 @@ function buildPanel(objElem) {
     });
     
     //Onglet Com
-    var commentTitle = objElem.items.length;
     var commentContent = "";
     objElem.comments.forEach(function(comId) {
         var com = loadComById(comId);
