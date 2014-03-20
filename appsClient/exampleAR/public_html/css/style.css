@@ -11,6 +11,14 @@ body {
 #backgroundVideo{
     position: absolute;
 }
+.icon-white{
+    color: white;
+}
+.logoFont{
+    font-size: 1.7em;
+    margin-top: -3px;
+    padding-right: 3px;
+}
 
 #mainContent {
     position : relative;
@@ -218,6 +226,7 @@ body {
 
 #tabsPanel {
     font-size: 1.3em;
+    margin-top: -3px;
 }
 
 
