@@ -31,16 +31,19 @@ includeInThisContext(__dirname + "/model.js");
 // Config
 app.configure(function() {
     app.use(express.bodyParser());
-    app.use(express.methodOverride());
+
+    app.use(express.cookieParser('S3CRE7'));
+    app.use(express.cookieSession());
     app.use(app.router);
 
-    app.use(express.static(path.join(__dirname, "/public")));
+    app.use(express.methodOverride());
     app.use(express.static(path.join(__dirname, "/views")));
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 
 });
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
+
 
 
 //////////////////////////////////
@@ -78,7 +81,7 @@ app.get('/help', routes.help);
 app.get('/', routes.index);
 app.get('/is-init', routes.test_init);
 //routes for authentication
-app.post('/login', routes.authenticate.login);
+//app.post('/login', routes.authenticate.login);
 
 //app.get('/vote/vote_ruG', routes.crowdsourcing.voteRuGet);
 app.post('/vote/moyenne_ru', routes.crowdsourcing.getRu);
@@ -107,8 +110,41 @@ app.post('/covoiturage', function(req, res) {
 });
 
 app.use('/api', mers({uri: addrmongo}).rest());
+
+
+
+function restrict(req, res, next) {
+    if (req.session && req.session.user) {
+        next();
+    } else {
+        req.session.error = 'Access denied!';
+        res.redirect('/login');
+    }
+}
+
+
+app.get('/logout', function(request, response) {
+    request.session.admin = null;
+    request.session.user = null;
+    response.redirect('/');
+});
+
+
+//Example of a restricted route !
+app.get('/restricted', restrict, function(request, response) {
+    response.send('This is the restricted area! Hello ' + request.session.user + '! click <a href="/logout">here to logout</a>');
+});
+
 //Run the server
 http.createServer(app).listen(4242, function() {
     console.log("\n Start on http://localhost:4242 \n");
 });
-
+//exports.authCallback = function (req, res, next) {
+//  //Check if the logged in user is an admin
+//  Admin.findOne( { user : req.user.id },function ( err, admin, count ){
+//    var old = req.session;
+//      if(!err && admin)
+//        req.session.isAdmin = true;
+//      res.redirect('/')
+//  })
+//}
