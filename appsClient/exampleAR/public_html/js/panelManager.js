@@ -6,6 +6,8 @@
 
 entitiesArray = new Array();
 serverAddress = "localhost";
+//Var pour les index des onglets
+indexTab = 0;
 
 /// ==== LOADERS ==== ////
 
@@ -144,11 +146,10 @@ function addComment(entityId, comment) {
     return com;
 }
 
-function voteTest(idEntity) {
+function makeVote(idEntity) {
 
     //recupere le vote choisis
     var vote = $('input[name="vote"]:checked').val();
-//                var vote = 5;
 
     console.log("vote = " + vote);
     jQuery.ajax({
@@ -254,7 +255,7 @@ function buildVotePanelQueue(idEntity) {
     html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Ca va  ";
     html += "<input type = \"radio\" name = \"vote\" value = \"4\" onclick=\"activeBtn()\"> Pas mal  ";
     html += "<input type = \"radio\" name = \"vote\" value = \"5\" onclick=\"activeBtn()\"> Abusé gros!<br/>";
-    html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"voteTest('" + idEntity + "')\" disabled>Alerte les autres :)</button>";
+    html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"makeVote('" + idEntity + "')\" disabled>Alerte les autres :)</button>";
     html += "</div>";
 
     return html;
@@ -264,64 +265,75 @@ function buildPanelByIndex(indexElem) {
     buildPanel(entitiesArray[indexElem]);
 }
 
+/**
+ * Build un onglet du panel d'information
+ * @param {type} title : Titre de l'onglet
+ * @param {type} content : Contenu
+ * @param {type} i : index de l'onglet
+ * @returns {undefined}
+ */
+function buildTab(title, content, i) {
+    (function(index) {
+        var tabContent = "";
+        var tabTitle = "";
+        if (index !== 0) {
+            tabTitle = "<li><a href=\"#tabPan" + index + "\" data-toggle=\"tab\">" + title + "</a></li>";
+            tabContent = "<div id=\"tabPan" + index + "\" class=\"tab-pane\">";
+        } else {
+            tabTitle = "<li class=\"active\"><a href=\"#tabPan" + index + "\" data-toggle=\"tab\">" + title + "</a></li>";
+            tabContent = "<div id=\"tabPan" + index + "\" class=\"tab-pane active\">";
+        }
+        tabContent += content;
+        tabContent += "</div>";
+        $("#tabsPanel").append(tabTitle);
+        $("#contentTabs").append(tabContent);
+//        index++;
+    })(i);
+    indexTab++;
+}
+
 /*
  * Chargement d'un objet représentant l'element detecté
  */
 function buildPanel(objElem) {
     console.log(objElem);
-
+    
     /* Clean le panel */
     cleanChildOfNodeID("tabsPanel");
     cleanChildOfNodeID("contentTabs");
+    
     //Titre du panel info
     $("#informationTitle").html(objElem.name);
+    
     //Onglet Description
-    var tabTitle = "";
-    var tabContent = "";
-    tabTitle = "<li class=\"active\"><a href=\"#entityDescription\" data-toggle=\"tab\">Description</a></li>";
-    tabContent = "<div id=\"entityDescription\" class=\"tab-pane active\" id=\"tabbedPanDesc\">";
-    tabContent += objElem.description;
-//                console.log("nb cara :" + objElem.description.length);
-
-//    console.log("idElem: " + objElem._id);
-    tabContent += buildVotePanelQueue(objElem._id);
-    console.log("idElem: " + objElem._id);
-//    tabContent += buildVotePanelQueue(objElem._id);
-
-    //Div pour bouton addComment
-    tabContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
-    tabContent += "</div>";
-    $("#tabsPanel").append(tabTitle);
-    $("#contentTabs").append(tabContent);
-    checkDescriptionHeight();
+    var descriptionContent = objElem.description;
+    descriptionContent = buildVotePanelQueue(objElem._id);
+    descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
+    
+    buildTab("Description", descriptionContent, indexTab);
+    
     //Onglets Items
     objElem.items.forEach(function(itemId, index) {
-
         var itemLoaded = loadItemById(itemId);
         if (itemLoaded) {
-        tabTitle = "<li><a href=\"#tabbedPan" + index + "\" data-toggle=\"tab\">" + itemLoaded.name + "</a></li>";
-        $("#tabsPanel").append(tabTitle);
-        tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + index + "\">" + itemLoaded.description + "</div>";
-        $("#contentTabs").append(tabContent);
+            buildTab(itemLoaded.name, itemLoaded.description, indexTab);
         }
     });
+    
     //Onglet Com
-//    var coms = objElem.comments;
-//    tabTitle = "<li><a href=\"#tabbedPan" + (objElem.items.length) + "\" data-toggle=\"tab\">Avis</a></li>";
-//    $("#tabsPanel").append(tabTitle);
-//    tabContent = "<div class=\"tab-pane\" id=\"tabbedPan" + (objElem.items.length) + "\">";
-//    objElem.comments.forEach(function(comId) {
-//        var com = loadComById(comId);
-//        var date = new Date(com.date);
-//        tabContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
-//    });
-    //Div pour bouton addComment
-//                console.log("id" + objElem._id + "!!!!");
-    tabContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
-    tabContent += "</div>";
-    $("#contentTabs").append(tabContent);
+    var commentTitle = objElem.items.length;
+    var commentContent = "";
+    objElem.comments.forEach(function(comId) {
+        var com = loadComById(comId);
+        var date = new Date(com.date);
+        commentContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
+    });
+    commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
+    commentContent += "</div>";
+    buildTab("Avis", commentContent, indexTab);
 
     $("#informationPanel").css("display", "block");
+    indexTab = 0;
 }
 
 /**
