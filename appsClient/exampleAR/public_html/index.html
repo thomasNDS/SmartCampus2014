@@ -61,10 +61,18 @@ menu template for interface
 
             <div id="map-canvas"></div>
 
+            <!--DIV QUI CONTIENDRA L'UI-->
+            <div id="mainContent" class="container-fluid">
+                <!-- Tout le contenu dans une row -->
+                <div class="row-fluid voffset5">
+                </div>
+            </div>
+
             <script type="text/javascript" src="js/map.js"></script>
             <script type="text/javascript">
-                            loadEntities();
-                            buildEmptyPanel("#wrapper");
+                loadEntities();
+                buildEmptyPanel("#mainContent");
+                showModalParameters('#mainContent');
             </script>
 
         </div>
