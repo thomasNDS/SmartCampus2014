@@ -5,8 +5,8 @@
  */
 
 entitiesArray = new Array();
-//serverAddress = "localhost";
-serverAddress = "192.168.43.142";
+serverAddress = "localhost";
+//serverAddress = "192.168.43.142";
 //Var pour les index des onglets
 indexTab = 0;
 
@@ -394,7 +394,7 @@ function buildPanel(objElem) {
     //Onglets Items
     objElem.items.forEach(function(itemId, index) {
         var itemLoaded = loadItemById(itemId);
-        if (itemLoaded) {
+        if (itemLoaded.show !== false) {
             buildTab(itemLoaded.name, itemLoaded.description, indexTab);
         }
     });
