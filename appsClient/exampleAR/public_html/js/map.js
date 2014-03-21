@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-serverAddress = "localhost";
+//serverAddress = "localhost";
 //serverAddress = "192.168.43.142";
 
 var area = {

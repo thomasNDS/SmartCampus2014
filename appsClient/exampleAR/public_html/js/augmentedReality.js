@@ -1,6 +1,6 @@
 //Adresse du serveur web
 //serverAddress = "192.168.43.142";
-serverAddress = "localhost";
+//serverAddress = "localhost";
 
 //Fonction en cas d'erreur
 function onFailure(err) {
