@@ -1,0 +1,1018 @@
+<!--  SmartCampus
+ ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+License MIT-->
+
+<style>
+    html{margin:0;padding:0}body{font:75% georgia,sans-serif;line-height:1.88889;color:#555753;background:#fff;margin:0;padding:0;margin-left:45px}p{margin-top:0;text-align:justify}h3{font:italic normal 1.4em georgia,sans-serif;letter-spacing:1px;margin-bottom:0;color:#7D775C}a:link{font-weight:700;text-decoration:none;color:#B7A5DF}a:visited{font-weight:700;text-decoration:none;color:#D4CDDC}a:active,a:hover{text-decoration:underline;color:#9685BA}.ok{color:#fff;background:#90ee90;font-weight:800}.no{color:#fff;background:red;font-weight:800}
+</style>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<h1>Init DB Campus</h1>
+
+
+<script>
+    //Variable d'id
+    var polytech_id = "a";
+    var upmf_id = "b";
+    var iae_id = "c";
+    var stendhal_id = "d";
+    var lig_id = "e";
+    var com1_id = "";
+    var com2_id = "";
+    var sensor_id = "";
+    var mesure1_id = "";
+    var mesure2_id = "";
+    var mesure3_id = "";
+    var item1_id = "";
+    var item2_id = "";
+    var item3_id = "";
+    var item4_id = "";
+    var RUFramboisierehumidite_id = "";
+    var CROUSDortoirChambreMBairQualite_id = "";
+    var PolytechBureauDDhumidite_id = "";
+
+
+</script>
+
+<h2>Mesures</h2>
+<div id="mesures"></div>
+<script>
+    jQuery.ajax({
+        url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/mesure",
+                    type: 'POST',
+                    data: {
+                        "value": 42
+                    }, success: function(data, textStatus, jqXHR) {
+                        if (data.payload._id) {
+                            mesure1_id = data.payload._id;
+                            $("#mesures").html($("#mesures").html() + "<strong>Value: </strong>" + data.payload.value + "<span class='ok'> OK </span> <br>");
+                        }
+                        else
+                            $("#mesures").html($("#mesures").html() + "<strong>Value: </strong>" + data.payload.value + "<span class='no'> ERROR </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/mesure",
+                    type: 'POST',
+                    data: {
+                        "value": 18
+                    }, success: function(data, textStatus, jqXHR) {
+                        if (data.payload._id) {
+                            mesure2_id = data.payload._id;
+                            $("#mesures").html($("#mesures").html() + "<strong>Value: </strong>" + data.payload.value + "<span class='ok'> OK </span> <br>");
+                        } else
+                            $("#mesures").html($("#mesures").html() + "<strong>Value: </strong>" + data.payload.value + "<span class='no'> ERROR </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/mesure",
+                    type: 'POST',
+                    data: {
+                        "value": 3
+                    }, success: function(data, textStatus, jqXHR) {
+                        if (data.payload._id) {
+                            mesure3_id = data.payload._id;
+                            $("#mesures").html($("#mesures").html() + "<strong>Value: </strong>" + data.payload.value + "<span class='ok'> OK </span> <br>");
+                        } else
+                            $("#mesures").html($("#mesures").html() + "<strong>Value: </strong>" + data.payload.value + "<span class='no'> ERROR </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+            } else {
+                $("#mesures").html("<span class='no'> ERROR BD already init !  </span> <br> To remove : mongo<br> use Client<br> db.dropDatabase();");
+            }
+        }
+    });
+</script>
+
+<h2>Sensors</h2>
+<div id="sensors"></div>
+
+<script>
+    jQuery.ajax({
+        url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/Sensors_data",
+                    type: 'POST',
+                    data: {
+                        "type": "humidite",
+                        "identifiant": "RUFramboisierehumidite",
+                        "mesure": [mesure1_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        RUFramboisierehumidite_id = data.payload._id;
+                        if (data.payload._id) {
+                            $("#sensors").html($("#sensors").html() + "<strong>Identifiant: </strong>" + data.payload.identifiant + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#sensors").html($("#sensors").html() + "<strong>Identifiant: </strong>" + data.payload.identifiant + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/Sensors_data",
+                    type: 'POST',
+                    data: {
+                        "type": "humidite",
+                        "identifiant": "PolytechBureauDDhumidite",
+                        "mesure": [mesure2_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        PolytechBureauDDhumidite_id = data.payload._id;
+                        if (data.payload._id) {
+                            $("#sensors").html($("#sensors").html() + "<strong>Identifiant: </strong>" + data.payload.identifiant + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#sensors").html($("#sensors").html() + "<strong>Identifiant: </strong>" + data.payload.identifiant + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/Sensors_data",
+                    type: 'POST',
+                    data: {
+                        "type": "airQualite",
+                        "identifiant": "CROUSDortoirChambreMBairQualite",
+                        "mesure": [mesure3_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        CROUSDortoirChambreMBairQualite_id = data.payload._id;
+                        if (data.payload._id) {
+                            $("#sensors").html($("#sensors").html() + "<strong>Identifiant: </strong>" + data.payload.identifiant + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#sensors").html($("#sensors").html() + "<strong>Identifiant: </strong>" + data.payload.identifiant + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+            } else {
+                $("#sensors").html("<span class='no'> ERROR BD already init !  </span> <br> To remove : mongo<br> use Client<br> db.dropDatabase();");
+            }
+        }
+    });
+</script>
+
+<h2>Items</h2>
+<div id="items"></div>
+<script>
+    jQuery.ajax({
+        url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+                jQuery.ajax({url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {
+                        "name": "Salle de cours 42",
+                        "description": "Salle de cours 42",
+                        "show": false
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        item1_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {
+                        "name": "Bureau",
+                        "description": "Bureau de Didier Donsez",
+                        "show": true,
+                        "Sensors_data": [PolytechBureauDDhumidite_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        item2_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {
+                        "name": "Salle Framboisière",
+                        "description": "Salle Framboisière",
+                        "show": true,
+                        "Sensors_data": [RUFramboisierehumidite_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        item3_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {
+                        "name": "CROUS Dortoir",
+                        "description": "Dortoir d'un étudiant",
+                        "show": true,
+                        "Sensors_data": [CROUSDortoirChambreMBairQualite_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        item4_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#items").html($("#items").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+            } else {
+                $("#items").html("<span class='no'> ERROR BD already init !  </span> <br> To remove : mongo<br> use Client<br> db.dropDatabase();");
+            }
+        }
+    });
+</script>
+
+<h2>Buildings</h2>
+<div id="entity"></div>
+<script>
+//    var polytech_id = "a";
+//    var upmf_id = "b";
+//    var iae_id = "c";
+//    var stendhal_id = "d";
+//    var com1_id = "";
+//    var com2_id = "";
+//    var sensor_id = "";
+//    var item_id = "";
+    jQuery.ajax({
+        url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+                //////COMMMENTS//////
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/comment",
+                    type: 'POST',
+                    data: {
+                        "value": "Ouai ! Super com test !"
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.payload.value) {
+//                            console.log("Comment ok");
+                            com1_id = data.payload._id;
+                        } else {
+                            console.log("Comment Error");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/comment",
+                    type: 'POST',
+                    data: {
+                        "value": "Deuxième comme de la mort ! Super com test !"
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.payload.value) {
+//                            console.log("Comment ok");
+                            com2_id = data.payload._id;
+                        } else {
+                            console.log("Comment Error");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                //////////////////
+                ////ENTITIES//////
+                //////////////////
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Polytech Grenoble",
+                        "description": "Polytech Grenoble",
+                        "type": "Ecole",
+                        "infos": [],
+                        "comments": [com1_id, com2_id],
+                        "latitude": 45.18451,
+                        "longitude": 5.753433,
+                        "items": [item2_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        polytech_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "IAE",
+                        "description": "Les IAE sont des composantes des universités françaises, hors IAE Paris qui a un statut à part. Ils ont pour mission le développement de la recherche et de la formation supérieure en gestion au sein des universités. Les IAE constituent un modèle qui s'inspire de celui des Business schools anglo-saxonnes.",
+                        "type": "Ecole",
+                        "infos": [{"uneInfo": "tata"}, {"test": "test2"}],
+                        "comments": [com2_id],
+                        "latitude": 45.192119,
+                        "longitude": 5.765228
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Barnave",
+                        "description": "Description du Resto U Barnave",
+                        "type": "Restaurant Universitaire",
+                        "comments": [com1_id, com2_id],
+                        "latitude": 45.190834,
+                        "longitude": 5.760778,
+                        "items": [item3_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Condillac B",
+                        "description": "Description de la cité U Condillac B",
+                        "type": "Cité Universitaire",
+                        "comments": [],
+                        "latitude": 45.188649,
+                        "longitude": 5.773658,
+                        "items": [item4_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "LIG",
+                        "description": "Description du LIG",
+                        "type": "Laboratoire",
+                        "comments": [],
+                        "latitude": 45.193692,
+                        "longitude": 5.769500
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        lig_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "IMAG",
+                        "description": "Description de l'IMAG",
+                        "type": "Ecole",
+                        "comments": [],
+                        "latitude": 45.193920,
+                        "longitude": 5.768052
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Bibliothèque U",
+                        "description": "Description de Bibliothèque U",
+                        "type": "Bibliothèque",
+                        "comments": [],
+                        "latitude": 45.192408,
+                        "longitude": 5.769683
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "EVE",
+                        "description": "Description de EVE",
+                        "type": "Bar",
+                        "comments": [],
+                        "latitude": 45.191164,
+                        "longitude": 5.767623
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "IUT-1",
+                        "description": "Description de IUT-1",
+                        "type": "Ecole",
+                        "comments": [],
+                        "latitude": 45.198784,
+                        "longitude": 5.774983
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "UFRAPS",
+                        "description": "Description de UFRAPS",
+                        "type": "Ecole",
+                        "comments": [],
+                        "latitude": 45.196687,
+                        "longitude": 5.777150
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "ENSIMAG",
+                        "description": "Description de ENSIMAG",
+                        "type": "Ecole",
+                        "comments": [],
+                        "latitude": 45.193077,
+                        "longitude": 5.767001
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Banque",
+                        "description": "Description de Banque",
+                        "type": "Utilitaire",
+                        "comments": [],
+                        "latitude": 45.192195,
+                        "longitude": 5.771467
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Metro Vélo",
+                        "description": "Description de Metro Vélo",
+                        "type": "Utilitaire",
+                        "comments": [],
+                        "latitude": 45.192563,
+                        "longitude": 5.771168
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Arrêt G.Fauré",
+                        "description": "Description de Arrêt G.Fauré",
+                        "type": "Tram",
+                        "comments": [],
+                        "latitude": 45.192279,
+                        "longitude": 5.764415
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        iae_id = data.payload._id;
+                        $("#entity").html($("#entity").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+            } else {
+                $("#entity").html("<span class='no'> ERROR BD already init !  </span> <br> To remove : mongo<br> use Client<br> db.dropDatabase();");
+            }
+        }
+    });
+</script>
+
+<!--<h2>Tram</h2>
+<div id="tram"></div>
+<script>
+
+    jQuery.ajax({url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+//                var bibli_id = "";
+//                var faure_id = "";
+//                var condillac_id = "";
+//                var taille_id = "";
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {"name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "BIBLIOTHEQUES UNIVERSITAIRES",
+//                        "type": "shedule"
+//                    },
+//                    success: 
+//                            function(data, textStatus, jqXHR) {
+                jQuery.post("http://localhost:4242/api/entity", {
+                    "name": "BIBLIOTHEQUES UNIVERSITAIRES",
+                    "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
+                    "type": "arretTram",
+                    "infos": [],
+//                            "items": [data.payload._id]
+                }, function(data, textStatus, jqXHR) {
+                    $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                });
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "CONDILLAC UNIVERSITAIRES",
+//                        "type": "shedule",
+//                        "latitude": 45.188408,
+//                        "longitude": 5.77361,
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                jQuery.post("http://localhost:4242/api/entity", {
+                    "name": "CONDILLAC UNIVERSITAIRES",
+                    "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
+                    "type": "arretTram",
+                    "infos": [],
+                    "items": [data.payload._id],
+                    "latitude": 45.188408,
+                    "longitude": 5.77361,
+                }, function(data, textStatus, jqXHR) {
+                    $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                });
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "GABRIEL FAURE",
+//                        "type": "shedule"
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                jQuery.post("http://localhost:4242/api/entity", {
+                    "name": "GABRIEL FAURE",
+                    "description": "Arret de tram GABRIEL FAURE",
+                    "type": "arretTram",
+                    "infos": [],
+                    "items": [data.payload._id]
+                }, function(data, textStatus, jqXHR) {
+                    $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                });
+//                    }});
+//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                    async: false,
+//                    cache: false,
+//                    type: 'POST',
+//                    data: {
+//                        "name": "Horaires",
+//                        "description": "Horaires",
+//                        "identifiantString": "Taille UNIVERSITE",
+//                        "type": "shedule"
+//                    }, success: function(data, textStatus, jqXHR) {
+//                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                jQuery.post("http://localhost:4242/api/entity", {
+                    "name": "Taille UNIVERSITE",
+                    "description": "Arret de tram Taille UNIVERSITE",
+                    "type": "arretTram",
+                    "infos": [],
+                    "items": [data.payload._id]
+                }, function(data, textStatus, jqXHR) {
+                    $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                });
+//                    }});
+            }
+        }
+    });</script>
+
+<h2>RU</h2>
+<div id="ru"></div>
+<script>
+/////////////////////////////////////////////////////DIDEROT/////////////////////////////////////////////////
+    var diderot19_id = "";
+    var diderot18_id = "";
+    var diderot46_id = "";
+    var diderot17_id = "";
+    jQuery.ajax({
+        url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {"identifiant": 18,
+                        "name": "Entracte",
+                        "type": "Salle",
+                        "description": "Batiment dessous Diderot"
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        diderot18_id = data.payload._id;
+                        console.log("diderot");
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {"identifiant": 46,
+                        "name": "Administratif",
+                        "type": "Salle",
+                        "description": "Viendez pour vos cartes monéo !!"
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        console.log("diderot");
+                        diderot46_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {"identifiant": 17,
+                        "name": "Traditionnel",
+                        "description": "Manger des légumes au RU, oui oui oui oui !",
+                        "type": "Salle"
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        diderot17_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Diderot",
+                        "description": "Restaurant Universitaire",
+                        "type": "Restaurant Universitaire",
+                        "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id],
+                        "latitude": 45.191005,
+                        "longitude": 5.768699,
+                    }, success: function(data, textStatus, jqXHR) {
+                        condillac4_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                console.log(diderot17_id + "   " + diderot18_id + "   " + diderot19_id + "   " + diderot46_id)
+                ///////////////////////////////////////////////CONDILLAC/////////////////////////////////////////
+                var condillac4_id = "";
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {"identifiant": 4,
+                        "name": "Traditionnel",
+                        "description": "Salle traditionnelle de Condillac",
+                        "type": "Salle"
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        condillac4_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Condillac",
+                        "items": [condillac4_id],
+                        "description": "Restaurant Universitaire du Campus de Grenoble",
+                        "type": "Restaurant Universitaire",
+                        "latitude": 45.188408,
+                        "longitude": 5.77361,
+                    }, success: function(data, textStatus, jqXHR) {
+                        barnave3_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                /////////////////////////////BARNAVE //////////////////////////////////////////
+                var barnave13_id = "";
+                var barnave24_id = "";
+                var barnave3_id = "";
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {"identifiant": 3,
+                        "name": "Traditionnel",
+                        "description": "Miam j'adore les légumes des salles traditionnelles"},
+                    success: function(data, textStatus, jqXHR) {
+                        barnave3_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {"identifiant": 13,
+                        "name": "Cafeteria",
+                        "description": "Viendez manger des pizzas super bonnes de la mort qui tue à la Cafet'!!"},
+                    success: function(data, textStatus, jqXHR) {
+                        barnave13_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/item",
+                    type: 'POST',
+                    data: {"identifiant": 24,
+                        "name": "Framboisière",
+                        "description": "La Framboisière c'est trop bon, J'adore !!"},
+                    success: function(data, textStatus, jqXHR) {
+                        barnave24_id = data.payload._id;
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/entity",
+                    type: 'POST',
+                    data: {
+                        "name": "Barnave",
+                        "description": "Restaurant Universitaire du Campus de Grenoble",
+                        "type": "Restaurant Universitaire",
+                        "items": [barnave24_id, barnave13_id, barnave3_id],
+                        "latitude": 45.190642,
+                        "longitude": 5.760729,
+                    }, success: function(data, textStatus, jqXHR) {
+                        if (data.payload.name) {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        } else {
+                            $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                        }
+                    },
+                    async: false,
+                    cache: false
+                });
+            }
+        }
+    });</script>-->
+
+<h2>Administrators</h2>
+<div id="admin"></div>
+<script>
+    jQuery.ajax({
+        url: "http://localhost:4242/is-init",
+        type: 'GET',
+        async: false,
+        cache: false,
+        success: function(data, textStatus, jqXHR) {
+            if (!data) {
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/administrator",
+                    type: 'POST',
+                    data: {
+                        "first_name": "nicolas",
+                        "name": "husson",
+                        "login": "nicolas",
+                        "password": "password",
+                        "entity": [lig_id]
+                    }, 
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.payload._id)
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        else
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/administrator",
+                    type: 'POST',
+                    data: {
+                        "first_name": "thomas",
+                        "name": "nunes",
+                        "login": "thomas",
+                        "password": "password",
+                        "entity": [iae_id]
+                    }, 
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.payload._id)
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        else
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/administrator",
+                    type: 'POST',
+                    data: {
+                        "first_name": "simon",
+                        "name": "planes",
+                        "login": "simon",
+                        "password": "password",
+                        "entity": [polytech_id]
+                    }, 
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.payload._id)
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        else
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+                jQuery.ajax({
+                    url: "http://localhost:4242/api/administrator",
+                    type: 'POST',
+                    data: {
+                        "first_name": "laurene",
+                        "name": "guelorgette",
+                        "login": "laurene",
+                        "password": "password",
+                        "entity": [polytech_id]
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.payload._id)
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
+                        else
+                            $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='no'> ERROR </span> <br>");
+                    },
+                    async: false,
+                    cache: false
+                });
+            }
+        }
+    });
+
+</script>
+
+<h1>Usage</h1>
+<h4>Afficher l'ensemble des entités</h4>
+http://localhost:4242/api/entity/ </br>
+
+<h4>Afficher un entité $id</h4>
+http://localhost:4242/api/entity/$id/ </br>
+
+<h4>Afficher les infos d'une entité $id</h4>
+http://localhost:4242/api/entity/$id/infos </br>
+
+<h4>Afficher la premiére info d'une entité $id</h4>
+http://localhost:4242/api/entity/$id/infos/0 </br>
+
+<h4>Afficher un attribut d'ine info d'une entité $id</h4>
+http://localhost:4242/api/entity/$id/infos/0/uneInfo </br>

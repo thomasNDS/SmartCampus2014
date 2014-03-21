@@ -184,7 +184,7 @@ function loadComById(id) {
         async: false,
         url: "http://" + serverAddress + ":4242/api/comment/" + id,
         success: function(data) {
-            console.dir(data.payload[0]);
+//            console.dir(data.payload[0]);
             com = data.payload[0];
         },
         error: function(err) {
@@ -335,11 +335,12 @@ function refreshEntity(entityId) {
     var indexEntity;
     //Recupere l'index de l'entite dans le tableau
     while (i < entitiesArray.length && !isFound) {
+        console.log("boucle " + i);
         if (entitiesArray[i]._id === entityId) {
             isFound = true;
             indexEntity = i;
         }
-        i++;
+        i = i+4;
     }
     //Mise a jour de l'entite dans le tableau
     jQuery.ajax({
@@ -439,7 +440,6 @@ function buildPanel(objElem) {
         
         if (itemLoaded.show !== false) {
             var itemContent = itemLoaded.description;
-            console.log("lg sensor data array : " + itemLoaded.Sensors_data.length);
             if (itemLoaded.Sensors_data.length > 0) {
                 itemContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
                 itemContent += "<div>";
@@ -447,7 +447,7 @@ function buildPanel(objElem) {
                 itemLoaded.Sensors_data.forEach(function(sensorId) {
                     var sensorLoaded = loadSensorById(sensorId);
                     var mesure = loadMesureById(sensorLoaded.mesure[0]);
-                    itemContent += sensorLoaded.type + " : " + mesure + "<br>";
+                    itemContent += sensorLoaded.type + " : " + mesure.value + "<br>";
                 });
                 itemContent += "</div>";
                 itemContent += "</div>";
