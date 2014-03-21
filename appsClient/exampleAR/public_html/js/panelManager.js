@@ -45,43 +45,43 @@ function sortEntityArray() {
     var arraySorted = new Array();
     var entityIndex = null;
     var entity = null;
-    
+
     //UPMF -> 0
     entityIndex = getIndexElementByName("UPMF");
     entity = entitiesArray[entityIndex];
     arraySorted[0] = entity;
     arrayUnset(entitiesArray, entity);
-    
+
     //Polytech Grenoble -> 4
     entityIndex = getIndexElementByName("Polytech Grenoble");
     entity = entitiesArray[entityIndex];
     arraySorted[4] = entity;
     arrayUnset(entitiesArray, entity);
-    
+
     //IAE -> 8
     entityIndex = getIndexElementByName("IAE");
     entity = entitiesArray[entityIndex];
     arraySorted[8] = entity;
     arrayUnset(entitiesArray, entity);
-    
+
     //Université Stendhal -> 12
     entityIndex = getIndexElementByName("Université Stendhal");
     entity = entitiesArray[entityIndex];
     arraySorted[12] = entity;
     arrayUnset(entitiesArray, entity);
-    
+
     //BIBLIOTHEQUES UNIVERSITAIRES -> 16
     entityIndex = getIndexElementByName("BIBLIOTHEQUES UNIVERSITAIRES");
     entity = entitiesArray[entityIndex];
     arraySorted[16] = entity;
     arrayUnset(entitiesArray, entity);
-    
+
     //CONDILLAC UNIVERSITAIRES -> 20
     entityIndex = getIndexElementByName("CONDILLAC UNIVERSITAIRES");
     entity = entitiesArray[entityIndex];
     arraySorted[20] = entity;
     arrayUnset(entitiesArray, entity);
-    
+
     entitiesArray = arraySorted;
 
 }
@@ -95,7 +95,7 @@ function getIndexElementByName(name) {
     var found = false;
     var i = 0;
     while (i < entitiesArray.length && !found) {
-        if (entitiesArray[i].name === name){
+        if (entitiesArray[i].name === name) {
             found = true;
         } else {
             i++;
@@ -110,7 +110,7 @@ function getIndexElementByName(name) {
  * @param {type} value
  * @returns {undefined}
  */
-function arrayUnset(array, value){
+function arrayUnset(array, value) {
     array.splice(array.indexOf(value), 1);
 }
 
@@ -192,6 +192,50 @@ function loadComById(id) {
         }
     });
     return com;
+}
+
+/*
+ * Charge un sensor à partir de son id
+ * @param {type} id
+ * @returns {unresolved}
+ */
+function loadSensorById(id) {
+    var sensor;
+    jQuery.ajax({
+        type: 'GET',
+        async: false,
+        url: "http://" + serverAddress + ":4242/api/sensors_data/" + id,
+        success: function(data) {
+            console.dir(data.payload[0]);
+            sensor = data.payload[0];
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+    return sensor;
+}
+
+/*
+ * Charge un sensor à partir de son id
+ * @param {type} id
+ * @returns {unresolved}
+ */
+function loadMesureById(id) {
+    var mesure;
+    jQuery.ajax({
+        type: 'GET',
+        async: false,
+        url: "http://" + serverAddress + ":4242/api/mesure/" + id,
+        success: function(data) {
+            console.dir(data.payload[0]);
+            mesure = data.payload[0];
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+    return mesure;
 }
 
 
@@ -329,11 +373,9 @@ function buildVotePanelQueue(idEntity) {
     var txtActualAvg = "Estimation queue";
     var html = "<div id=\"votePanel\">";
     html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
-    html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Quasiment pas  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Un peu  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Ca va  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"4\" onclick=\"activeBtn()\"> Pas mal  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"5\" onclick=\"activeBtn()\"> Abusé gros!<br/>";
+    html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Un peu  ";
+    html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Moyen  ";
+    html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Beaucoup  ";
     html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"makeVote('" + idEntity + "')\" disabled>Alerte les autres :)</button>";
     html += "</div>";
 
@@ -392,10 +434,25 @@ function buildPanel(objElem) {
     buildTab("Description", descriptionContent, indexTab);
 
     //Onglets Items
-    objElem.items.forEach(function(itemId, index) {
+    objElem.items.forEach(function(itemId) {
         var itemLoaded = loadItemById(itemId);
+        
         if (itemLoaded.show !== false) {
-            buildTab(itemLoaded.name, itemLoaded.description, indexTab);
+            var itemContent = itemLoaded.description;
+            console.log("lg sensor data array : " + itemLoaded.Sensors_data.length);
+            if (itemLoaded.Sensors_data.length > 0) {
+                itemContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
+                itemContent += "<div>";
+                //Sensors
+                itemLoaded.Sensors_data.forEach(function(sensorId) {
+                    var sensorLoaded = loadSensorById(sensorId);
+                    var mesure = loadMesureById(sensorLoaded.mesure[0]);
+                    itemContent += sensorLoaded.type + " : " + mesure + "<br>";
+                });
+                itemContent += "</div>";
+                itemContent += "</div>";
+            }
+            buildTab(itemLoaded.name, itemContent, indexTab);
         }
     });
 
