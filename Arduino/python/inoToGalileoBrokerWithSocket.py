@@ -10,36 +10,31 @@ broker="localhost"
 port=1883
 sensor="tempdetector"
 topic="temperature"
+HOST = ''
+PORT = 8888 
 
 
-
-a = threading.Thread(None, sendValueToGalileoBroker, None, (200,), {'nom':'thread a'}) 
-b = threading.Thread(None, affiche, None, (200,), {'nom':'thread b'}) 
-a.start() 
-b.start()
 
 #Thread number one which is suppose to send to the broker the value of the ino sketch
-def sendValueToGalileoBroker(nb, nom=''):
-
-
+def sendValueToGalileoBroker(mqttc):
 	tempbool = False;
-	mqttc = mosquitto.Mosquitto(sensor)
-	#connect to broker
-	mqttc.connect(broker,port,60)
+	
 	p = pexpect.spawn("sh",["/etc/init.d/clloader.sh"],timeout=None,logfile=None)
 	line = p.readline()
 	#line = p.readline()
 	#show that the sh has been launched
 	print "sh has been launched "+line
-	while line:	
+	while line:
+                print line
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.connect((HOST, PORT))
+                print "let's goooo trueee"
 		while True:
 			#receive "Temp"	
-			data = s.recv(128)
+			data = s.recv(32)
 			str = data.split(' ')
-			print str[2]
-			mqttc.publish(topic,str[2])
+			print data
+			#mqttc.publish(topic,str[2])
 			if tempbool :
 				print "allume LED"
 				s.send('H')
@@ -51,10 +46,18 @@ def sendValueToGalileoBroker(nb, nom=''):
 
 
 #Thread number two which is suppose watching the action from the openhab
-def listenMessageFromCentralBroker(nb, nom=''):
+def listenMessageFromCentralBroker(mqttc):
+    print "LOADDD"
 	
 
 
 
-
+if __name__ == "__main__":
+    mqttc = mosquitto.Mosquitto(sensor)
+    #connect to broker
+    mqttc.connect(broker,port,60)
+    a = threading.Thread(None, listenMessageFromCentralBroker, None, (mqttc,), {}) 
+    b = threading.Thread(None, sendValueToGalileoBroker, None, (mqttc,), {}) 
+    a.start() 
+    b.start()
                                                                                                                                                                            
