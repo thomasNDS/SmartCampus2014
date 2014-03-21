@@ -199,29 +199,34 @@ eventUjfClient.on('message', function(topic, message) {
 /////// SENSORS ////////////
 ////////////////////////////
 
-/*var sensor = mqtt.createClient(1883, 'localhost');
+var sensor = mqtt.createClient(1883, 'localhost');
 sensor.subscribe('sensor');
 sensor.on('message', function(topic, message) {
     //The message follow the regex identifiant@value
     tabInfo = message.split("@");
-    //Create the mesure form the sensor
-    var newMesure = new MesureModel({
-        value: tabInfo[1]
-    });
-    Sensors_dataModel.findOne({ identifiant : tabInfo[0]}, function(err, sensor) {
-        if (err){
-            //console.log(DB failed);
+    Sensors_dataModel.findOne({identifiant: tabInfo[0]}, function(err, sensorFind) {
+        if (err) {
+            console.log("DB failed");
         }
-        if (sensor) {
+        if (sensorFind != null) {
+            //Create the mesure form the sensor
+            var newMesure = new MesureModel({
+                value: tabInfo[1]
+            });
             newMesure.save(function(err) {
-                if (!err){  
-                    sensor.mesure = [newMesure._id];
-                    sensor.save(function(err){
-                        if (err)
-                            //console.log("failed to save sensor in db");
+                if (err) {
+                    //Console.log("failed to add mesure to the db");
+                }
+                else{
+                    //sensorFind.mesure = [newMesure._id];
+                    sensorFind.save(function(err) {
+                        if (err){
+                             //console.log("failed to save sensor in db");
+                        }
+                               
                     });
                 }
             });
         }
     });
-});*/
+});
