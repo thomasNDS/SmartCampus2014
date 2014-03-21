@@ -340,7 +340,7 @@ function refreshEntity(entityId) {
             isFound = true;
             indexEntity = i;
         }
-        i = i+4;
+        i = i + 4;
     }
     //Mise a jour de l'entite dans le tableau
     jQuery.ajax({
@@ -429,7 +429,9 @@ function buildPanel(objElem) {
 
     //Onglet Description
     var descriptionContent = objElem.description;
-    descriptionContent += buildVotePanelQueue(objElem._id);
+    if (objElem.typeCrowdsourcing === "queue") {
+        descriptionContent += buildVotePanelQueue(objElem._id);
+    }
     descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
 
     buildTab("Description", descriptionContent, indexTab);
@@ -437,7 +439,7 @@ function buildPanel(objElem) {
     //Onglets Items
     objElem.items.forEach(function(itemId) {
         var itemLoaded = loadItemById(itemId);
-        
+
         if (itemLoaded.show !== false) {
             var itemContent = itemLoaded.description;
             if (itemLoaded.Sensors_data.length > 0) {

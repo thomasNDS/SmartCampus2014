@@ -346,7 +346,7 @@ License MIT-->
                             "name": "BIBLIOTHEQUES UNIVERSITAIRES",
                             "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
                             "type": "arretTram",
-                            "infos": [],
+                            "infos": []
 //                            "items": [data.payload._id]
                         }, function(data, textStatus, jqXHR) {
                             $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
@@ -373,7 +373,7 @@ License MIT-->
                             "infos": [],
                             "items": [data.payload._id],
                             "latitude": 45.188408,
-                            "longitude": 5.77361,
+                            "longitude": 5.77361
                         }, function(data, textStatus, jqXHR) {
                             $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                         });
@@ -509,6 +509,7 @@ License MIT-->
                         "items": [diderot17_id, diderot18_id, diderot19_id, diderot46_id],
                         "latitude": 45.191005,
                         "longitude": 5.768699,
+                        "typeCrowdsourcing": "queue"
                     }, success: function(data, textStatus, jqXHR) {
                         condillac4_id = data.payload._id;
                         if (data.payload.name) {
@@ -520,7 +521,7 @@ License MIT-->
                     async: false,
                     cache: false
                 });
-                console.log(diderot17_id + "   " + diderot18_id + "   " + diderot19_id + "   " + diderot46_id)
+                console.log(diderot17_id + "   " + diderot18_id + "   " + diderot19_id + "   " + diderot46_id);
                 ///////////////////////////////////////////////CONDILLAC/////////////////////////////////////////
                 var condillac4_id = "";
                 jQuery.ajax({
@@ -552,6 +553,7 @@ License MIT-->
                         "type": "Restaurant Universitaire",
                         "latitude": 45.188408,
                         "longitude": 5.77361,
+                        "typeCrowdsourcing": "queue"
                     }, success: function(data, textStatus, jqXHR) {
                         barnave3_id = data.payload._id;
                         if (data.payload.name) {
@@ -628,6 +630,7 @@ License MIT-->
                         "items": [barnave24_id, barnave13_id, barnave3_id],
                         "latitude": 45.190642,
                         "longitude": 5.760729,
+                        "typeCrowdsourcing": "queue"
                     }, success: function(data, textStatus, jqXHR) {
                         if (data.payload.name) {
                             $("#ru").html($("#ru").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
