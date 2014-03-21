@@ -199,7 +199,7 @@ eventUjfClient.on('message', function(topic, message) {
 /////// SENSORS ////////////
 ////////////////////////////
 
-var sensor = mqtt.createClient(1883, 'localhost');
+/*var sensor = mqtt.createClient(1883, 'localhost');
 sensor.subscribe('sensor');
 sensor.on('message', function(topic, message) {
     //The message follow the regex identifiant@value
@@ -224,4 +224,4 @@ sensor.on('message', function(topic, message) {
             });
         }
     });
-});
+});*/
