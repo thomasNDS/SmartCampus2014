@@ -37,6 +37,7 @@ app.configure(function() {
     app.use(app.router);
 
     app.use(express.methodOverride());
+    app.use(express.static(path.join(__dirname, "/public")));
     app.use(express.static(path.join(__dirname, "/views")));
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 

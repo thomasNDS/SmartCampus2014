@@ -239,3 +239,8 @@ body {
 .moreBtn > .btn, .commentBtn > .btn {
     font-size: 1.1em;
 }
+
+#sensorsDiv{
+    border-top-style: solid;
+    border-top-width: thin;
+}
