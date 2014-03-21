@@ -31,9 +31,87 @@ function loadEntities() {
             for (var i = 0; i < entities.payload.length; i++) {
                 entitiesArray[i] = entities.payload[i];
             }
+            sortEntityArray();
 //            return entitiesArray;
         }
     });
+}
+
+/*
+ * Fonction pour arranger le tableau d'entites a notre sauce
+ * @returns {undefined}
+ */
+function sortEntityArray() {
+    var arraySorted = new Array();
+    var entityIndex = null;
+    var entity = null;
+    
+    //UPMF -> 0
+    entityIndex = getIndexElementByName("UPMF");
+    entity = entitiesArray[entityIndex];
+    arraySorted[0] = entity;
+    arrayUnset(entitiesArray, entity);
+    
+    //Polytech Grenoble -> 4
+    entityIndex = getIndexElementByName("Polytech Grenoble");
+    entity = entitiesArray[entityIndex];
+    arraySorted[4] = entity;
+    arrayUnset(entitiesArray, entity);
+    
+    //IAE -> 8
+    entityIndex = getIndexElementByName("IAE");
+    entity = entitiesArray[entityIndex];
+    arraySorted[8] = entity;
+    arrayUnset(entitiesArray, entity);
+    
+    //Université Stendhal -> 12
+    entityIndex = getIndexElementByName("Université Stendhal");
+    entity = entitiesArray[entityIndex];
+    arraySorted[12] = entity;
+    arrayUnset(entitiesArray, entity);
+    
+    //BIBLIOTHEQUES UNIVERSITAIRES -> 16
+    entityIndex = getIndexElementByName("BIBLIOTHEQUES UNIVERSITAIRES");
+    entity = entitiesArray[entityIndex];
+    arraySorted[16] = entity;
+    arrayUnset(entitiesArray, entity);
+    
+    //CONDILLAC UNIVERSITAIRES -> 20
+    entityIndex = getIndexElementByName("CONDILLAC UNIVERSITAIRES");
+    entity = entitiesArray[entityIndex];
+    arraySorted[20] = entity;
+    arrayUnset(entitiesArray, entity);
+    
+    entitiesArray = arraySorted;
+
+}
+
+/*
+ * Retourne l'index d'un element dans le tableau entitesArray
+ * @param {type} name
+ * @returns {Number}
+ */
+function getIndexElementByName(name) {
+    var found = false;
+    var i = 0;
+    while (i < entitiesArray.length && !found) {
+        if (entitiesArray[i].name === name){
+            found = true;
+        } else {
+            i++;
+        }
+    }
+    return i;
+}
+
+/*
+ * Fonction pour enlever un element d'un tableau
+ * @param {type} array
+ * @param {type} value
+ * @returns {undefined}
+ */
+function arrayUnset(array, value){
+    array.splice(array.indexOf(value), 1);
 }
 
 /*
