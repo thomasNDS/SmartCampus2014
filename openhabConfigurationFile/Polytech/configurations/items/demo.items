@@ -1,0 +1,13 @@
+/* Polytech */
+
+Number Humidity_Polytech_DD 		"Humidite 20 [%.1f %]" <humidite> (DD_Bureaux_PolytechGrenoble)  {mqtt="<[mosquitto:temperature:state:default]"}
+
+Group PolytechGrenoble
+Group Bureaux_PolytechGrenoble (PolytechGrenoble)
+
+Group DD_Bureaux_PolytechGrenoble "Bureau Mr. Donsez" <idea> (Bureaux_PolytechGrenoble)
+
+/*Fin Polytech */
+
+
+

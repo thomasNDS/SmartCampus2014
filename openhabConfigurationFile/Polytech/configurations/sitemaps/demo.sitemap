@@ -1,0 +1,13 @@
+sitemap demo label="Polytech'Grenoble" 
+{
+	Frame label="Bureaux"  {
+			Text label="Deuxième Etage" {
+				Text item=DD_Bureaux_PolytechGrenoble  {
+				Frame {
+					Text item=Humidity_Polytech_DD 
+				}
+			}
+		}
+	}
+}
+

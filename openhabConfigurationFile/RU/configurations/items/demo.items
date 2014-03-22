@@ -1,0 +1,12 @@
+/* RU */
+
+Number Humidity_RU_Framboisiere 		"Humidite 20 [%.1f %]" <humidite> (RestaurantUniv)  {mqtt="<[mosquitto:temperature:state:default]"}
+
+Group RestaurantUniv
+Group FF_RestaurantUniv (RestaurantUniv)
+
+Group Framboisiere_FF_RestaurantUniv "Framboisière" <cheeseburger> 	(FF_RestaurantUniv)
+
+/*Fin RU */
+
+
