@@ -1,0 +1,11 @@
+sitemap demo label="Main Menu"
+{
+	Frame label="Eve intérieur"  {
+		Text label="Salle principale" icon="firstfloor" {
+			Frame {
+				Switch item=Speaker_Eve_MainRoom label="Ambiance"
+			}
+		}
+	}
+	
+}

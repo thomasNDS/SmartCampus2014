@@ -1,0 +1,13 @@
+sitemap demo label="Restaurant Universitaire" 
+{
+	Frame label="Barnave"  {
+		Text item=Framboisiere_FF_RestaurantUniv  {
+			Frame {
+				Text item=Humidity_RU_Framboisiere 
+			}
+		}
+	}
+	
+}
+
+

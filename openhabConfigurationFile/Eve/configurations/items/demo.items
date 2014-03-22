@@ -1,0 +1,13 @@
+/* Eve */
+Switch Speaker_Eve_MainRoom 		"Salle principale" 		(Eve_MainRoom, LightsSpeaker) {mqtt=">[mosquitto:LED:command:ON:1],>[mosquitto:LED:command:OFF:0]"}
+
+
+Group All
+Group MainRoom  (All)
+
+Group Eve_MainRoom 	"Ambiance" 	(MainRoom)
+
+/*Fin Eve */
+
+
+
