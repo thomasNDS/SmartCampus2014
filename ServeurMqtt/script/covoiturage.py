@@ -20,6 +20,10 @@ if len(sys.argv) > 4:
 def __unicode__(self):
    return unicode(self.title) or u''
 
+# Return a formatted trip item
+def item(label, value):
+    return "<div class=\"row\"><div class=\"col-sm-1 label label-default\">"+label+"</div><div class=\"col-sm-11\">" + value + "</div></div>"
+
 site = "www.covoiturage.fr"
 
 #Access to our server and get ids of restaurants
@@ -42,7 +46,8 @@ for trip in alltrip:
     title = title.replace('href="', 'href="http://'+ site )
     title = title.replace('src="', 'src="http://'+site)
 
-    user = trip.find("div", attrs = {'class':'user-info'})
+    user = trip.find("div", attrs = {'class':'user-info'}).h2.string
+    age = str(trip.find("div", attrs = {'class':'user-info'})).split("</h2>")[1].strip().split("<br")[0]
     description = trip.find("div", attrs = {'class':'description span5'})
     stopFrom = description.find("span", attrs = {'class':'from trip-roads-stop'})
     stops = description.findAll("span", attrs = {'class':'trip-roads-stop'})
@@ -58,23 +63,24 @@ for trip in alltrip:
     unit = rent.find("span", attrs = {'class':'priceUnit'}).string
     avail = str(trip.find("div", attrs = {'class':'availability'}).strong) + " " + str(trip.find("div", attrs = {'class':'availability'}).span)
     
-    result = "<div class=\"jumbotron container-fluid\">"
-    result += "<div class=\"row\"><div class=\"col-sm-1 label label-primary\">Départ</div>"
-    result += "<div class=\"col-sm-2\">" + str(geofrom) + "</div></div>"
-    result += "<div class=\"row\"><div class=\"col-sm-1 label label-primary\">Arrivée</div>"
-    result += "<div class=\"col-sm-2\">" + str(geoto) + "</div></div>"
-    result += "<div class=\"row\"><div class=\"col-sm-1 label label-primary\">Véhicule</div>" 
-    result += "<div class=\"col-sm-2\">" + str(vehicle) + "</div></div>"
-    result += "<div class=\"row\"><div class=\"col-sm-1 label label-primary\">Prix</div>"
-    result += "<div class=\"col-sm-2\">" + str(price) + " " + str(unit) + "</div></div>"
-    result += "<div class=\"row\"><div class=\"col-sm-1 label label-primary\">Disponibilité</div>"
-    result += "<div class=\"col-sm-2\">" + str(avail) + "</div></div>"
-    result += "<div class=\"row\"><div class=\"col-sm-2\"><a href=\"" + str(link) + "\">Voir l'annonce</a></div></div></div>"
+#    result = "<div class=\"jumbotron container-fluid\">"
+    result = "<div class=\"panel panel-primary\">"
+    result += "<div class=\"panel-heading\"><h4>" + str(user) + " (" + age + ")" + "</h4></div>"
+    result += "<div class=\"panel-body\">"
+    result += item("Départ", str(geofrom))
+    result += item("Arrivée", str(geoto))
+    result += item("Véhicule", str(vehicle).replace("Véhicule : ", ""))
+    result += item("Prix", str(price) + " " + str(unit))
+    result += item("Disponibilité", str(avail))
+    result += "<div class=\"row\"><div class=\"col-sm-4\"><a href=\"" + str(link) + "\"><button type=\"button\" class=\"btn btn-default btn-sm\">Voir l'annonce</button></a></div></div>"
+    result += "</div></div>"
     
     result = result.replace("<strong>", "")
     result = result.replace("</strong>", "")
     result = result.replace("<dt>", "")
     result = result.replace("</dt>", "")
+    result = result.replace("None", "")
     
     print result
     
+
