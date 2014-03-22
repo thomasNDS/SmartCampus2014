@@ -91,7 +91,7 @@ app.post('/vote/vote_ru2', routes.crowdsourcing.voteRu2);
 app.post('/add_comment', routes.add_comment);
 
 app.post('/covoiturage', function(req, res) {
-    var dataRes = "OK";
+    var dataRes = "";
     var spawn = require('child_process').spawn,
             pythonProcess = spawn('python', ['script/covoiturage.py', req.body.destination, req.body.day, req.body.month, req.body.year]);
 
@@ -106,7 +106,7 @@ app.post('/covoiturage', function(req, res) {
 
     pythonProcess.on('close', function(code) {
         console.log('child process exited with code ' + code);
-        res.send("" + dataRes + req.body.destination);
+        res.send("" + dataRes);
     });
 });
 

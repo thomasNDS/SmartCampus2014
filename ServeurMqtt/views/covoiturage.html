@@ -26,7 +26,6 @@ menu template for interface
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">
-                        Strasbourg
                         <input id="dest" type="text" class="form-control" placeholder="Destination">
                     </div>
                 </div>
@@ -39,26 +38,24 @@ menu template for interface
             <div class="col-sm-offset-1">
                 <button id="send" onclick="searchTrips();" class="btn btn-primary">Search</button>
             </div>
-            <div class="row">
-                <h2>Results</h2>
-                <!--<img src="images/ajax-loader.gif" alt="Chargement...">-->
-                <div id="show"></div>
+            <div id="show" class="row">
+                <div class="col-sm-4"><img src="images/ajax-loader.gif" alt="Chargement..."></div>
             </div>
         </div>
 
         <script>
-//            jQuery.post("http://localhost:4242/covoiturage", {
-//                "destination": "Paris",
-//                "day": "23",
-//                "month": "3",
-//                "year": "2014"
-//            }, function(data, textStatus, jqXHR) {
-//                console.log("Post response:");
-//                console.dir(data);
-//                console.log(textStatus);
-//                console.dir(jqXHR);
-//                $("#show").html(data);
-//            });
+            jQuery.post("http://localhost:4242/covoiturage", {
+                "destination": "Paris",
+                "day": "23",
+                "month": "3",
+                "year": "2014"
+            }, function(data, textStatus, jqXHR) {
+                console.log("Post response:");
+                console.dir(data);
+                console.log(textStatus);
+                console.dir(jqXHR);
+                $("#show").html(data);
+            });
 
             function searchTrips() {
                 $("#show").html("<div class=\"row\"><div class=\"col-sm-4\"><img src=\"images/ajax-loader.gif\" alt=\"Chargement...\"></div></div>");
