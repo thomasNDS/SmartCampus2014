@@ -14,7 +14,6 @@ and open the template in the editor.
         <link href="css/authentication.css" rel="stylesheet" type="text/css">
         <!--<link href="css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css">-->
         <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
-        <script type="text/javascript" src="js/authentication.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
@@ -23,13 +22,10 @@ and open the template in the editor.
                 <div class="row ">
                     <div class="center span4 well">
                         <legend>Merci de s'identifier</legend>
-                        <form onSubmit="authentify()" accept-charset="UTF-8">
-                            <input type="text" id="username"  name="nom d'utilisateur" placeholder="Nom d'utilisateur" />
-                            <input type="password" id="password" name="mot de passe" placeholder="Mot de passe" />
-                            <label class="checkbox">
-                                <input type="checkbox" name="remember" value="1" /> Se souvenir de moi
-                            </label>
-                            <button type="submit"  name="submit" class="btn btn-primary btn-block">Se connecter</button>
+                        <form method="post" action="/loginme" accept-charset="UTF-8">
+                            <input type="text" id="username"  name="username" placeholder="Nom d'utilisateur" />
+                            <input type="password" id="password" name="password" placeholder="Mot de passe" />
+                            <button type="submit"  value="Login" class="btn btn-primary btn-block">Se connecter</button>
                         </form>
                     </div>
                 </div>

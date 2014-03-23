@@ -33,7 +33,9 @@ app.configure(function() {
     app.use(express.bodyParser());
 
     app.use(express.cookieParser('S3CRE7'));
-    app.use(express.cookieSession());
+    //app.use(express.cookieSession()); //utilité??? --> THOMAS??
+    app.use(express.session());
+    
     app.use(app.router);
 
     app.use(express.methodOverride());
@@ -81,8 +83,9 @@ app.get('/api', routes.help);
 app.get('/help', routes.help);
 app.get('/', routes.index);
 app.get('/is-init', routes.test_init);
+
 //routes for authentication
-//app.post('/login', routes.authenticate.login);
+app.post('/loginme', routes.authenticate.login);
 
 //app.get('/vote/vote_ruG', routes.crowdsourcing.voteRuGet);
 app.post('/vote/moyenne_ru', routes.crowdsourcing.getRu);
@@ -119,7 +122,7 @@ function restrict(req, res, next) {
         next();
     } else {
         req.session.error = 'Access denied!';
-        res.redirect('/login');
+        res.redirect('/authentication.ejs');
     }
 }
 

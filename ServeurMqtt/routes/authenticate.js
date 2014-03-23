@@ -1,21 +1,38 @@
 
-exports.login = function(req, res) {
-        var username = request.body.username;
+/*exports.login = function(req, res) {
+ var username = request.body.username;
+ var password = request.body.password;
+ AdministratorModel.findOne({'login': username, 'password': password}, 'name', function(err, admin) {
+ if (err)
+ return handleError(err);
+ if (admin != null) {
+ req.session.admin = admin;
+ console.log("success");
+ } else {
+ req.session.admin = null;
+ console.log("fail");
+ }
+ res.send('admin: ' + req.session.admin);
+ });
+ res.json(true);
+ 
+ };*/
+
+exports.login = function(request, response) {
+    var username = request.body.username;
     var password = request.body.password;
-    
-    AdministratorModel.findOne({'login': username, 'password': password}, 'name', function(err, admin) {
+    AdministratorModel.findOne({'login': username, 'password': password}, 'username', function(err, admin) {
         if (err)
             return handleError(err);
         if (admin != null) {
-            req.session.admin = admin;
-            console.log("success");
+            request.session.regenerate(function() {
+                request.session.user = username;
+                response.redirect('/restricted');
+            });
         } else {
-            req.session.admin = null;
-            console.log("fail");
+            response.redirect('authentication.html');
         }
-        res.send('admin: ' + req.session.admin);
     });
-    res.json(true);
 
 };
 
