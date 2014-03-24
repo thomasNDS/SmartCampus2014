@@ -608,19 +608,44 @@ function buildPanel(objElem) {
         var itemLoaded = loadItemById(itemId);
 
         if (itemLoaded.show !== false) {
-            var itemContent = itemLoaded.description;
+            //DESCRIPTION
+            var itemContent = itemLoaded.description + "<br>";
+
+            // INFOS
+            var infoContent = "";
+            infoContent += "<div id=\"infoDiv\">";
+            itemLoaded.infos.forEach(function(info, index) {
+                if (info !== "") {
+                    var infoDay = info.split(" ");
+                    var day = infoDay[0];
+                    var hour = infoDay [1];
+                    var dateTiretString = infoDay[2];
+                    var date = dateTiretString.split("--")[0];
+                    var meal = info.split("--");
+                    var mealToShow = meal[1];
+                    infoContent += "<br><div class=\"mealDiv\"><b>" + day + " " + hour + " " + date + " </b> : <br>" + mealToShow + "</div>";
+                }
+            });
+            infoContent += "</div>";
+
+            itemContent += infoContent;
+
+            // SENSORS
+            var sensorContent = "";
             if (itemLoaded.Sensors_data.length > 0) {
-                itemContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
-                itemContent += "<div>";
-                //Sensors
+                sensorContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
+                sensorContent += "<div>";
+
                 itemLoaded.Sensors_data.forEach(function(sensorId) {
                     var sensorLoaded = loadSensorById(sensorId);
                     var mesure = loadMesureById(sensorLoaded.mesure[0]);
-                    itemContent += sensorLoaded.type + " : " + mesure.value + "<br>";
+                    sensorContent += sensorLoaded.type + " : " + mesure.value + "<br>";
                 });
-                itemContent += "</div>";
-                itemContent += "</div>";
+                sensorContent += "</div>";
+                sensorContent += "</div>";
             }
+            itemContent += sensorContent;
+
             buildTab(itemLoaded.name, itemContent, indexTab);
         }
     });
