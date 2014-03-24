@@ -475,6 +475,72 @@ function buildVotePanelQueue(idEntity) {
     return html;
 }
 
+/*
+ * Construction du panel Horaire
+ * @param {type} arrayHours
+ * @returns {String}
+ */
+function buildSchedulePanel(arrayHours) {
+    var txt = "Horaires théoriques : <br><br>";
+    var arrayToSeyssin = arrayHours[0];
+    var arrayToGieres = arrayHours[1];
+    var actualDate = new Date();// (new Date()).getMinutes() + 60*(new Date()).hours();
+    var actualDateMin = actualDate.getHours() * 60 + actualDate.getMinutes();
+
+    var hoursSeyssin = [];
+    var hoursGieres = [];
+
+    var isFound = false;
+    var i = 0;
+
+    //Vers Sessyn//
+    while (i < arrayToSeyssin.length && !isFound) {
+        if (arrayToSeyssin[i] > actualDateMin) {
+            isFound = true;
+        } else {
+            i++;
+        }
+    }
+    var cptHours = 0;
+    while (i < arrayToSeyssin.length && cptHours < 5) {
+        hoursSeyssin[cptHours] = arrayToSeyssin[i] - actualDateMin;
+        i++;
+        cptHours++;
+    }
+
+    isFound = false;
+    i = 0;
+
+    //Vers Gieres //
+    while (i < arrayToGieres.length && !isFound) {
+        if (arrayToGieres[i] > actualDateMin) {
+            isFound = true;
+        } else {
+            i++;
+        }
+    }
+    cptHours = 0;
+    while (i < arrayToGieres.length && cptHours < 5) {
+        hoursGieres[cptHours] = arrayToGieres[i] - actualDateMin;
+        i++;
+        cptHours++;
+    }
+
+    txt += "<div>";
+    txt += "<b>Direction Seyssins Le Prisme :</b> <br>";
+    hoursSeyssin.forEach(function(hour) {
+        txt += hour + " min - ";
+    });
+    txt += "<br>";
+    txt += "<b>Direction Gières :</b> <br>";
+    hoursGieres.forEach(function(hour) {
+        txt += hour + " min - ";
+    });
+    txt += "</div>";
+
+    return txt;
+}
+
 function buildPanelByIndex(indexElem) {
     buildPanel(entitiesArray[indexElem]);
 }
@@ -521,7 +587,7 @@ function buildPanel(objElem) {
 
     //Onglet Description
     var descriptionContent = "<div id=\"descriptionContent\">" + objElem.description + "</div>";
-    
+
     if (objElem.typeCrowdsourcing === "queue") {
         descriptionContent += buildVotePanelQueue(objElem._id);
     }
@@ -529,9 +595,11 @@ function buildPanel(objElem) {
     buildTab("Description", descriptionContent, indexTab);
 
     //Onglet Horaire
-    var scheduleContent = objElem.schedule;
-
-    if (scheduleContent.length !== 0) {
+    var scheduleContent = "";
+    var schedule = objElem.schedule;
+    if (schedule.length !== 0) {
+        var arraySchedule = JSON.parse(schedule);
+        scheduleContent = buildSchedulePanel(arraySchedule);
         buildTab("Horaire", scheduleContent, indexTab);
     }
 
