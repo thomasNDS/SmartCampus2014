@@ -37,8 +37,6 @@ function build_menu() {
                                 "<div class=\"tab-pane\" id=\"entity_"
                                 + name
                                 + "\">"
-                                + "Contenu de "
-                                + data.payload.name
                                 + "</div>"
                                 );
                     });
@@ -80,6 +78,31 @@ function displayLeftPanel(link) {
     });
 }
 
+function get_sensors() {
+    if (current_entity) {
+        $.getJSON('http://localhost:4242/api/entity/' + current_entity,
+                function(data) {
+                    var items = data.payload.items;
+                    $(items).each(function(index, value) {
+                        $.getJSON('http://localhost:4242/api/item/' + value,
+                                function(item) {
+                                    $("#div_sensors").append("<p>" + item.payload.name + "</p><table class=\"table\"><tbody id=\"tbody_" + item.payload._id + "\"></tbody></table>");
+                                    $(item.payload.Sensors_data).each(function(index, value) {
+                                        console.log(value);
+                                        $.getJSON('http://localhost:4242/api/sensors_data/' + value,
+                                                function(sensor) {
+                                                    console.log(sensor);
+                                                    $("#tbody_" + item.payload._id).append("<tr><td>" + sensor.payload.identifiant + "</td>"
+                                                    +"<td><a href=\"#\" title=\"Modifier\"><i class=\"glyphicon glyphicon-pencil\"></i></a></td>"
+                                                    +"<td><a href=\"#\" title=\"Supprimer\"><i class=\"glyphicon glyphicon-remove\"></i></a></td></tr>");
+                                                });
+                                    });
+                                });
+                    });
+                });
+    }
+}
+
 function get_comments() {
     $("#div_comments").html("");
     if (current_entity) {
@@ -87,7 +110,6 @@ function get_comments() {
                 function(data) {
                     var comments = data.payload.comments;
                     $(comments).each(function(index, value) {
-                        console.log('value ' + value);
                         $.getJSON('http://localhost:4242/api/comment/' + value,
                                 function(com) {
                                     $("#div_comments").append("<blockquote>" + com.payload.value + "</blockquote>");
