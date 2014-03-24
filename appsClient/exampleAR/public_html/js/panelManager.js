@@ -718,3 +718,27 @@ function showModalParameters(htmlNodeToAppend) {
             "</div>";
     $(htmlNodeToAppend).append(modalParam);
 }
+
+function showModalAbout(htmlNodeToAppend) {
+    var modalAbout = "<div id=\"popAbout\" class=\"modal hide fade\">" +
+            "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
+            "<h3 style=\"text-align:center\">A propros</h3>" +
+            "</div>" +
+            "<div id=\"popUpContent\" class=\"modal-body\">" +
+            "Voulez-vous l'afficher ?" +
+            "</div>" +
+            "</div>";
+    $(htmlNodeToAppend).append(modalAbout);
+}
+
+function showModalHelp(htmlNodeToAppend) {
+    var modalHelp = "<div id=\"popHelp\" class=\"modal hide fade\">" +
+            "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
+            "<h3 style=\"text-align:center\">Aide</h3>" +
+            "</div>" +
+            "<div id=\"popUpContent\" class=\"modal-body\">" +
+            "Voulez-vous l'afficher ?" +
+            "</div>" +
+            "</div>";
+    $(htmlNodeToAppend).append(modalHelp);
+}

@@ -40,8 +40,8 @@
                     <div class="container-fluid"> 
                         <ul class="nav">
                             <li><a href="parameters.html" data-target="#popParam" data-toggle="modal"><i class="icon-white fa fa-cog logoFont"></i> <!--Paramètres--></a></li>
-                            <li><a href="#"><i class="icon-white fa fa-info-circle logoFont"></i> <!--Aide--> </a></li>
-                            <li><a href="#"><i class="icon-white fa fa-question-circle logoFont"></i> <!--Aide--> </a></li>
+                            <li><a href="about.html" data-target="#popAbout" data-toggle="modal"><i class="icon-white fa fa-info-circle logoFont"></i> <!--A Propos--> </a></li>
+                            <li><a href="help.html" data-target="#popHelp" data-toggle="modal"><i class="icon-white fa fa-question-circle logoFont"></i> <!--Aide--> </a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="icon-white fa fa-plus-square logoFont">
@@ -110,6 +110,8 @@
             buildEmptyPanel("#pageContent");
             buildEmptyPanel("#mainContent");
             showModalParameters('#mainContent');
+            showModalAbout('#mainContent');
+            showModalHelp('#mainContent');
         </script>
     </body>
 </html>
