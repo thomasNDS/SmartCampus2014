@@ -94,6 +94,8 @@ app.post('/vote/vote_ru2', routes.crowdsourcing.voteRu2);
 
 app.post('/add_comment', routes.add_comment);
 
+app.get('/admin', routes.adminapp.adminapp);
+
 app.post('/covoiturage', function(req, res) {
     var dataRes = "";
     var spawn = require('child_process').spawn,

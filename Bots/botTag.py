@@ -37,7 +37,7 @@ data = response.read()			            # get the html as a string '<html >...</htm
 try:
 #if 1:
     decoded = json.loads(data)
-    ids = [3,4,5,6]
+    ids =[5]#[3,4,5,6]
 
 
     for id in ids:
