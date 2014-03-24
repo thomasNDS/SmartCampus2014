@@ -30,4 +30,4 @@ exports.whoami = function(request, res) {
 //        console.log("whoiam-no");
         res.send("personne");
     }
-}
+};
