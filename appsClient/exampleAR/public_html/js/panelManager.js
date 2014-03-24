@@ -409,6 +409,16 @@ function closePanel() {
 }
 
 /*
+ * Met la limite height pour affichage contenu
+ * @returns {undefined}
+ */
+function changeMaxHeightContentTabs(parentNode) {
+        var height = parseInt($(parentNode).css("height"));
+        var maxHeightContentTab = height * (65 / 100);
+        $("#contentTabs").css("max-height", maxHeightContentTab);
+    }
+
+/*
  * Fonction appelé lors de la construction du panel de vote, type Queue
  * @param {type} objElem
  * @returns {undefined}
@@ -559,6 +569,7 @@ function buildEmptyPanel(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(panel);
+    changeMaxHeightContentTabs("#map-canvas");
 }
 
 /*
