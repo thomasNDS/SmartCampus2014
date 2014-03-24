@@ -5,6 +5,7 @@
  */
 
 
+// campus boundaries
 var area = {
     sw: {lat: 45.18361, lon: 5.750477},
     ne: {lat: 45.20112086, lon: 5.78054667},
@@ -18,6 +19,7 @@ var ICONS = {
     "Ecole d'ingénieur": IMG_DIR + "school.png",
     "Ecole": IMG_DIR + "school.png",
     "Tramway": IMG_DIR + "tramway.png",
+    "Tram": IMG_DIR + "tramway.png",
     "Commerce": IMG_DIR + "store.png",
     "Restaurant Universitaire": IMG_DIR + "food.png"
 };
@@ -32,7 +34,7 @@ function initialize() {
 
     // bounds of the desired area
     var allowedBounds = new google.maps.LatLngBounds(// limites du campus
-            new google.maps.LatLng(area.sw.lat, area.sw.lat),
+            new google.maps.LatLng(area.sw.lat, area.sw.lon),
             new google.maps.LatLng(area.ne.lat, area.ne.lon)
             );
     var boundLimits = {

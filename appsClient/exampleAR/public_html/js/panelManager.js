@@ -409,6 +409,16 @@ function closePanel() {
 }
 
 /*
+ * Met la limite height pour affichage contenu
+ * @returns {undefined}
+ */
+function changeMaxHeightContentTabs(parentNode) {
+        var height = parseInt($(parentNode).css("height"));
+        var maxHeightContentTab = height * (65 / 100);
+        $("#contentTabs").css("max-height", maxHeightContentTab);
+    }
+
+/*
  * Fonction appelé lors de la construction du panel de vote, type Queue
  * @param {type} objElem
  * @returns {undefined}
@@ -481,7 +491,7 @@ function buildPanel(objElem) {
     buildTab("Description", descriptionContent, indexTab);
 
     //Onglet Horaire
-    var scheduleContent = objElem.shedule;
+    var scheduleContent = objElem.schedule;
 
     if (scheduleContent.length !== 0) {
         buildTab("Horaire", scheduleContent, indexTab);
@@ -559,6 +569,7 @@ function buildEmptyPanel(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(panel);
+    changeMaxHeightContentTabs("#map-canvas");
 }
 
 /*
