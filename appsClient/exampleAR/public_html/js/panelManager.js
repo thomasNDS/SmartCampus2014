@@ -491,7 +491,7 @@ function buildPanel(objElem) {
     buildTab("Description", descriptionContent, indexTab);
 
     //Onglet Horaire
-    var scheduleContent = objElem.shedule;
+    var scheduleContent = objElem.schedule;
 
     if (scheduleContent.length !== 0) {
         buildTab("Horaire", scheduleContent, indexTab);
