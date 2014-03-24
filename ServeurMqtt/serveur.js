@@ -86,6 +86,7 @@ app.get('/is-init', routes.test_init);
 
 //routes for authentication
 app.post('/loginme', routes.authenticate.login);
+app.get('/who_i_am', routes.authenticate.who_i_am);
 
 //app.get('/vote/vote_ruG', routes.crowdsourcing.voteRuGet);
 app.post('/vote/moyenne_ru', routes.crowdsourcing.getRu);
