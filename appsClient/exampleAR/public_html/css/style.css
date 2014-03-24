@@ -244,3 +244,8 @@ body {
     border-top-style: solid;
     border-top-width: thin;
 }
+#logo{
+    position:fixed;
+    bottom: 30px;
+    right: 20px;
+}
