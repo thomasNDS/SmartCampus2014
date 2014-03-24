@@ -22,13 +22,12 @@ exports.login = function(request, response) {
 
 };
 
-exports.who_i_am = function(request, res) {
+exports.whoami = function(request, res) {
 //    console.log("whoiam")
     if (request.session && request.session.user) {
-        console.log("whoiam-user" + request.session.user)
         res.send(request.session.user);
     } else {
 //        console.log("whoiam-no");
         res.send("personne");
     }
-}
+};

@@ -60,6 +60,5 @@ exports.add_comment = function(req, res) {
 };
 
 exports.administrator = require("./administrator.js");
-exports.building = require("./building.js");
 exports.authenticate = require("./authenticate.js");
 exports.crowdsourcing = require("./crowdsourcing.js");
