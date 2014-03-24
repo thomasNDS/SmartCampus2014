@@ -520,8 +520,7 @@ function buildPanel(objElem) {
     $("#informationTitle").html(objElem.name);
 
     //Onglet Description
-    var descriptionContent = objElem.description;
-    descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
+    var descriptionContent = "<div id=\"descriptionContent\">" + objElem.description + "</div>";
     
     if (objElem.typeCrowdsourcing === "queue") {
         descriptionContent += buildVotePanelQueue(objElem._id);
@@ -631,5 +630,4 @@ function showModalParameters(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(modalParam);
-//                $("#popParam").modal('show');                
 }
