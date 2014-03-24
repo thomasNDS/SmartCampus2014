@@ -46,42 +46,36 @@ function sortEntityArray() {
     var entityIndex = null;
     var entity = null;
 
-    //UPMF -> 0
-    entityIndex = getIndexElementByName("UPMF");
+    //Polytech Grenoble -> 0
+    entityIndex = getIndexElementByName("Polytech Grenoble");
     entity = entitiesArray[entityIndex];
     arraySorted[0] = entity;
     arrayUnset(entitiesArray, entity);
 
-    //Polytech Grenoble -> 4
-    entityIndex = getIndexElementByName("Polytech Grenoble");
+    //Barnave -> 1
+    entityIndex = getIndexElementByName("Barnave");
+    entity = entitiesArray[entityIndex];
+    arraySorted[1] = entity;
+    arrayUnset(entitiesArray, entity);
+
+    //CROUS Taillées -> 2
+    entityIndex = getIndexElementByName("Cité des Taillées");
+    entity = entitiesArray[entityIndex];
+    arraySorted[2] = entity;
+    arrayUnset(entitiesArray, entity);
+
+    //EVE -> 3
+    entityIndex = getIndexElementByName("EVE");
+    entity = entitiesArray[entityIndex];
+    arraySorted[3] = entity;
+    arrayUnset(entitiesArray, entity);
+
+    //ARRET TRAM -> 4
+    entityIndex = getIndexElementByName("Arrêt G.Fauré");
     entity = entitiesArray[entityIndex];
     arraySorted[4] = entity;
     arrayUnset(entitiesArray, entity);
-
-    //IAE -> 8
-    entityIndex = getIndexElementByName("IAE");
-    entity = entitiesArray[entityIndex];
-    arraySorted[8] = entity;
-    arrayUnset(entitiesArray, entity);
-
-    //Université Stendhal -> 12
-    entityIndex = getIndexElementByName("Université Stendhal");
-    entity = entitiesArray[entityIndex];
-    arraySorted[12] = entity;
-    arrayUnset(entitiesArray, entity);
-
-    //BIBLIOTHEQUES UNIVERSITAIRES -> 16
-    entityIndex = getIndexElementByName("BIBLIOTHEQUES UNIVERSITAIRES");
-    entity = entitiesArray[entityIndex];
-    arraySorted[16] = entity;
-    arrayUnset(entitiesArray, entity);
-
-    //CONDILLAC UNIVERSITAIRES -> 20
-    entityIndex = getIndexElementByName("Condillac");
-    entity = entitiesArray[entityIndex];
-    arraySorted[20] = entity;
-    arrayUnset(entitiesArray, entity);
-
+	
     entitiesArray = arraySorted;
 
 }
