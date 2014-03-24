@@ -5,11 +5,7 @@
  */
 
 entitiesArray = new Array();
-<<<<<<< HEAD
-serverAddress = "localhost";
-=======
-//serverAddress = "localhost";
->>>>>>> 612222d6934b115e60e72f9cb41852fbacbe2e51
+
 //serverAddress = "192.168.43.142";
 //Var pour les index des onglets
 indexTab = 0;
