@@ -77,7 +77,7 @@ function sortEntityArray() {
     arrayUnset(entitiesArray, entity);
 
     //CONDILLAC UNIVERSITAIRES -> 20
-    entityIndex = getIndexElementByName("CONDILLAC UNIVERSITAIRES");
+    entityIndex = getIndexElementByName("Condillac");
     entity = entitiesArray[entityIndex];
     arraySorted[20] = entity;
     arrayUnset(entitiesArray, entity);
@@ -238,6 +238,50 @@ function loadMesureById(id) {
     return mesure;
 }
 
+/*
+ * Charge les horaires à partir de son id
+ * @param {type} id
+ * @returns {unresolved}
+ */
+function loadSchedule(id) {
+    var schedule;
+    jQuery.ajax({
+        type: 'GET',
+        async: false,
+        url: "http://" + serverAddress + ":4242/api/entity/" + id,
+        success: function(data) {
+//            console.dir(data.payload[0]);
+            schedule = data.payload[0].schedule;
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+    return schedule;
+}
+
+/*
+ * Charge un event à partir de son id
+ * @param {type} id
+ * @returns {unresolved}
+ */
+function loadEvent(id) {
+    var event;
+    jQuery.ajax({
+        type: 'GET',
+        async: false,
+        url: "http://" + serverAddress + ":4242/api/event/" + id,
+        success: function(data) {
+//            console.dir(data.payload[0]);
+            event = data.payload[0];
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+    return event;
+}
+
 
 /// ==== PANEL ==== ////
 
@@ -269,10 +313,10 @@ function addComment(entityId, comment) {
     return com;
 }
 
-function makeVote(idEntity) {
+function makeVote(idEntity, vote) {
 
     //recupere le vote choisis
-    var vote = $('input[name="vote"]:checked').val();
+//    var vote = $('input[name="vote"]:checked').val();
 
     console.log("vote = " + vote);
     jQuery.ajax({
@@ -292,11 +336,11 @@ function makeVote(idEntity) {
     });
 
     //Met a jour la moyenne
-    $("#avgVote").html(getVoteValue(idEntity));
+    $("#avgVote").html(getTextualAvg(getVoteValue(idEntity)));
 }
 
 function getVoteValue(idEntity) {
-    var vote = 0;
+    var vote = 1;
     jQuery.ajax({
         type: 'POST',
         async: false,
@@ -365,22 +409,136 @@ function closePanel() {
 }
 
 /*
+ * Met la limite height pour affichage contenu
+ * @returns {undefined}
+ */
+function changeMaxHeightContentTabs(parentNode) {
+    var height = parseInt($(parentNode).css("height"));
+    var maxHeightContentTab = height * (65 / 100);
+    $("#contentTabs").css("max-height", maxHeightContentTab);
+}
+
+/*
+ * Obtenir la couleur du text
+ * @param {type} avg
+ * @returns {String}
+ */
+function getColorAvg(avg) {
+    var color = "";
+    if (avg < 1.5) {
+        color = "green";
+    } else if (avg > 2.5) {
+        color = "red";
+    } else {
+        color = "orange";
+    }
+    return color;
+}
+
+/*
+ * Obtenir le texte traduisant la valeur des votes
+ * @param {type} avg
+ * @returns {String}
+ */
+function getTextualAvg(avg) {
+    var txt = "";
+    if (avg < 1.5) {
+        txt = "Faible";
+        $("#avgVote").css("color", "green");
+    } else if (avg > 2.5) {
+        txt = "Forte";
+        $("#avgVote").css("color", "red");
+    } else {
+        txt = "Moyenne";
+        $("#avgVote").css("color", "orange");
+    }
+    return txt;
+}
+
+/*
  * Fonction appelé lors de la construction du panel de vote, type Queue
  * @param {type} objElem
  * @returns {undefined}
  */
 function buildVotePanelQueue(idEntity) {
     var avg = getVoteValue(idEntity);
-    var txtActualAvg = "Estimation queue";
+    var txtActualAvg = "Estimation de l'attente";
     var html = "<div id=\"votePanel\">";
-    html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
-    html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Un peu  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Moyen  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Beaucoup  ";
-    html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"makeVote('" + idEntity + "')\" disabled>Alerte les autres :)</button>";
+
+    html += "<div>" + txtActualAvg + " : <span id=\"avgVote\" style=\"color:" + getColorAvg(avg) + "\">" + getTextualAvg(avg) + "</span></div>";
+    html += "Comment est la file ?<br>";
+    html += "<button type=\"button\" class=\"btn btn-info\" onclick=\"makeVote('" + idEntity + "',1)\">Faible</button> ";
+    html += "<button type=\"button\" class=\"btn btn-info\" onclick=\"makeVote('" + idEntity + "',2)\">Moyenne</button> ";
+    html += "<button type=\"button\" class=\"btn btn-info\" onclick=\"makeVote('" + idEntity + "',3)\">Forte</button>";
     html += "</div>";
 
     return html;
+}
+
+/*
+ * Construction du panel Horaire
+ * @param {type} arrayHours
+ * @returns {String}
+ */
+function buildSchedulePanel(arrayHours) {
+    var txt = "Horaires théoriques : <br><br>";
+    var arrayToSeyssin = arrayHours[0];
+    var arrayToGieres = arrayHours[1];
+    var actualDate = new Date();// (new Date()).getMinutes() + 60*(new Date()).hours();
+    var actualDateMin = actualDate.getHours() * 60 + actualDate.getMinutes();
+
+    var hoursSeyssin = [];
+    var hoursGieres = [];
+
+    var isFound = false;
+    var i = 0;
+
+    //Vers Sessyn//
+    while (i < arrayToSeyssin.length && !isFound) {
+        if (arrayToSeyssin[i] > actualDateMin) {
+            isFound = true;
+        } else {
+            i++;
+        }
+    }
+    var cptHours = 0;
+    while (i < arrayToSeyssin.length && cptHours < 5) {
+        hoursSeyssin[cptHours] = arrayToSeyssin[i] - actualDateMin;
+        i++;
+        cptHours++;
+    }
+
+    isFound = false;
+    i = 0;
+
+    //Vers Gieres //
+    while (i < arrayToGieres.length && !isFound) {
+        if (arrayToGieres[i] > actualDateMin) {
+            isFound = true;
+        } else {
+            i++;
+        }
+    }
+    cptHours = 0;
+    while (i < arrayToGieres.length && cptHours < 5) {
+        hoursGieres[cptHours] = arrayToGieres[i] - actualDateMin;
+        i++;
+        cptHours++;
+    }
+
+    txt += "<div>";
+    txt += "<b>Direction Seyssins Le Prisme :</b> <br>";
+    hoursSeyssin.forEach(function(hour) {
+        txt += hour + " min - ";
+    });
+    txt += "<br>";
+    txt += "<b>Direction Gières :</b> <br>";
+    hoursGieres.forEach(function(hour) {
+        txt += hour + " min - ";
+    });
+    txt += "</div>";
+
+    return txt;
 }
 
 function buildPanelByIndex(indexElem) {
@@ -428,13 +586,22 @@ function buildPanel(objElem) {
     $("#informationTitle").html(objElem.name);
 
     //Onglet Description
-    var descriptionContent = objElem.description;
+    var descriptionContent = "<div id=\"descriptionContent\">" + objElem.description + "</div>";
+
     if (objElem.typeCrowdsourcing === "queue") {
         descriptionContent += buildVotePanelQueue(objElem._id);
     }
-    descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
 
     buildTab("Description", descriptionContent, indexTab);
+
+    //Onglet Horaire
+    var scheduleContent = "";
+    var schedule = objElem.schedule;
+    if (schedule.length !== 0) {
+        var arraySchedule = JSON.parse(schedule);
+        scheduleContent = buildSchedulePanel(arraySchedule);
+        buildTab("Horaire", scheduleContent, indexTab);
+    }
 
     //Onglets Items
     objElem.items.forEach(function(itemId) {
@@ -457,6 +624,21 @@ function buildPanel(objElem) {
             buildTab(itemLoaded.name, itemContent, indexTab);
         }
     });
+
+    //Onglet Event
+    if (objElem.events.length > 0) {
+        var eventContent = "<div>";
+        objElem.events.forEach(function(eventId) {
+            var eventLoaded = loadEvent(eventId);
+            if (eventLoaded.description !== "") {
+                var event = "<div>" + eventLoaded.description + "</div>";
+                eventContent += event;
+            }
+        });
+
+        eventContent += "</div>";
+        buildTab("Evenement", eventContent, indexTab);
+    }
 
     //Onglet Com
     var commentContent = "";
@@ -493,6 +675,7 @@ function buildEmptyPanel(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(panel);
+    changeMaxHeightContentTabs("#map-canvas");
 }
 
 /*
@@ -515,5 +698,4 @@ function showModalParameters(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(modalParam);
-//                $("#popParam").modal('show');                
 }

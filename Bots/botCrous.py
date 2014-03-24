@@ -16,6 +16,8 @@ broker = "localhost"
 port = 1883
 ids= [17,3,4,24,46,18,19]               # Identifiants des salles sur le site du crous
 
+print "start"
+
 # Create a MQTT identifier for this process
 mypid = os.getpid()
 pub= "pubclient_"+str(mypid)

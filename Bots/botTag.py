@@ -14,12 +14,6 @@ import paho.mqtt.client as paho
 import time
 
 print "DEBUT: "
-#if len(sys.argv) > 4:
-#    print sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]
-#    city = sys.argv[1]
-#    day = sys.argv[2]
-#    month = sys.argv[3]
-#    year = sys.argv[4]
 
 broker = "localhost"
 port = 1883
@@ -43,10 +37,11 @@ data = response.read()			            # get the html as a string '<html >...</htm
 try:
 #if 1:
     decoded = json.loads(data)
-    ids = [3,4,5,6]
+    ids =[5]#[3,4,5,6]
 
-    globalmess = []
+
     for id in ids:
+        globalmess = []
         name=decoded["destinations"][0]["arrets"][id]["nom"]
         hours= decoded["destinations"][0]["arrets"][id]["heures"]
         topic = "hours_" + name
@@ -57,7 +52,6 @@ try:
             (h,m)= hour.split(':')
             tabHours.append(int(h)*60+int(m))
             
-#        tabHours= tabHours.sort()
         globalmess.append(sorted(tabHours))
         
         hours= decoded["destinations"][1]["arrets"][id]["heures"]
@@ -66,9 +60,9 @@ try:
             (h,m)= hour.split(':')
             tabHours.append(int(h)*60+int(m))
             
-#        tabHours= tabHours.sort()
         globalmess.append(sorted(tabHours))
-        print globalmess
+#        print globalmess
+        print len(globalmess), len(globalmess[0])
         print topic
         mqttc.publish(topic, str(globalmess), 0, True)                              #qos=0, retain=y
 

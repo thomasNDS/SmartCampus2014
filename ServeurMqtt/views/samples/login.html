@@ -1,0 +1,18 @@
+<style>
+    html{margin:0;padding:0}body{font:85% georgia,sans-serif;line-height:1.88889;color:#555753;background:#fff;margin:0;padding:0;margin-left:45px}p{margin-top:0;text-align:justify}h3{font:italic normal 1.4em georgia,sans-serif;letter-spacing:1px;margin-bottom:0;color:#7D775C}a:link{font-weight:700;text-decoration:none;color:#B7A5DF}a:visited{font-weight:700;text-decoration:none;color:#D4CDDC}a:active,a:hover{text-decoration:underline;color:#9685BA}.ok{color:#fff;background:#90ee90;font-weight:800}.no{color:#fff;background:red;font-weight:800}
+
+</style> 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+ <h1>POST</h1>
+<script>
+    jQuery.post("http://localhost:4242/login", {
+        "user": "john",
+        "password":"johnspassword"
+    }, function(data, textStatus, jqXHR) {
+        console.log("Post response:");
+        console.dir(data);
+        console.log(textStatus);
+        console.dir(jqXHR);
+    });
+
+</script>

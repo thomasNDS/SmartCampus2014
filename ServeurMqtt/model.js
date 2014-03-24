@@ -22,7 +22,7 @@ var Entity = new Schema({
     events: [Event],
     items: [Item],
     infos: [],
-    shedule: [],
+    schedule: [],
     voteValue : {type:Number, default:0},
     typeCrowdsourcing : String,
     identifiant: String

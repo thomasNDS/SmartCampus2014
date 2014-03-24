@@ -109,7 +109,7 @@ tagClient.subscribe('hours_ST-MARTIN-D_HERES_GABRIEL_FAURE');
 tagClient.subscribe('hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES');
 var tagEntityWhoSubscribe = ["", , ""];
 tagClient.on('message', function(topic, message) {
-    console.log(message);
+    console.log(topic);
     var stop = "";
     switch (topic) {
         case 'hours_ST-MARTIN-D_HERES_CONDILLAC-UNIVERSITES':
@@ -119,7 +119,7 @@ tagClient.on('message', function(topic, message) {
             stop = "BIBLIOTHEQUES UNIVERSITAIRES";
             break;
         case 'hours_ST-MARTIN-D_HERES_GABRIEL_FAURE':
-            stop = "GABRIEL FAURE";
+            stop = "Arrêt G.Fauré";
             break;
         case 'hours_ST-MARTIN-D_HERES_LES_TAILLEES-UNIVERSITES':
             stop = "Taille UNIVERSITE";
@@ -127,13 +127,13 @@ tagClient.on('message', function(topic, message) {
     }
     EntityModel.findOne({name: stop}, function(err, doc) {
         if (!doc) {
-            console.log("Could not load Document");
+            console.log("Could not load Document " + topic);
         } else {
 
             if (message !== "undefined") {
-                console.log()
+                console.log("\n---------topic-----------\n" + topic)
                 myData = message;
-                doc.shedule = myData;
+                doc.schedule = myData;
                 doc.save(function(err) {
                     if (err)
                         console.log('\n\n !!! ERROR with ' + topic);
