@@ -313,10 +313,10 @@ function addComment(entityId, comment) {
     return com;
 }
 
-function makeVote(idEntity) {
+function makeVote(idEntity, vote) {
 
     //recupere le vote choisis
-    var vote = $('input[name="vote"]:checked').val();
+//    var vote = $('input[name="vote"]:checked').val();
 
     console.log("vote = " + vote);
     jQuery.ajax({
@@ -336,11 +336,11 @@ function makeVote(idEntity) {
     });
 
     //Met a jour la moyenne
-    $("#avgVote").html(getVoteValue(idEntity));
+    $("#avgVote").html(getTextualAvg(getVoteValue(idEntity)));
 }
 
 function getVoteValue(idEntity) {
-    var vote = 0;
+    var vote = 1;
     jQuery.ajax({
         type: 'POST',
         async: false,
@@ -413,10 +413,47 @@ function closePanel() {
  * @returns {undefined}
  */
 function changeMaxHeightContentTabs(parentNode) {
-        var height = parseInt($(parentNode).css("height"));
-        var maxHeightContentTab = height * (65 / 100);
-        $("#contentTabs").css("max-height", maxHeightContentTab);
+    var height = parseInt($(parentNode).css("height"));
+    var maxHeightContentTab = height * (65 / 100);
+    $("#contentTabs").css("max-height", maxHeightContentTab);
+}
+
+/*
+ * Obtenir la couleur du text
+ * @param {type} avg
+ * @returns {String}
+ */
+function getColorAvg(avg) {
+    var color = "";
+    if (avg < 1.5) {
+        color = "green";
+    } else if (avg > 2.5) {
+        color = "red";
+    } else {
+        color = "orange";
     }
+    return color;
+}
+
+/*
+ * Obtenir le texte traduisant la valeur des votes
+ * @param {type} avg
+ * @returns {String}
+ */
+function getTextualAvg(avg) {
+    var txt = "";
+    if (avg < 1.5) {
+        txt = "Faible";
+        $("#avgVote").css("color", "green");
+    } else if (avg > 2.5) {
+        txt = "Forte";
+        $("#avgVote").css("color", "red");
+    } else {
+        txt = "Moyenne";
+        $("#avgVote").css("color", "orange");
+    }
+    return txt;
+}
 
 /*
  * Fonction appelé lors de la construction du panel de vote, type Queue
@@ -425,13 +462,14 @@ function changeMaxHeightContentTabs(parentNode) {
  */
 function buildVotePanelQueue(idEntity) {
     var avg = getVoteValue(idEntity);
-    var txtActualAvg = "Estimation queue";
+    var txtActualAvg = "Estimation de l'attente";
     var html = "<div id=\"votePanel\">";
-    html += "<div>" + txtActualAvg + " : <span id=\"avgVote\">" + avg + "</span></div>";
-    html += "<input type = \"radio\" name = \"vote\" value = \"1\" onclick=\"activeBtn()\")\"> Un peu  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"2\" onclick=\"activeBtn()\"> Moyen  ";
-    html += "<input type = \"radio\" name = \"vote\" value = \"3\" onclick=\"activeBtn()\"> Beaucoup  ";
-    html += "<button id=\"btnVote\" type=\"button\" class=\"btn btn-primary\" onclick=\"makeVote('" + idEntity + "')\" disabled>Alerte les autres :)</button>";
+
+    html += "<div>" + txtActualAvg + " : <span id=\"avgVote\" style=\"color:" + getColorAvg(avg) + "\">" + getTextualAvg(avg) + "</span></div>";
+    html += "Comment est la file ?<br>";
+    html += "<button type=\"button\" class=\"btn btn-info\" onclick=\"makeVote('" + idEntity + "',1)\">Faible</button> ";
+    html += "<button type=\"button\" class=\"btn btn-info\" onclick=\"makeVote('" + idEntity + "',2)\">Moyenne</button> ";
+    html += "<button type=\"button\" class=\"btn btn-info\" onclick=\"makeVote('" + idEntity + "',3)\">Forte</button>";
     html += "</div>";
 
     return html;
@@ -483,10 +521,11 @@ function buildPanel(objElem) {
 
     //Onglet Description
     var descriptionContent = objElem.description;
+    descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
+    
     if (objElem.typeCrowdsourcing === "queue") {
         descriptionContent += buildVotePanelQueue(objElem._id);
     }
-    descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
 
     buildTab("Description", descriptionContent, indexTab);
 
