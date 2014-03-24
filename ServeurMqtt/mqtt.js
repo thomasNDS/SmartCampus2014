@@ -133,7 +133,7 @@ tagClient.on('message', function(topic, message) {
             if (message !== "undefined") {
                 console.log()
                 myData = message;
-                doc.shedule = myData;
+                doc.schedule = myData;
                 doc.save(function(err) {
                     if (err)
                         console.log('\n\n !!! ERROR with ' + topic);

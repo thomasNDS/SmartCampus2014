@@ -251,7 +251,7 @@ function loadSchedule(id) {
         url: "http://" + serverAddress + ":4242/api/entity/" + id,
         success: function(data) {
 //            console.dir(data.payload[0]);
-            schedule = data.payload[0].shedule;
+            schedule = data.payload[0].schedule;
         },
         error: function(err) {
             console.log(err);
