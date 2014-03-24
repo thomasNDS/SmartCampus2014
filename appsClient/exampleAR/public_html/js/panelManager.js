@@ -77,7 +77,7 @@ function sortEntityArray() {
     arrayUnset(entitiesArray, entity);
 
     //CONDILLAC UNIVERSITAIRES -> 20
-    entityIndex = getIndexElementByName("CONDILLAC UNIVERSITAIRES");
+    entityIndex = getIndexElementByName("Condillac");
     entity = entitiesArray[entityIndex];
     arraySorted[20] = entity;
     arrayUnset(entitiesArray, entity);
@@ -236,6 +236,50 @@ function loadMesureById(id) {
         }
     });
     return mesure;
+}
+
+/*
+ * Charge les horaires à partir de son id
+ * @param {type} id
+ * @returns {unresolved}
+ */
+function loadSchedule(id) {
+    var schedule;
+    jQuery.ajax({
+        type: 'GET',
+        async: false,
+        url: "http://" + serverAddress + ":4242/api/entity/" + id,
+        success: function(data) {
+//            console.dir(data.payload[0]);
+            schedule = data.payload[0].schedule;
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+    return schedule;
+}
+
+/*
+ * Charge un event à partir de son id
+ * @param {type} id
+ * @returns {unresolved}
+ */
+function loadEvent(id) {
+    var event;
+    jQuery.ajax({
+        type: 'GET',
+        async: false,
+        url: "http://" + serverAddress + ":4242/api/event/" + id,
+        success: function(data) {
+//            console.dir(data.payload[0]);
+            event = data.payload[0];
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+    return event;
 }
 
 
@@ -436,6 +480,13 @@ function buildPanel(objElem) {
 
     buildTab("Description", descriptionContent, indexTab);
 
+    //Onglet Horaire
+    var scheduleContent = objElem.shedule;
+
+    if (scheduleContent.length !== 0) {
+        buildTab("Horaire", scheduleContent, indexTab);
+    }
+
     //Onglets Items
     objElem.items.forEach(function(itemId) {
         var itemLoaded = loadItemById(itemId);
@@ -457,6 +508,21 @@ function buildPanel(objElem) {
             buildTab(itemLoaded.name, itemContent, indexTab);
         }
     });
+
+    //Onglet Event
+    if (objElem.events.length > 0) {
+        var eventContent = "<div>";
+        objElem.events.forEach(function(eventId) {
+            var eventLoaded = loadEvent(eventId);
+            if (eventLoaded.description !== "") {
+                var event = "<div>" + eventLoaded.description + "</div>";
+                eventContent += event;
+            }
+        });
+
+        eventContent += "</div>";
+        buildTab("Evenement", eventContent, indexTab);
+    }
 
     //Onglet Com
     var commentContent = "";
