@@ -384,11 +384,11 @@ License MIT-->
                     type: 'POST',
                     data: {
                         "name": "Cité des Taillées",
-                        "description": "La résidence universitaire des Taillées est située au coeur du campus de Saint-Martin d'Hères. Elle est desservie par la ligne B, C et D du tramway et est équipée d'un parking, un local à vélo et une laverie. Cette résidence conventionnée dispose de 200 logements d'une superficie de 20 m² à 24 m², répartis sur 2 bâtiments de 3 ou 4 étages. Le loyer mensuel s’élève, selon la superficie, de 206 € à 238 €. Site web du CROUS : http://www.crous-grenoble.fr/hebergement",
+                        "description": "La résidence universitaire des Taillées est située au coeur du campus de Saint-Martin d'Hères. Elle est desservie par la ligne B, C et D du tramway et est équipée d'un parking, un local à vélo et une laverie. Cette résidence conventionnée dispose de 200 logements d'une superficie de 20 m² à 24 m², répartis sur 2 bâtiments de 3 ou 4 étages. Le loyer mensuel s’élève, selon la superficie, de 206 € à 238 €. <a href=\"http://www.crous-grenoble.fr/hebergement\">Site web du CROUS</a>",
                         "type": "Cité Universitaire",
                         "comments": [],
                         "latitude": 45.189856,
-                        "longitude": 5.759966‎,
+                        "longitude": 5.759966,
                         "items": [item4_id]
                     },
                     success: function(data, textStatus, jqXHR) {
@@ -929,7 +929,7 @@ License MIT-->
                         "login": "nicolas",
                         "password": "password",
                         "entity": [lig_id]
-                    }, 
+                    },
                     success: function(data, textStatus, jqXHR) {
                         if (data.payload._id)
                             $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
@@ -948,7 +948,7 @@ License MIT-->
                         "login": "thomas",
                         "password": "password",
                         "entity": [iae_id]
-                    }, 
+                    },
                     success: function(data, textStatus, jqXHR) {
                         if (data.payload._id)
                             $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
@@ -967,7 +967,7 @@ License MIT-->
                         "login": "simon",
                         "password": "password",
                         "entity": [polytech_id]
-                    }, 
+                    },
                     success: function(data, textStatus, jqXHR) {
                         if (data.payload._id)
                             $("#admin").html($("#admin").html() + "<strong>Name: </strong>" + data.payload.name + " " + data.payload.first_name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
