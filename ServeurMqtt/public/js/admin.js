@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+// entity selected by admin (link)
 var current_entity = null;
 
 function initialize() {
@@ -43,10 +44,6 @@ function build_menu() {
             entity++;
         }
     }
-}
-
-function update_current_entity(entity_id) {
-    current_entity = entity_id;
 }
 
 function get_entities() {
@@ -93,8 +90,8 @@ function get_sensors() {
                                                 function(sensor) {
                                                     console.log(sensor);
                                                     $("#tbody_" + item.payload._id).append("<tr><td>" + sensor.payload.identifiant + "</td>"
-                                                    +"<td><a href=\"#\" title=\"Modifier\"><i class=\"glyphicon glyphicon-pencil\"></i></a></td>"
-                                                    +"<td><a href=\"#\" title=\"Supprimer\"><i class=\"glyphicon glyphicon-remove\"></i></a></td></tr>");
+                                                            + "<td><a href=\"#\" title=\"Modifier\"><i class=\"glyphicon glyphicon-pencil\"></i></a></td>"
+                                                            + "<td><a href=\"#\" title=\"Supprimer\"><i class=\"glyphicon glyphicon-remove\"></i></a></td></tr>");
                                                 });
                                     });
                                 });
@@ -120,6 +117,28 @@ function get_comments() {
     }
 }
 
+function get_events() {
+    $("#div_events").html("");
+    if (current_entity) {
+        $.getJSON('http://localhost:4242/api/entity/' + current_entity,
+                function(data) {
+                    var events = data.payload.events;
+                    $(events).each(function(index, value) {
+                        $.getJSON('http://localhost:4242/api/event/' + value,
+                                function(event) {
+                                    $("#div_events").append(event.payload.name);
+                                    $("#div_events").append(event.payload.description);
+                                    $("#div_events").append($.date(event.payload.date));
+                                });
+                    });
+                });
+    }
+}
+
+
+
+// utils
+
 $.date = function(dateObject) {
     var d = new Date(dateObject);
     var day = d.getDate();
@@ -138,5 +157,6 @@ $.date = function(dateObject) {
     return date;
 };
 
-
-
+function update_current_entity(entity_id) {
+    current_entity = entity_id;
+}
