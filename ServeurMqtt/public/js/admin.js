@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 
-serverAddress = "localhost";
-serverPort = "4242";
-
 // entity selected by admin (link)
 var current_entity;
 var current_entity_name;
@@ -29,7 +26,7 @@ function build_menu() {
     var entities = get_entities(), entity = 0;
     if (entities) {
         while (entities[entity]) {
-            $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/entity/' + entities[entity],
+            $.getJSON('/api/entity/' + entities[entity],
                     function(data) {
                         var name = data.payload.name.replace(" ", "_");
                         $("#entities_list").append(
@@ -55,7 +52,7 @@ function build_menu() {
 function get_entities() {
     var entities;
     $.ajax({
-        url: 'http://' + serverAddress + ':' + serverPort + '/whoami/',
+        url: '/whoami/',
         dataType: 'json',
         async: false,
         success: function(data) {
@@ -83,15 +80,15 @@ function displayLeftPanel(link) {
 
 function get_sensors() {
     if (current_entity) {
-        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/entity/' + current_entity,
+        $.getJSON('/api/entity/' + current_entity,
                 function(data) {
                     var items = data.payload.items;
                     $(items).each(function(index, value) {
-                        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/item/' + value,
+                        $.getJSON('/api/item/' + value,
                                 function(item) {
                                     $("#div_sensors").append("<p>" + item.payload.name + "</p><table class=\"table\"><tbody id=\"tbody_" + item.payload._id + "\"></tbody></table>");
                                     $(item.payload.Sensors_data).each(function(index, value) {
-                                        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/sensors_data/' + value,
+                                        $.getJSON('/api/sensors_data/' + value,
                                                 function(sensor) {
                                                     $("#tbody_" + item.payload._id).append("<tr><td>" + sensor.payload.identifiant + "</td>"
                                                             + "<td><a href=\"#\" title=\"Modifier\"><i class=\"glyphicon glyphicon-pencil\"></i></a></td>"
@@ -107,11 +104,11 @@ function get_sensors() {
 function get_comments() {
     $("#div_comments").html("");
     if (current_entity) {
-        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/entity/' + current_entity,
+        $.getJSON('/api/entity/' + current_entity,
                 function(data) {
                     var comments = data.payload.comments;
                     $(comments).each(function(index, value) {
-                        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/comment/' + value,
+                        $.getJSON('/api/comment/' + value,
                                 function(com) {
                                     if (com.payload.value && com.payload.date) {
                                         $("#div_comments").append("<blockquote>" + com.payload.value + "</blockquote>");
@@ -126,11 +123,11 @@ function get_comments() {
 function get_events() {
     $("#div_events").html("");
     if (current_entity) {
-        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/entity/' + current_entity,
+        $.getJSON('/api/entity/' + current_entity,
                 function(data) {
                     var events = data.payload.events;
                     $(events).each(function(index, value) {
-                        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/event/' + value,
+                        $.getJSON('/api/event/' + value,
                                 function(event) {
                                     $("#div_events").append(event.payload.name);
                                     $("#div_events").append(event.payload.description);
@@ -144,7 +141,7 @@ function get_events() {
 function get_admins() {
     var selectedAdmin = null;
     if (current_entity) {
-        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/administrator/',
+        $.getJSON('/api/administrator/',
                 function(data) {
                     var admin = 0;
                     while (data.payload[admin]) {
@@ -158,7 +155,7 @@ function get_admins() {
                         admin++;
                     }
                     $("#admins_list").change(function() {
-                        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/administrator/' + $("#admins_list").val(),
+                        $.getJSON('/api/administrator/' + $("#admins_list").val(),
                                 function(selection) {
                                     selectedAdmin = selection;
                                     $("#admin_descr").html(selection.payload.first_name + ' ' + selection.payload.name);
@@ -174,7 +171,7 @@ function get_admins() {
                             toggle_switch();
                             if ($("#btn_on").hasClass('active')) {
                                 $.ajax({
-                                    url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
+                                    url: '/api/administrator/' + selectedAdmin.payload._id,
                                     type: 'PUT',
                                     dataType: 'json',
                                     data: {'entity': $.merge(selectedAdmin.payload.entity, [current_entity])},
@@ -188,7 +185,7 @@ function get_admins() {
                                 });
                             } else {
                                 $.ajax({
-                                    url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
+                                    url: '/api/administrator/' + selectedAdmin.payload._id,
                                     type: 'PUT',
                                     dataType: 'json',
                                     data: {'entity': $.grep(selectedAdmin.payload.entity, function(elt, idx) {
@@ -250,7 +247,7 @@ $.date = function(dateObject) {
 
 function update_current_entity(entity_id) {
     current_entity = entity_id;
-    $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/entity/' + entity_id,
+    $.getJSON('/api/entity/' + entity_id,
             function(data) {
                 current_entity_name = data.payload.name || "";
             });
