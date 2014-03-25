@@ -91,7 +91,7 @@ app.post('/vote/vote_ru2', routes.crowdsourcing.voteRu2);
 
 app.post('/add_comment', routes.add_comment);
 
-app.get('/admin', routes.adminapp.adminapp);
+app.get('/admin', restrict_admin, routes.adminapp.adminapp);
 
 //route to launch child process
 app.post('/covoiturage', routes.script.covoiturage);
@@ -110,6 +110,14 @@ function restrict(req, res, next) {
     }
 }
 
+function restrict_admin(req, res, next) {
+    if (req.session && req.session.user) {
+        next();
+    } else {
+        req.session.error = 'Access denied!';
+        res.redirect('/authentication.html');
+    }
+}
 
 
 
