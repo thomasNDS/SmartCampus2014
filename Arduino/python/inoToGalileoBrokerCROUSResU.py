@@ -7,29 +7,21 @@ import struct
 # The goal of this file is to launch the arduino sketch inside the galileo board,
 # open a socket between this script and the sketch in order to communicate. (The 
 # socket server is inside the sketch )
-# Moreover, this script subscribe to the topic "LED" and send ON ('1') or off ('0') 
-# throught socket 
+# Moreover, the sketch send data to this script which send it back to a local broker
+# mosquitto on the board.
 # Author : Smartcampus.
+
 
 
 #For mqtt
 broker="localhost" 
 port=1883
-nameMosquitto="Eve"
-topic="LED"
-HOST = '' # = localhost
+nameMosquitto="CROUSRU"
+topicHumid="humidite"
+topicMethane="methane"
+topicGPL="GPL"
+HOST = ''  # = localhost
 PORT = 8888 
-
-
-#On receipt of a message resend it to the broker of the serv
-def on_message(mosq, obj, msg):
-    print "message received "+msg.payload
-    if msg.payload=="0":
-        print "receive 0"
-        s.send('0')
-    elif msg.payload=="1":
-        print "receive 1"
-        s.send('1')
 
 mqttc = mosquitto.Mosquitto(nameMosquitto)
 #connect to broker
@@ -42,13 +34,22 @@ line = p.readline()
 print line
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
-mqttc.subscribe(topic,0)    
-#define the callbacks
-mqttc.on_message = on_message
-#Number of millised mqttcGalileo is waiting
-TimeMs = 1;
 while True:
-    mqttc.loop(TimeMs)
+	#receive "humid"	
+	data = s.recv(32)
+	str = data.split(' ')
+	print data
+	mqttc.publish(topicHumid,str[2])
+	#receive methane
+	data = s.recv(32)
+	str = data.split(' ')
+	print data
+	mqttc.publish(topicMethane,str[2])
+	#receive GPL	
+	data = s.recv(32)
+	str = data.split(' ')
+	print data
+	mqttc.publish(topicGPL,str[2])
 
 
 
