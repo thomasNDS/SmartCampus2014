@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+menu template for interface
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
+-->
+<html>
+    <head>
+        <title>Index - Bootstrap</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Loading Bootstrap -->
+        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+        <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <style>
+            .price{
+                font-weight: bold;
+            }
+            .line-item {
+                border: 1px solid #dcdcdc;
+                padding: 10px;
+                margin-left: 5%;
+                margin-right: 5%;
+                max-width: 90%;
+                -moz-border-radius: 6px;
+                -webkit-border-radius: 6px;
+                border-radius: 6px;
+                background: whitesmoke;
+            }
+            .category{
+                -moz-border-radius: 6px;
+                -webkit-border-radius: 6px;
+                border-radius: 6px;
+                border: 1px solid #dcdcdc;
+                background-color: rgb(53, 51, 51);
+                font-weight: bold;
+                text-decoration: none;
+                text-shadow: 0px 1px 0px #ffffff;
+                padding: 0px 10px 2px 10px;
+                color: white;
+            }
+            h1{
+                text-align: center;
+            }
+
+        </style>
+    </head>
+    <body>
+        <form><button  style="margin: 20px;font-weight: bold;" class=" btn btn-sm btn-primary" type="button" onclick="history.go(-1);
+                return false;" >Retour</button></form>
+        <div id="wrapper" class="container-fluid">
+            <h1>Smart Self Service</h1>
+            <div class="alert alert-info">Cette application de consignes connectées sert à l'échange ou au prêt d’objets entre particuliers.</div>
+
+            <h4>Les objects disponibles actuelement : </h4>
+            <div id="show" class="row">
+                <div class="col-sm-4"><img src="images/ajax-loader.gif" alt="Chargement..."></div>
+            </div>
+        </div>
+
+        <script>
+            jQuery.post("/casier_nfc", {
+            }, function(data, textStatus, jqXHR) {
+                $("#show").html(data);
+            });
+        </script>
+    </body>
+</html>

@@ -19,11 +19,17 @@ menu template for interface
         <script src="bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
+        <form><button style="margin: 20px;font-weight: bold;" class=" btn btn-sm btn-primary" type="button" onclick="history.go(-1);
+                return false;" >Retour</button></form>
         <div id="wrapper" class="container-fluid">
             <form class="form-horizontal">
                 <div class="row">
                     <h1 class="col-sm-12">Covoiturage au départ de Grenoble</h1>
                 </div>
+                <div class="alert alert-info">
+                    Cette application de covoiturage regroupe les voyages au départ du campus de grenoble.
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-12">
                         <input id="dest" type="text" class="form-control" placeholder="Destination">
@@ -36,7 +42,7 @@ menu template for interface
                 </div>
             </form>
             <div class="col-sm-offset-1">
-                <button id="send" onclick="searchTrips();" class="btn btn-primary">Search</button>
+                <button id="send" onclick="searchTrips();" class="btn btn-primary">Rechercher</button>
             </div>
             <br>
             <div id="show" class="row">
@@ -45,7 +51,7 @@ menu template for interface
         </div>
 
         <script>
-            jQuery.post("http://localhost:4242/covoiturage", {
+            jQuery.post("/covoiturage", {
                 "destination": "Paris",
                 "day": "23",
                 "month": "3",
@@ -61,7 +67,7 @@ menu template for interface
             function searchTrips() {
                 $("#show").html("<div class=\"row\"><div class=\"col-sm-4\"><img src=\"images/ajax-loader.gif\" alt=\"Chargement...\"></div></div>");
                 var date = $("#date").val().split("-");
-                jQuery.post("http://localhost:4242/covoiturage", {
+                jQuery.post("/covoiturage", {
                     "destination": $("#dest").val(),
                     "day": date[2],
                     "month": date[1],

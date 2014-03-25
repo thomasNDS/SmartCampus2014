@@ -22,7 +22,7 @@ function loadEntities() {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity",
+        url: "/api/entity",
         success: function(data) {
             console.dir(data);
             entities = data;
@@ -75,7 +75,7 @@ function sortEntityArray() {
     entity = entitiesArray[entityIndex];
     arraySorted[4] = entity;
     arrayUnset(entitiesArray, entity);
-	
+
     entitiesArray = arraySorted;
 
 }
@@ -118,7 +118,7 @@ function loadEntitiesCallback(callback) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity",
+        url: "/api/entity",
         success: function(data) {
             console.dir(data);
             entities = data;
@@ -157,7 +157,7 @@ function loadItemById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/item/" + id,
+        url: "/api/item/" + id,
         success: function(data) {
             console.dir(data.payload[0]);
             item = data.payload[0];
@@ -176,7 +176,7 @@ function loadComById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/comment/" + id,
+        url: "/api/comment/" + id,
         success: function(data) {
 //            console.dir(data.payload[0]);
             com = data.payload[0];
@@ -198,7 +198,7 @@ function loadSensorById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/sensors_data/" + id,
+        url: "/api/sensors_data/" + id,
         success: function(data) {
             console.dir(data.payload[0]);
             sensor = data.payload[0];
@@ -220,7 +220,7 @@ function loadMesureById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/mesure/" + id,
+        url: "/api/mesure/" + id,
         success: function(data) {
             console.dir(data.payload[0]);
             mesure = data.payload[0];
@@ -242,7 +242,7 @@ function loadSchedule(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity/" + id,
+        url: "/api/entity/" + id,
         success: function(data) {
 //            console.dir(data.payload[0]);
             schedule = data.payload[0].schedule;
@@ -264,7 +264,7 @@ function loadEvent(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/event/" + id,
+        url: "/api/event/" + id,
         success: function(data) {
 //            console.dir(data.payload[0]);
             event = data.payload[0];
@@ -286,25 +286,33 @@ function loadEvent(id) {
  */
 function addComment(entityId, comment) {
     console.log(entityId, comment);
-    var com;
-    jQuery.ajax({
-        type: 'POST',
-        async: false,
-        data: {
-            entityId: entityId,
-            commentValue: comment
-        },
-        url: "http://" + serverAddress + ":4242/add_comment",
-        success: function(data) {
-            console.log("Comment created" + data);
-        },
-        error: function(err) {
-            console.log("Loupé :P");
-            console.log(err);
-        }
-    });
-    refreshEntity(entityId);
-    return com;
+    // get value of comment and pseudo
+    var valComment = $("#commentArea").val();
+    var valpseudo = $("#commentPseudo").val();
+    
+    //test if not a null comment
+    if (valComment && valpseudo && valpseudo !== "" && valComment !== "") {
+        comment = '<strong>' + valpseudo + '</strong>' + ' : ' + valComment;
+        var com;
+        jQuery.ajax({
+            type: 'POST',
+            async: false,
+            data: {
+                entityId: entityId,
+                commentValue: comment
+            },
+            url: "/add_comment",
+            success: function(data) {
+                console.log("Comment created" + data);
+            },
+            error: function(err) {
+                console.log("Loupé :P");
+                console.log(err);
+            }
+        });
+        refreshEntity(entityId);
+        return com;
+    }
 }
 
 function makeVote(idEntity, vote) {
@@ -320,7 +328,7 @@ function makeVote(idEntity, vote) {
             value: vote,
             idEntity: idEntity
         },
-        url: "http://" + serverAddress + ":4242/vote/vote_ru2",
+        url: "/vote/vote_ru2",
         success: function(data) {
 //            console.log("vote effectué\n" + data);
         },
@@ -338,7 +346,7 @@ function getVoteValue(idEntity) {
     jQuery.ajax({
         type: 'POST',
         async: false,
-        url: "http://" + serverAddress + ":4242/vote/moyenne_ru",
+        url: "/vote/moyenne_ru",
         data: {
             idEntity: idEntity
         },
@@ -384,7 +392,7 @@ function refreshEntity(entityId) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity/" + entityId,
+        url: "/api/entity/" + entityId,
         success: function(data) {
             console.dir(data);
             entitiesArray[indexEntity] = data.payload[0];
@@ -403,6 +411,7 @@ function closePanel() {
 }
 
 /*
+ * Inutilisée pour le moment!
  * Met la limite height pour affichage contenu
  * @returns {undefined}
  */
@@ -660,15 +669,20 @@ function buildPanel(objElem) {
         buildTab("Evenement", eventContent, indexTab);
     }
 
-    //Onglet Com
+    //Onglet Com /////////////////////////////////////////////////////////////////////////////////////////////////////
     var commentContent = "";
+    //Chargement et affichage
     objElem.comments.forEach(function(comId) {
         var com = loadComById(comId);
         var date = new Date(com.date);
         commentContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
     });
-    commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
-    commentContent += "</div>";
+    //Ajout
+    commentContent += '<hr/><div class="zoneAddComment"><h4>Ajouter un commentaire</h4>'
+    commentContent += '<input id="commentPseudo" class="form-control addPseudo" placeholder="Pseudo"><br/>'
+    commentContent += "<textarea id='commentArea' class='form-control commentArea' placeholder='Commentaire'></textarea> "
+    commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','" + $("#commentArea").val() + "'" + ")\">Poster</button></div>";
+    commentContent += "</div></div>";
     buildTab("Avis", commentContent, indexTab);
 
     $("#informationPanel").css("display", "block");
@@ -695,7 +709,6 @@ function buildEmptyPanel(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(panel);
-//    changeMaxHeightContentTabs("#map-canvas");console.log("maj heightContent");
 }
 
 /*

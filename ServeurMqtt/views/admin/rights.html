@@ -14,18 +14,21 @@ and open the template in the editor.
         <script type="text/javascript" src="js/admin.js"></script>
     </head>
     <body>
-        <p>Droits</p>
+        <h1>Droits</h1>
 
-        <p><label>Sélectionner un administrateur</label></p>
+        <p>Sélectionner un administrateur : </p>
         <div class="row">
-            <select id="admins_list" class="form-control col-md-4" size=5 style="width: 15em"></select>
             <div class="col-md-1">
-                <!--<p>actif <input id="checkbox_rights" type="checkbox" name="checkbox" value="checkbox"></p>-->
+                <select id="admins_list" class="form-control" size=5 style="width: 15em"></select>
             </div>
         </div>
-        <div id="btn_onoff" class="btn-group btn-toggle"> 
-            <button id="btn_on" class="btn btn-lg btn-default">ON</button>
-            <button id="btn_off" class="btn btn-lg btn-primary active">OFF</button>
+        <div class="row">
+            <div class="col-md-4">
+                <div id="btn_onoff" class="btn-group btn-toggle"> 
+                    <button id="btn_on" class="btn btn-lg btn-default">ON</button>
+                    <button id="btn_off" class="btn btn-lg btn-primary active">OFF</button>
+                </div>
+            </div>
         </div>
 
         <div class="row">

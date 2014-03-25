@@ -1,7 +1,7 @@
 
 //function to authentify the admin
 function authentify() {
-    $.ajax({url: 'http://localhost:4242/login',
+    $.ajax({url: '/login',
         type: 'POST',
         data: {login: $('#username').val(), password: $('#password').val()},
         error: function(){

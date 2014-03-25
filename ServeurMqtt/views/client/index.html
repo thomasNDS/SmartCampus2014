@@ -12,19 +12,19 @@ menu template for interface
         <meta name="viewport" content="width=device-width">
 
         <!-- Loading Bootstrap -->
-        <link href="css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
-        <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/bootstrap2/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+        <link href="/bootstrap2/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
         <!-- CSS de la page -->
-        <link href="css/style.css" rel="stylesheet" type="text/css">
+        <link href="/css/style.css" rel="stylesheet" type="text/css">
 
-        <script type="text/javascript" src="js/libs/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="js/screenManagement.js"></script>
-        <script type="text/javascript" src="js/panelManager.js"></script>
-        <script type="text/javascript" src="js/libs/bootstrap/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/libs/jquery/jquery.js"></script>
+        <script type="text/javascript" src="/js/screenManagement.js"></script>
+        <script type="text/javascript" src="/js/panelManager.js"></script>
+        <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-        <script type="text/javascript" src="js/configureAddressServeur.js"></script>
+        <script type="text/javascript" src="/js/configureAddressServeur.js"></script>
 
         <script>
 
@@ -47,7 +47,8 @@ menu template for interface
                                     </i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="http://localhost:4242/covoiturage.html">Covoiturage</a></li>
+                                    <li><a href="/covoiturage.html">Covoiturage</a></li>
+                                    <li><a href="/casierNFC.html">Smart self service</a></li>
                                     <li><a href="#">Météo</a></li>
                                 </ul>
                             </li>
@@ -68,9 +69,9 @@ menu template for interface
                 </div>
             </div>
 
-            <img id="logo" src="images/logo_SmartCampus_transparent.svg" alt="SmartCampus" />
+            <img id="logo" src="/images/logo_SmartCampus_transparent.svg" alt="SmartCampus" />
 
-            <script type="text/javascript" src="js/map.js"></script>
+            <script type="text/javascript" src="/js/map.js"></script>
             <script type="text/javascript">
                 loadEntities();
                 buildEmptyPanel("#mainContent");

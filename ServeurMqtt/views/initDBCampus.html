@@ -38,14 +38,14 @@ License MIT-->
 <div id="mesures"></div>
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/mesure",
+                    url: "/api/mesure",
                     type: 'POST',
                     data: {
                         "value": 42
@@ -61,7 +61,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/mesure",
+                    url: "/api/mesure",
                     type: 'POST',
                     data: {
                         "value": 18
@@ -76,7 +76,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/mesure",
+                    url: "/api/mesure",
                     type: 'POST',
                     data: {
                         "value": 3
@@ -102,14 +102,14 @@ License MIT-->
 
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/Sensors_data",
+                    url: "/api/Sensors_data",
                     type: 'POST',
                     data: {
                         "type": "humidite",
@@ -128,7 +128,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/Sensors_data",
+                    url: "/api/Sensors_data",
                     type: 'POST',
                     data: {
                         "type": "humidite",
@@ -147,7 +147,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/Sensors_data",
+                    url: "/api/Sensors_data",
                     type: 'POST',
                     data: {
                         "type": "airQualite",
@@ -176,13 +176,13 @@ License MIT-->
 <div id="items"></div>
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "name": "Salle de cours 42",
@@ -200,7 +200,7 @@ License MIT-->
                     async: false,
                     cache: false
                 });
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "name": "Bureau",
@@ -219,7 +219,7 @@ License MIT-->
                     async: false,
                     cache: false
                 });
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "identifiant": 24,
@@ -239,7 +239,7 @@ License MIT-->
                     async: false,
                     cache: false
                 });
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "name": "CROUS Dortoir",
@@ -277,7 +277,7 @@ License MIT-->
 //    var sensor_id = "";
 //    var item_id = "";
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
@@ -285,7 +285,7 @@ License MIT-->
             if (!data) {
                 //////COMMMENTS//////
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/comment",
+                    url: "/api/comment",
                     type: 'POST',
                     data: {
                         "value": "Ouai ! Super com test !"
@@ -302,7 +302,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/comment",
+                    url: "/api/comment",
                     type: 'POST',
                     data: {
                         "value": "Deuxième comme de la mort ! Super com test !"
@@ -322,11 +322,11 @@ License MIT-->
                 ////ENTITIES//////
                 //////////////////
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Polytech Grenoble",
-                        "description": "L'École Polytechnique de l'université Grenoble-I, plus communément appelée Polytech'Grenoble, est l'école d'ingénieurs de l'Université Joseph Fourier. Elle appartient au réseau Polytech qui regroupe treize écoles d'ingénieurs universitaires dans toute la France. L'école propose différentes formations couvrant ainsi l'ensemble des domaines technologiques modernes. Située dans un grand bassin scientifique, elle bénéficie d'un riche environnement de recherche et de formation. Polytech Grenoble compte 900 élèves recrutés en grande majorité à bac+2. <a href=\"www.polytech-grenoble.fr/\">Site web de Polytech'Grenoble.</a>",
+                        "description": "L'École Polytechnique de l'université Grenoble-I, plus communément appelée Polytech'Grenoble, est l'école d'ingénieurs de l'Université Joseph Fourier. Elle appartient au réseau Polytech qui regroupe treize écoles d'ingénieurs universitaires dans toute la France. L'école propose différentes formations couvrant ainsi l'ensemble des domaines technologiques modernes. <a href=\"http://www.polytech-grenoble.fr/\">Site web de Polytech'Grenoble.</a>",
                         "type": "Ecole",
                         "infos": [],
                         "comments": [com1_id, com2_id],
@@ -342,11 +342,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "IAE",
-                        "description": "L'Institut d'Administration des Entreprises de Grenoble II (ou IAE Grenoble) est une école de management rattachée à l'université Pierre Mendès France. Les formations sont accessibles en formation initiale, formation continue et alternance et s'adressent à des étudiants titulaires d'un niveau BAC+3 souhaitant obtenir un diplôme supérieur spécialisé et des cadres désireux de se perfectionner ou d'évoluer dans leur carrière professionnelle. Les enseignements sont dispensés par des enseignants chercheurs reconnus et par des intervenants extérieurs issus du monde de l'entreprise. <a href=\"www.iae-grenoble.fr/\">Site web de l'IAE.</a>‎",
+                        "description": "L'Institut d'Administration des Entreprises de Grenoble II (ou IAE Grenoble) est une école de management rattachée à l'université Pierre Mendès France. Les formations sont accessibles en formation initiale, formation continue et alternance et s'adressent à des étudiants titulaires d'un niveau BAC+3 souhaitant obtenir un diplôme supérieur spécialisé et des cadres désireux de se perfectionner ou d'évoluer dans leur carrière professionnelle. <a href=\"http://www.iae-grenoble.fr/\">Site web de l'IAE.</a>‎",
                         "type": "Ecole",
                         "infos": [{"uneInfo": "tata"}, {"test": "test2"}],
                         "comments": [com2_id],
@@ -361,7 +361,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Barnave",
@@ -381,11 +381,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Cité des Taillées",
-                        "description": "La résidence universitaire des Taillées est située au coeur du campus de Saint-Martin d'Hères. Elle est desservie par la ligne B, C et D du tramway et est équipée d'un parking, un local à vélo et une laverie. Cette résidence conventionnée dispose de 200 logements d'une superficie de 20 m² à 24 m², répartis sur 2 bâtiments de 3 ou 4 étages. Le loyer mensuel s’élève, selon la superficie, de 206 € à 238 €. <a href=\"http://www.crous-grenoble.fr/hebergement\">Site web du CROUS</a>",
+                        "description": "La résidence universitaire des Taillées est située au coeur du campus de Saint-Martin d'Hères. Elle est desservie par la ligne B, C et D du tramway et est équipée d'un parking, un local à vélo et une laverie. Cette résidence conventionnée dispose de 200 logements d'une superficie de 20 m² à 24 m², répartis sur 2 bâtiments de 3 ou 4 étages. <a href=\"http://www.crous-grenoble.fr/hebergement\">Site web du CROUS</a>",
                         "type": "Cité Universitaire",
                         "comments": [],
                         "latitude": 45.189856,
@@ -400,11 +400,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "LIG",
-                        "description": "Le Laboratoire d'Informatique de Grenoble (LIG) a été créé en 2007 et fait partie du pôle académique grenoblois dans le domaine des STI (Sciences et Technologies de l’Information). Il regroupe près de 600 chercheurs et enseignants-chercheurs provenant de Grenoble INP, de l’UJF, de l’UPMF, de l’Université Stendhal, du CNRS et de l’INRIA. Le projet scientifique du laboratoire a comme objectif principal l’Informatique ambiante, allant des systèmes embarqués au Web. Le LIG est composé de 22 équipes différentes qui travaillent sur une ou plusieurs problématiques. <a href=\"www.liglab.fr/‎\">Site web du LIG.</a>",
+                        "description": "Le Laboratoire d'Informatique de Grenoble (LIG) a été créé en 2007 et fait partie du pôle académique grenoblois dans le domaine des STI (Sciences et Technologies de l’Information). Il regroupe près de 600 chercheurs et enseignants-chercheurs provenant de Grenoble INP, de l’UJF, de l’UPMF, de l’Université Stendhal, du CNRS et de l’INRIA. Le LIG est composé de 22 équipes différentes qui travaillent sur une ou plusieurs problématiques. <a href=\"http://www.liglab.fr/‎\">Site web du LIG.</a>",
                         "type": "Laboratoire",
                         "comments": [],
                         "latitude": 45.193692,
@@ -418,11 +418,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "IMAG",
-                        "description": "L'Unité de Formation et de Recherche IMAG de l'Université Joseph Fourier rassemble les enseignants-chercheurs de trois disciplines qui ont participé à la renommée du site grenoblois depuis plus de 50 ans : Informatique, Mathématiques, Mathématiques Appliquées. Plus de 160 enseignants, 30 personnels administratifs ou techniques et 100 intervenants extérieurs contribuent ainsi chaque année à la formation de près de 750 étudiants en licence, en master et 3 en alternance et en doctorat. <a href=\"ufrima.imag.fr/\">Site web de l'IMAG.</a>‎",
+                        "description": "L'Unité de Formation et de Recherche IMAG de l'Université Joseph Fourier rassemble les enseignants-chercheurs de trois disciplines qui ont participé à la renommée du site grenoblois depuis plus de 50 ans : Informatique, Mathématiques, Mathématiques Appliquées. Plus de 160 enseignants, 30 personnels administratifs ou techniques et 100 intervenants extérieurs contribuent ainsi chaque année à la formation de près de 750 étudiants. <a href=\"http://ufrima.imag.fr/\">Site web de l'IMAG.</a>‎",
                         "type": "Ecole",
                         "comments": [],
                         "latitude": 45.193920,
@@ -436,11 +436,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Bibliothèque U",
-                        "description": "La bibliothèque universitaire de Sciences de Grenoble est située au cente du campus de Saint-Martin d'Hères. Elle offre à la communauté universitaire environ 900 000 volumes, 8 000 titres de périodiques, 50 abonnements à des bases de données, 34 000 titres de revues électroniques et 300 manuels numériques. De plus, de nombreuses salles de travail sont mises à disposition des étudiants. <a href=\"sicd1.ujf-grenoble.fr\">Site web de la BU.</a>",
+                        "description": "La bibliothèque universitaire de Sciences de Grenoble est située au cente du campus de Saint-Martin d'Hères. Elle offre à la communauté universitaire environ 900 000 volumes, 8 000 titres de périodiques, 50 abonnements à des bases de données, 34 000 titres de revues électroniques et 300 manuels numériques. De plus, de nombreuses salles de travail sont mises à disposition des étudiants. <a href=\"http://sicd1.ujf-grenoble.fr\">Site web de la BU.</a>",
                         "type": "Bibliothèque",
                         "comments": [],
                         "latitude": 45.192408,
@@ -454,11 +454,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "EVE",
-                        "description": "L'Espace Vie Etudiante (EVE) est un bâtiment de 900 m² au coeur du campus de Grenoble. EVE c'est à la fois un café, une salle de spectacle, une pépinière d'initiatives, les locaux d'associations hébergées (Radio Campus, INTEGRE). Cet espace dédié aux étudiants, ouvert sur l'Université et la cité, est un formidable lieu de rencontres, d'échanges et de développement de projets en tous genres. Depuis 2003, EVE est géré par une association étudiante dans le cadre d'une Délégation de Service Public (DSP). Depuis le 1er septembre 2012, c'est l'association Savoirs Émancipation Vie Étudiante (S.E.V.E.) qui gère le bâtiment. <a href=\"asso-seve.org/\">Site web de SEVE.</a>",
+                        "description": "L'Espace Vie Etudiante (EVE) est un bâtiment de 900 m² au coeur du campus de Grenoble. Cet espace dédié aux étudiants, ouvert sur l'Université et la cité, est un formidable lieu de rencontres, d'échanges et de développement de projets en tous genres. Depuis le 1er septembre 2012, c'est l'association Savoirs Émancipation Vie Étudiante (S.E.V.E.) qui gère le bâtiment. <a href=\"http://asso-seve.org/\">Site web de SEVE.</a>",
                         "type": "Bar",
                         "comments": [],
                         "latitude": 45.191164,
@@ -472,7 +472,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "IUT-1",
@@ -490,11 +490,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "UFRAPS",
-                        "description": "L'Unité de Formation et de Recherche en Activités Physiques et Sportives (UFRAPS) est une composante de l’Université Joseph Fourier de Grenoble. Forte de plus de 70 enseignants et enseignants-chercheurs titulaires, l’UFRAPS s’acquitte des trois missions universitaires classiques dans la discipline des Sciences et Techniques des Activités Physiques et Sportives (STAPS). <a href=\"www-aps.ujf-grenoble.fr/\">Site web de l'UFRAPS.</a>‎",
+                        "description": "L'Unité de Formation et de Recherche en Activités Physiques et Sportives (UFRAPS) est une composante de l’Université Joseph Fourier de Grenoble. Forte de plus de 70 enseignants et enseignants-chercheurs titulaires, l’UFRAPS s’acquitte des trois missions universitaires classiques dans la discipline des STAPS. <a href=\"http://www-aps.ujf-grenoble.fr/\">Site web de l'UFRAPS.</a>‎",
                         "type": "Ecole",
                         "comments": [],
                         "latitude": 45.196687,
@@ -508,11 +508,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "ENSIMAG",
-                        "description": "L'école nationale supérieure d'informatique et de mathématiques appliquées (Ensimag) est une grande école d'ingénieurs de l'Institut polytechnique de Grenoble. Spécialisée en informatique, mathématiques et télécommunications, elle fut fondée en 1960 par Jean Kuntzmann. L'Ensimag offre une formation basée à la fois sur la théorie et la technique. La formation d'ingénieur se déroule en trois ans. Après une première année de tronc commun, les étudiants font le choix d'une des cinq filières proposées. <a href=\"ensimag.grenoble-inp.fr/\">Site web de l'ENSIMAG.</a>‎",
+                        "description": "L'école nationale supérieure d'informatique et de mathématiques appliquées (Ensimag) est une grande école d'ingénieurs de l'Institut polytechnique de Grenoble. Spécialisée en informatique, mathématiques et télécommunications, elle fut fondée en 1960 par Jean Kuntzmann. L'Ensimag offre une formation basée à la fois sur la théorie et la technique et la formation d'ingénieur se déroule en trois ans. <a href=\"http://ensimag.grenoble-inp.fr/\">Site web de l'ENSIMAG.</a>‎",
                         "type": "Ecole",
                         "comments": [],
                         "latitude": 45.193077,
@@ -526,11 +526,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Banque",
-                        "description": "La Banque Postale est un établissement bancaire depuis janvier 2006. Elle prend le relais des services financiers du groupe public La Poste dont elle reste une filiale à 100%. Sa longue histoire remonte au service public d'État de La Poste Royale en 1603. L'évolution de ses statuts a été progressive, orientant désormais les activités sur trois secteurs précis : le prêt immobilier, la gestion d'argent et l'épargne. Le chiffre d'affaires atteint plus de 5,6 milliards d'euros. Le groupe emploie plus de 29 000 collaborateurs se répartissant sur l'ensemble du territoire français. <a href=\"https://www.labanquepostale.fr/\">Site web de la Banque Postale.</a>‎",
+                        "description": "La Banque Postale est un établissement bancaire depuis janvier 2006. Elle prend le relais des services financiers du groupe public La Poste dont elle reste une filiale à 100%. L'évolution de ses statuts a été progressive, orientant désormais les activités sur trois secteurs précis : le prêt immobilier, la gestion d'argent et l'épargne. <a href=\"https://www.labanquepostale.fr/\">Site web de la Banque Postale.</a>‎",
                         "type": "Commerce",
                         "comments": [],
                         "latitude": 45.192195,
@@ -544,11 +544,11 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
-                        "name": "Métrovélo est un service accessible à tous offrant des locations de vélos à l'heure ou à l'année et des lieux de consigne. 4000 Métrovélos sont en circulation avec un tarif unique à 0,10 € de l’heure pour la location en MétrovéloBox et de 3 € à la journée pour une location en agence. <a href=\"https://www.metrovelo.fr/\">Site web de Métrovélo.</a>‎",
-                        "description": "Description de Metro Vélo",
+                        "name": "Métrovélo",
+                        "description": "Métrovélo est un service accessible à tous offrant des locations de vélos à l'heure ou à l'année et des lieux de consigne. 4000 Métrovélos sont en circulation avec un tarif unique à 0,10 € de l’heure pour la location en MétrovéloBox et de 3 € à la journée pour une location en agence. <a href=\"https://www.metrovelo.fr/\">Site web de Métrovélo.</a>‎",
                         "type": "Commerce",
                         "comments": [],
                         "latitude": 45.192563,
@@ -562,7 +562,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Arrêt G.Fauré",
@@ -590,7 +590,7 @@ License MIT-->
 <div id="tram"></div>
 <script>
 
-    jQuery.ajax({url: "http://localhost:4242/is-init",
+    jQuery.ajax({url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
@@ -600,7 +600,7 @@ License MIT-->
 //                var faure_id = "";
 //                var condillac_id = "";
 //                var taille_id = "";
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -611,7 +611,7 @@ License MIT-->
 //                    },
 //                    success: 
 //                            function(data, textStatus, jqXHR) {
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "BIBLIOTHEQUES UNIVERSITAIRES",
                     "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
                     "type": "arretTram",
@@ -622,7 +622,7 @@ License MIT-->
                 });
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
 //                    }});
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -635,7 +635,7 @@ License MIT-->
 //                        "longitude": 5.77361,
 //                    }, success: function(data, textStatus, jqXHR) {
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "CONDILLAC UNIVERSITAIRES",
                     "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
                     "type": "arretTram",
@@ -647,7 +647,7 @@ License MIT-->
                     $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                 });
 //                    }});
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -658,7 +658,7 @@ License MIT-->
 //                        "type": "shedule"
 //                    }, success: function(data, textStatus, jqXHR) {
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "GABRIEL FAURE",
                     "description": "Arret de tram GABRIEL FAURE",
                     "type": "arretTram",
@@ -668,7 +668,7 @@ License MIT-->
                     $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                 });
 //                    }});
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -679,7 +679,7 @@ License MIT-->
 //                        "type": "shedule"
 //                    }, success: function(data, textStatus, jqXHR) {
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "Taille UNIVERSITE",
                     "description": "Arret de tram Taille UNIVERSITE",
                     "type": "arretTram",
@@ -702,7 +702,7 @@ License MIT-->
     var diderot46_id = "";
     var diderot17_id = "";
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
@@ -710,7 +710,7 @@ License MIT-->
             if (!data) {
 
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 18,
                         "name": "Entracte",
@@ -730,7 +730,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 46,
                         "name": "Administratif",
@@ -750,7 +750,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 17,
                         "name": "Traditionnel",
@@ -769,7 +769,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Diderot",
@@ -793,7 +793,7 @@ License MIT-->
                 ///////////////////////////////////////////////CONDILLAC/////////////////////////////////////////
                 var condillac4_id = "";
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 4,
                         "name": "Traditionnel",
@@ -812,7 +812,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Condillac",
@@ -837,7 +837,7 @@ License MIT-->
                 var barnave24_id = "";
                 var barnave3_id = "";
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 3,
                         "name": "Traditionnel",
@@ -854,7 +854,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 13,
                         "name": "Cafeteria",
@@ -871,7 +871,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 24,
                         "name": "Framboisière",
@@ -888,7 +888,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Barnave",
@@ -915,14 +915,14 @@ License MIT-->
 <div id="admin"></div>
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "nicolas",
@@ -941,7 +941,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "thomas",
@@ -960,7 +960,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "simon",
@@ -979,7 +979,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "laurene",
@@ -1005,16 +1005,16 @@ License MIT-->
 
 <h1>Usage</h1>
 <h4>Afficher l'ensemble des entités</h4>
-http://localhost:4242/api/entity/ </br>
+/api/entity/ </br>
 
 <h4>Afficher un entité $id</h4>
-http://localhost:4242/api/entity/$id/ </br>
+/api/entity/$id/ </br>
 
 <h4>Afficher les infos d'une entité $id</h4>
-http://localhost:4242/api/entity/$id/infos </br>
+/api/entity/$id/infos </br>
 
 <h4>Afficher la premiére info d'une entité $id</h4>
-http://localhost:4242/api/entity/$id/infos/0 </br>
+/api/entity/$id/infos/0 </br>
 
 <h4>Afficher un attribut d'ine info d'une entité $id</h4>
-http://localhost:4242/api/entity/$id/infos/0/uneInfo </br>
+/api/entity/$id/infos/0/uneInfo </br>
