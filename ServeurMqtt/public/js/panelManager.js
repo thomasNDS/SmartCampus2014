@@ -759,8 +759,8 @@ function buildPanel(objElem) {
 
         if (itemLoaded.show !== false) {
             //DESCRIPTION
-//            itemLoaded.description = translate(itemLoaded.description);
-//            itemLoaded.name = translate(itemLoaded.name);
+            itemLoaded.description = translate(itemLoaded.description);
+            itemLoaded.name = translate(itemLoaded.name);
             var itemContent = itemLoaded.description + "<br>";
 
             // INFOS
