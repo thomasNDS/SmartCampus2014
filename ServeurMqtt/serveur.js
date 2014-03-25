@@ -46,7 +46,6 @@ app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 
 
-
 //////////////////////////////////
 /////// MONGODB  /////////////////
 //////////////////////////////////
@@ -96,6 +95,7 @@ app.get('/admin', routes.adminapp.adminapp);
 
 //route to launch child process
 app.post('/covoiturage', routes.script.covoiturage);
+app.post('/casier_nfc', routes.script.casierNFC);
 
 app.use('/api', mers({uri: addrmongo}).rest());
 
