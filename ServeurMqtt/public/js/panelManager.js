@@ -22,7 +22,7 @@ function loadEntities() {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity",
+        url: "/api/entity",
         success: function(data) {
             console.dir(data);
             entities = data;
@@ -118,7 +118,7 @@ function loadEntitiesCallback(callback) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity",
+        url: "/api/entity",
         success: function(data) {
             console.dir(data);
             entities = data;
@@ -157,7 +157,7 @@ function loadItemById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/item/" + id,
+        url: "/api/item/" + id,
         success: function(data) {
             console.dir(data.payload[0]);
             item = data.payload[0];
@@ -176,7 +176,7 @@ function loadComById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/comment/" + id,
+        url: "/api/comment/" + id,
         success: function(data) {
 //            console.dir(data.payload[0]);
             com = data.payload[0];
@@ -198,7 +198,7 @@ function loadSensorById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/sensors_data/" + id,
+        url: "/api/sensors_data/" + id,
         success: function(data) {
             console.dir(data.payload[0]);
             sensor = data.payload[0];
@@ -220,7 +220,7 @@ function loadMesureById(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/mesure/" + id,
+        url: "/api/mesure/" + id,
         success: function(data) {
             console.dir(data.payload[0]);
             mesure = data.payload[0];
@@ -242,7 +242,7 @@ function loadSchedule(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity/" + id,
+        url: "/api/entity/" + id,
         success: function(data) {
 //            console.dir(data.payload[0]);
             schedule = data.payload[0].schedule;
@@ -264,7 +264,7 @@ function loadEvent(id) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/event/" + id,
+        url: "/api/event/" + id,
         success: function(data) {
 //            console.dir(data.payload[0]);
             event = data.payload[0];
@@ -301,7 +301,7 @@ function addComment(entityId, comment) {
                 entityId: entityId,
                 commentValue: comment
             },
-            url: "http://" + serverAddress + ":4242/add_comment",
+            url: "/add_comment",
             success: function(data) {
                 console.log("Comment created" + data);
             },
@@ -328,7 +328,7 @@ function makeVote(idEntity, vote) {
             value: vote,
             idEntity: idEntity
         },
-        url: "http://" + serverAddress + ":4242/vote/vote_ru2",
+        url: "/vote/vote_ru2",
         success: function(data) {
 //            console.log("vote effectué\n" + data);
         },
@@ -346,7 +346,7 @@ function getVoteValue(idEntity) {
     jQuery.ajax({
         type: 'POST',
         async: false,
-        url: "http://" + serverAddress + ":4242/vote/moyenne_ru",
+        url: "/vote/moyenne_ru",
         data: {
             idEntity: idEntity
         },
@@ -392,7 +392,7 @@ function refreshEntity(entityId) {
     jQuery.ajax({
         type: 'GET',
         async: false,
-        url: "http://" + serverAddress + ":4242/api/entity/" + entityId,
+        url: "/api/entity/" + entityId,
         success: function(data) {
             console.dir(data);
             entitiesArray[indexEntity] = data.payload[0];

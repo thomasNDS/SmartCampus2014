@@ -69,7 +69,7 @@ function initialize() {
     });
 
     var pois = [];
-    $.getJSON('http://' + serverAddress + ':4242/api/entity/',
+    $.getJSON('/api/entity/',
             function(data) {
                 var entity = 0;
                 while (data.payload[entity]) {

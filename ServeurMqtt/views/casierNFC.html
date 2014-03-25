@@ -51,8 +51,8 @@ menu template for interface
         </style>
     </head>
     <body>
-        <form><button  style="margin: 20px;font-weight: bold;" class=" btn btn-sm btn-primary" type="button"onclick="history.go(-1);
-                return false;" >&lt;- RETOUR</button></form>
+        <form><button  style="margin: 20px;font-weight: bold;" class=" btn btn-sm btn-primary" type="button" onclick="history.go(-1);
+                return false;" >Retour</button></form>
         <div id="wrapper" class="container-fluid">
             <h1>Smart Self Service</h1>
             <div class="alert alert-info">Cette application de consignes connectées qui sert à l'échange ou au prêt d’objets entre particuliers.</div>
@@ -64,7 +64,7 @@ menu template for interface
         </div>
 
         <script>
-            jQuery.post("http://localhost:4242/casier_nfc", {
+            jQuery.post("/casier_nfc", {
             }, function(data, textStatus, jqXHR) {
                 $("#show").html(data);
             });

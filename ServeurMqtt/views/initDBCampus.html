@@ -38,14 +38,14 @@ License MIT-->
 <div id="mesures"></div>
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/mesure",
+                    url: "/api/mesure",
                     type: 'POST',
                     data: {
                         "value": 42
@@ -61,7 +61,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/mesure",
+                    url: "/api/mesure",
                     type: 'POST',
                     data: {
                         "value": 18
@@ -76,7 +76,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/mesure",
+                    url: "/api/mesure",
                     type: 'POST',
                     data: {
                         "value": 3
@@ -102,14 +102,14 @@ License MIT-->
 
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/Sensors_data",
+                    url: "/api/Sensors_data",
                     type: 'POST',
                     data: {
                         "type": "humidite",
@@ -128,7 +128,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/Sensors_data",
+                    url: "/api/Sensors_data",
                     type: 'POST',
                     data: {
                         "type": "humidite",
@@ -147,7 +147,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/Sensors_data",
+                    url: "/api/Sensors_data",
                     type: 'POST',
                     data: {
                         "type": "airQualite",
@@ -176,13 +176,13 @@ License MIT-->
 <div id="items"></div>
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "name": "Salle de cours 42",
@@ -200,7 +200,7 @@ License MIT-->
                     async: false,
                     cache: false
                 });
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "name": "Bureau",
@@ -219,7 +219,7 @@ License MIT-->
                     async: false,
                     cache: false
                 });
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "identifiant": 24,
@@ -239,7 +239,7 @@ License MIT-->
                     async: false,
                     cache: false
                 });
-                jQuery.ajax({url: "http://localhost:4242/api/item",
+                jQuery.ajax({url: "/api/item",
                     type: 'POST',
                     data: {
                         "name": "CROUS Dortoir",
@@ -277,7 +277,7 @@ License MIT-->
 //    var sensor_id = "";
 //    var item_id = "";
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
@@ -285,7 +285,7 @@ License MIT-->
             if (!data) {
                 //////COMMMENTS//////
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/comment",
+                    url: "/api/comment",
                     type: 'POST',
                     data: {
                         "value": "Ouai ! Super com test !"
@@ -302,7 +302,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/comment",
+                    url: "/api/comment",
                     type: 'POST',
                     data: {
                         "value": "Deuxième comme de la mort ! Super com test !"
@@ -322,7 +322,7 @@ License MIT-->
                 ////ENTITIES//////
                 //////////////////
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Polytech Grenoble",
@@ -342,7 +342,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "IAE",
@@ -361,7 +361,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Barnave",
@@ -381,7 +381,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Cité des Taillées",
@@ -400,7 +400,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "LIG",
@@ -418,7 +418,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "IMAG",
@@ -436,7 +436,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Bibliothèque U",
@@ -454,7 +454,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "EVE",
@@ -472,7 +472,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "IUT-1",
@@ -490,7 +490,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "UFRAPS",
@@ -508,7 +508,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "ENSIMAG",
@@ -526,7 +526,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Banque",
@@ -544,7 +544,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Métrovélo est un service accessible à tous offrant des locations de vélos à l'heure ou à l'année et des lieux de consigne. 4000 Métrovélos sont en circulation avec un tarif unique à 0,10 € de l’heure pour la location en MétrovéloBox et de 3 € à la journée pour une location en agence. <a href=\"https://www.metrovelo.fr/\">Site web de Métrovélo.</a>‎",
@@ -562,7 +562,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Arrêt G.Fauré",
@@ -590,7 +590,7 @@ License MIT-->
 <div id="tram"></div>
 <script>
 
-    jQuery.ajax({url: "http://localhost:4242/is-init",
+    jQuery.ajax({url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
@@ -600,7 +600,7 @@ License MIT-->
 //                var faure_id = "";
 //                var condillac_id = "";
 //                var taille_id = "";
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -611,7 +611,7 @@ License MIT-->
 //                    },
 //                    success: 
 //                            function(data, textStatus, jqXHR) {
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "BIBLIOTHEQUES UNIVERSITAIRES",
                     "description": "Arret de tram BIBLIOTHEQUES UNIVERSITAIRES",
                     "type": "arretTram",
@@ -622,7 +622,7 @@ License MIT-->
                 });
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
 //                    }});
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -635,7 +635,7 @@ License MIT-->
 //                        "longitude": 5.77361,
 //                    }, success: function(data, textStatus, jqXHR) {
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "CONDILLAC UNIVERSITAIRES",
                     "description": "Arret de tram CONDILLAC UNIVERSITAIRES",
                     "type": "arretTram",
@@ -647,7 +647,7 @@ License MIT-->
                     $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                 });
 //                    }});
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -658,7 +658,7 @@ License MIT-->
 //                        "type": "shedule"
 //                    }, success: function(data, textStatus, jqXHR) {
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "GABRIEL FAURE",
                     "description": "Arret de tram GABRIEL FAURE",
                     "type": "arretTram",
@@ -668,7 +668,7 @@ License MIT-->
                     $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
                 });
 //                    }});
-//                jQuery.ajax({url: "http://localhost:4242/api/item",
+//                jQuery.ajax({url: "/api/item",
 //                    async: false,
 //                    cache: false,
 //                    type: 'POST',
@@ -679,7 +679,7 @@ License MIT-->
 //                        "type": "shedule"
 //                    }, success: function(data, textStatus, jqXHR) {
 //                        $("#tram").html($("#tram").html() + "<strong>Name: </strong>" + data.payload.name + " <strong>ID: </strong> " + data.payload._id + " <span class='ok'> OK </span> <br>");
-                jQuery.post("http://localhost:4242/api/entity", {
+                jQuery.post("/api/entity", {
                     "name": "Taille UNIVERSITE",
                     "description": "Arret de tram Taille UNIVERSITE",
                     "type": "arretTram",
@@ -702,7 +702,7 @@ License MIT-->
     var diderot46_id = "";
     var diderot17_id = "";
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
@@ -710,7 +710,7 @@ License MIT-->
             if (!data) {
 
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 18,
                         "name": "Entracte",
@@ -730,7 +730,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 46,
                         "name": "Administratif",
@@ -750,7 +750,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 17,
                         "name": "Traditionnel",
@@ -769,7 +769,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Diderot",
@@ -793,7 +793,7 @@ License MIT-->
                 ///////////////////////////////////////////////CONDILLAC/////////////////////////////////////////
                 var condillac4_id = "";
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 4,
                         "name": "Traditionnel",
@@ -812,7 +812,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Condillac",
@@ -837,7 +837,7 @@ License MIT-->
                 var barnave24_id = "";
                 var barnave3_id = "";
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 3,
                         "name": "Traditionnel",
@@ -854,7 +854,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 13,
                         "name": "Cafeteria",
@@ -871,7 +871,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/item",
+                    url: "/api/item",
                     type: 'POST',
                     data: {"identifiant": 24,
                         "name": "Framboisière",
@@ -888,7 +888,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/entity",
+                    url: "/api/entity",
                     type: 'POST',
                     data: {
                         "name": "Barnave",
@@ -915,14 +915,14 @@ License MIT-->
 <div id="admin"></div>
 <script>
     jQuery.ajax({
-        url: "http://localhost:4242/is-init",
+        url: "/is-init",
         type: 'GET',
         async: false,
         cache: false,
         success: function(data, textStatus, jqXHR) {
             if (!data) {
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "nicolas",
@@ -941,7 +941,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "thomas",
@@ -960,7 +960,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "simon",
@@ -979,7 +979,7 @@ License MIT-->
                     cache: false
                 });
                 jQuery.ajax({
-                    url: "http://localhost:4242/api/administrator",
+                    url: "/api/administrator",
                     type: 'POST',
                     data: {
                         "first_name": "laurene",
@@ -1005,16 +1005,16 @@ License MIT-->
 
 <h1>Usage</h1>
 <h4>Afficher l'ensemble des entités</h4>
-http://localhost:4242/api/entity/ </br>
+/api/entity/ </br>
 
 <h4>Afficher un entité $id</h4>
-http://localhost:4242/api/entity/$id/ </br>
+/api/entity/$id/ </br>
 
 <h4>Afficher les infos d'une entité $id</h4>
-http://localhost:4242/api/entity/$id/infos </br>
+/api/entity/$id/infos </br>
 
 <h4>Afficher la premiére info d'une entité $id</h4>
-http://localhost:4242/api/entity/$id/infos/0 </br>
+/api/entity/$id/infos/0 </br>
 
 <h4>Afficher un attribut d'ine info d'une entité $id</h4>
-http://localhost:4242/api/entity/$id/infos/0/uneInfo </br>
+/api/entity/$id/infos/0/uneInfo </br>
