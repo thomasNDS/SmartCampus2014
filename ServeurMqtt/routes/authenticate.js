@@ -10,12 +10,13 @@ exports.login = function(request, response) {
     AdministratorModel.findOne({'login': username, 'password': password}, 'username entity', function(err, admin) {
         if (err)
             return handleError(err);
-        if (admin != null) {
+        if (admin !== null) {
             request.session.regenerate(function() {
                 request.session.user = username;
                 request.session.id = admin._id;
                 request.session.entity = admin.entity;
-                response.redirect('/restricted');
+//                response.redirect('/restricted');
+                response.redirect('/admin');
             });
         } else {
             response.redirect('authentication.html');
@@ -32,7 +33,7 @@ exports.whoami = function(request, res) {
     }
 };
 
-exports.logout=function(request, response) {
+exports.logout = function(request, response) {
     request.session.admin = null;
     request.session.user = null;
     response.redirect('/');
