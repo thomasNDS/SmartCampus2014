@@ -33,9 +33,7 @@ app.configure(function() {
     app.use(express.bodyParser());
 
     app.use(express.cookieParser('S3CRE7'));
-    //app.use(express.cookieSession()); //utilité??? --> THOMAS??
     app.use(express.session());
-    
     app.use(app.router);
 
     app.use(express.methodOverride());
@@ -87,8 +85,8 @@ app.get('/is-init', routes.test_init);
 //routes for authentication
 app.post('/loginme', routes.authenticate.login);
 app.get('/whoami', routes.authenticate.whoami);
+app.get('/logout',routes.authenticate.logout);
 
-//app.get('/vote/vote_ruG', routes.crowdsourcing.voteRuGet);
 app.post('/vote/moyenne_ru', routes.crowdsourcing.getRu);
 app.post('/vote/vote_ru2', routes.crowdsourcing.voteRu2);
 
@@ -96,25 +94,8 @@ app.post('/add_comment', routes.add_comment);
 
 app.get('/admin', routes.adminapp.adminapp);
 
-app.post('/covoiturage', function(req, res) {
-    var dataRes = "";
-    var spawn = require('child_process').spawn,
-            pythonProcess = spawn('python', ['script/covoiturage.py', req.body.destination, req.body.day, req.body.month, req.body.year]);
-
-    pythonProcess.stdout.on('data', function(data) {
-        console.log('stdout: ' + data);
-        dataRes += data;
-    });
-
-    pythonProcess.stderr.on('data', function(data) {
-        console.log('stderr: ' + data);
-    });
-
-    pythonProcess.on('close', function(code) {
-        console.log('child process exited with code ' + code);
-        res.send("" + dataRes);
-    });
-});
+//route to launch child process
+app.post('/covoiturage', routes.script.covoiturage);
 
 app.use('/api', mers({uri: addrmongo}).rest());
 
@@ -130,11 +111,6 @@ function restrict(req, res, next) {
 }
 
 
-app.get('/logout', function(request, response) {
-    request.session.admin = null;
-    request.session.user = null;
-    response.redirect('/');
-});
 
 
 //Example of a restricted route !
@@ -146,12 +122,3 @@ app.get('/restricted', restrict, function(request, response) {
 http.createServer(app).listen(4242, function() {
     console.log("\n Start on http://localhost:4242 \n");
 });
-//exports.authCallback = function (req, res, next) {
-//  //Check if the logged in user is an admin
-//  Admin.findOne( { user : req.user.id },function ( err, admin, count ){
-//    var old = req.session;
-//      if(!err && admin)
-//        req.session.isAdmin = true;
-//      res.redirect('/')
-//  })
-//}
