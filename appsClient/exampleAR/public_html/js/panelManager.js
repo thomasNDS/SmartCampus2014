@@ -403,13 +403,15 @@ function closePanel() {
 }
 
 /*
+ * Inutilisée pour le moment!
  * Met la limite height pour affichage contenu
  * @returns {undefined}
  */
 function changeMaxHeightContentTabs(parentNode) {
     var height = parseInt($(parentNode).css("height"));
-    var maxHeightContentTab = height * (65 / 100);
-    $("#contentTabs").css("max-height", maxHeightContentTab);
+    console.log("maj heightContent " + height);
+    var maxHeightContentTab = height * (10 / 100);
+//    $("#contentTabs").css("max-height", maxHeightContentTab);
 }
 
 /*
@@ -694,7 +696,6 @@ function buildEmptyPanel(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(panel);
-    changeMaxHeightContentTabs("#map-canvas");
 }
 
 /*
