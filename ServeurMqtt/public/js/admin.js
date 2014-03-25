@@ -169,8 +169,8 @@ function get_admins() {
                                     }
                                 });
                     });
-                    if (selectedAdmin) {
-                        $("#btn_onoff").click(function() {
+                    $("#btn_onoff").click(function() {
+                        if (selectedAdmin) {
                             toggle_switch();
                             if ($("#btn_on").hasClass('active')) {
                                 $.ajax({
@@ -203,8 +203,8 @@ function get_admins() {
                                     }
                                 });
                             }
-                        });
-                    }
+                        }
+                    });
                 }
         );
     }
