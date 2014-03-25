@@ -289,7 +289,7 @@ function addComment(entityId, comment) {
     // get value of comment and pseudo
     var valComment = $("#commentArea").val();
     var valpseudo = $("#commentPseudo").val();
-    
+
     //test if not a null comment
     if (valComment && valpseudo && valpseudo !== "" && valComment !== "") {
         comment = '<strong>' + valpseudo + '</strong>' + ' : ' + valComment;
@@ -400,7 +400,8 @@ function refreshEntity(entityId) {
     });
     //Rebuild du panel pour mettre à jour l'item commentaire
     //@TODO : Optimiser (rechargement d'un seul item)
-    buildPanel(entitiesArray[indexEntity]);
+    var entity = entitiesArray[indexEntity];
+    buildPanel(entity);
 }
 
 /*
@@ -546,7 +547,8 @@ function buildSchedulePanel(arrayHours) {
 }
 
 function buildPanelByIndex(indexElem) {
-    buildPanel(entitiesArray[indexElem]);
+    var entity = entitiesArray[indexElem];
+    buildPanel(entity);
 }
 
 /**
@@ -580,6 +582,9 @@ function buildTab(title, content, i) {
  * Chargement d'un objet représentant l'element detecté
  */
 function buildPanel(objElem) {
+    var entity = objElem;
+    entity.name = translate(entity.name);
+    entity.description = translate(entity.description);
     console.log(objElem);
 
     /* Clean le panel */
