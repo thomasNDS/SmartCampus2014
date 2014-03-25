@@ -85,6 +85,7 @@ app.get('/is-init', routes.test_init);
 //routes for authentication
 app.post('/loginme', routes.authenticate.login);
 app.get('/whoami', routes.authenticate.whoami);
+app.get('/logout',routes.authenticate.logout);
 
 app.post('/vote/moyenne_ru', routes.crowdsourcing.getRu);
 app.post('/vote/vote_ru2', routes.crowdsourcing.voteRu2);
@@ -93,6 +94,7 @@ app.post('/add_comment', routes.add_comment);
 
 app.get('/admin', routes.adminapp.adminapp);
 
+//route to launch child process
 app.post('/covoiturage', routes.script.covoiturage);
 
 app.use('/api', mers({uri: addrmongo}).rest());
@@ -109,11 +111,6 @@ function restrict(req, res, next) {
 }
 
 
-app.get('/logout', function(request, response) {
-    request.session.admin = null;
-    request.session.user = null;
-    response.redirect('/');
-});
 
 
 //Example of a restricted route !
@@ -125,12 +122,3 @@ app.get('/restricted', restrict, function(request, response) {
 http.createServer(app).listen(4242, function() {
     console.log("\n Start on http://localhost:4242 \n");
 });
-//exports.authCallback = function (req, res, next) {
-//  //Check if the logged in user is an admin
-//  Admin.findOne( { user : req.user.id },function ( err, admin, count ){
-//    var old = req.session;
-//      if(!err && admin)
-//        req.session.isAdmin = true;
-//      res.redirect('/')
-//  })
-//}

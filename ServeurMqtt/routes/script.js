@@ -4,6 +4,7 @@
  *  License MIT
  */
 
+//Launch child process (python parser here)
 exports.covoiturage = function(req, res) {
     var dataRes = "";
     var spawn = require('child_process').spawn,
