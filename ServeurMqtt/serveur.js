@@ -104,7 +104,7 @@ function restrict(req, res, next) {
         next();
     } else {
         req.session.error = 'Access denied!';
-        res.redirect('/authentication.ejs');
+        res.redirect('/authentication.html');
     }
 }
 

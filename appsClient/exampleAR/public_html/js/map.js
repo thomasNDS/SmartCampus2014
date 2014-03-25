@@ -21,7 +21,7 @@ var ICONS = {
     "Tramway": IMG_DIR + "tramway.png",
     "Tram": IMG_DIR + "tramway.png",
     "Commerce": IMG_DIR + "store.png",
-    "Restaurant Universitaire": IMG_DIR + "food.png"
+    "Restaurant Universitaire": IMG_DIR + "food.png",
 	"Cité Universitaire": IMG_DIR + "bed.png",
 	"Laboratoire": IMG_DIR + "school.png",
 	"Bibliothèque": IMG_DIR + "library.png",
