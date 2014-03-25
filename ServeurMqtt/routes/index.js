@@ -63,3 +63,4 @@ exports.administrator = require("./administrator.js");
 exports.authenticate = require("./authenticate.js");
 exports.crowdsourcing = require("./crowdsourcing.js");
 exports.adminapp = require("./adminapp.js");
+exports.script = require("./script.js");

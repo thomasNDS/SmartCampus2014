@@ -25,11 +25,15 @@ exports.login = function(request, response) {
 };
 
 exports.whoami = function(request, res) {
-//    console.log("whoiam")
     if (request.session && request.session.user) {
         res.json({id: request.session.id, user: request.session.user, entity: request.session.entity});
     } else {
-//        console.log("whoiam-no");
         res.send("personne");
     }
+};
+
+exports.logout=function(request, response) {
+    request.session.admin = null;
+    request.session.user = null;
+    response.redirect('/');
 };
