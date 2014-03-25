@@ -15,11 +15,12 @@
             $('#langage').on('change', function() {
                 lang_selected = this.value;
             });
+            $('#langage_info').html(translate("Langue"));
         </script>
     </head>
     <body>
         <div>
-            <label for="langage">Langue</label><select name="langage" id="langage">
+            <label id="langage_info" for="langage"></label><select name="langage" id="langage">
                 <option value="fr">Français</option>
                 <option value="en">English</option>
                 <option value="uk">Ukraine</option>

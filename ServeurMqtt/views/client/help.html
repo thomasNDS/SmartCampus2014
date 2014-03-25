@@ -9,12 +9,21 @@ and open the template in the editor.
         <title>Aide</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="/js/libs/jquery/jquery.js"></script>
+        <script>
+            loadHelp();
+            function loadHelp() {
+                var text = translate("Cet application offre 2 modes de fonctionnement :") + "<br>"
+                text += translate("- en mode \" réalité augmentée \", pointez votre téléphone sur un QR code pour obtenir des informations sur le batiment ou l'objet.") + "<br>"
+                text += translate("- en mode \" plan \", cliquez sur un item de la carte pour obtenir des informations sur le batiment ou l'objet."
+                        ) + "<br>"
+
+                $('#content_help').html((text));
+            }
+        </script>
     </head>
     <body>
-        <div>
-			Cet application offre 2 modes de fonctionnement :<br>
-			- en mode "réalité augmentée", pointez votre téléphone sur un QR code pour obtenir des informations sur le batiment ou l'objet.<br>
-			- en mode "plan", cliquez sur un item de la carte pour obtenir des informations sur le batiment ou l'objet.<br>		
-		</div>
+        <div id="content_help">
+        </div>
     </body>
 </html>
