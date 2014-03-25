@@ -75,7 +75,7 @@ function sortEntityArray() {
     entity = entitiesArray[entityIndex];
     arraySorted[4] = entity;
     arrayUnset(entitiesArray, entity);
-	
+
     entitiesArray = arraySorted;
 
 }
@@ -286,25 +286,33 @@ function loadEvent(id) {
  */
 function addComment(entityId, comment) {
     console.log(entityId, comment);
-    var com;
-    jQuery.ajax({
-        type: 'POST',
-        async: false,
-        data: {
-            entityId: entityId,
-            commentValue: comment
-        },
-        url: "http://" + serverAddress + ":4242/add_comment",
-        success: function(data) {
-            console.log("Comment created" + data);
-        },
-        error: function(err) {
-            console.log("Loupé :P");
-            console.log(err);
-        }
-    });
-    refreshEntity(entityId);
-    return com;
+    // get value of comment and pseudo
+    var valComment = $("#commentArea").val();
+    var valpseudo = $("#commentPseudo").val();
+    
+    //test if not a null comment
+    if (valComment && valpseudo && valpseudo !== "" && valComment !== "") {
+        comment = '<strong>' + valpseudo + '</strong>' + ' : ' + valComment;
+        var com;
+        jQuery.ajax({
+            type: 'POST',
+            async: false,
+            data: {
+                entityId: entityId,
+                commentValue: comment
+            },
+            url: "http://" + serverAddress + ":4242/add_comment",
+            success: function(data) {
+                console.log("Comment created" + data);
+            },
+            error: function(err) {
+                console.log("Loupé :P");
+                console.log(err);
+            }
+        });
+        refreshEntity(entityId);
+        return com;
+    }
 }
 
 function makeVote(idEntity, vote) {
@@ -661,15 +669,20 @@ function buildPanel(objElem) {
         buildTab("Evenement", eventContent, indexTab);
     }
 
-    //Onglet Com
+    //Onglet Com /////////////////////////////////////////////////////////////////////////////////////////////////////
     var commentContent = "";
+    //Chargement et affichage
     objElem.comments.forEach(function(comId) {
         var com = loadComById(comId);
         var date = new Date(com.date);
         commentContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
     });
-    commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','aaa'" + ")\">Ajouter un commentaire</button></div>";
-    commentContent += "</div>";
+    //Ajout
+    commentContent += '<hr/><div class="zoneAddComment"><h4>Ajouter un commentaire</h4>'
+    commentContent += '<input id="commentPseudo" class="form-control addPseudo" placeholder="Pseudo"><br/>'
+    commentContent += "<textarea id='commentArea' class='form-control commentArea' placeholder='Commentaire'></textarea> "
+    commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','" + $("#commentArea").val() + "'" + ")\">Poster</button></div>";
+    commentContent += "</div></div>";
     buildTab("Avis", commentContent, indexTab);
 
     $("#informationPanel").css("display", "block");
