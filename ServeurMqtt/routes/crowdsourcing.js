@@ -31,15 +31,15 @@ exports.getRu = function(req, res) {
 //    res.send("" + average);
 //    updateTable();
     var idEntity = req.body.idEntity;
-    console.log("Get vote ru id : " + idEntity);
+//    console.log("Get vote ru id : " + idEntity);
     var vote = getVoteEntityById(idEntity, function(voterecup) {
-        console.log("recup vote : " + voterecup);
+//        console.log("recup vote : " + voterecup);
         res.json(voterecup);
     });
 };
 
 function processAvg(newPoll, idEntity) {
-    console.log("nouveau vote : " + newPoll);
+//    console.log("nouveau vote : " + newPoll);
     var mean = 0, coeffsSum = 0;
     var currentTime = new Date();
     table_polls.push({"date": new Date(), "poll": newPoll});
@@ -52,7 +52,7 @@ function processAvg(newPoll, idEntity) {
     });
 //    average = mean / coeffsSum;
     var newValue = mean / coeffsSum;
-    console.log("value= " + newValue + "id= " + idEntity);
+//    console.log("value= " + newValue + "id= " + idEntity);
     setVoteEntityById(idEntity, newValue);
     updateTable();
 }
@@ -81,7 +81,7 @@ function getVoteEntityById(idEntity, callback) {
         if (err) {
             console.log(err);
         } else {
-            console.log("getVoteEntityById OK, vote " + ent.voteValue);
+//            console.log("getVoteEntityById OK, vote " + ent.voteValue);
             vote = ent.voteValue;
             return callback(vote);
         }

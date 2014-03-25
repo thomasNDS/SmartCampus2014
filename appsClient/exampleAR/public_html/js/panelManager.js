@@ -46,42 +46,36 @@ function sortEntityArray() {
     var entityIndex = null;
     var entity = null;
 
-    //UPMF -> 0
-    entityIndex = getIndexElementByName("UPMF");
+    //Polytech Grenoble -> 0
+    entityIndex = getIndexElementByName("Polytech Grenoble");
     entity = entitiesArray[entityIndex];
     arraySorted[0] = entity;
     arrayUnset(entitiesArray, entity);
 
-    //Polytech Grenoble -> 4
-    entityIndex = getIndexElementByName("Polytech Grenoble");
+    //Barnave -> 1
+    entityIndex = getIndexElementByName("Barnave");
+    entity = entitiesArray[entityIndex];
+    arraySorted[1] = entity;
+    arrayUnset(entitiesArray, entity);
+
+    //CROUS Taillées -> 2
+    entityIndex = getIndexElementByName("Cité des Taillées");
+    entity = entitiesArray[entityIndex];
+    arraySorted[2] = entity;
+    arrayUnset(entitiesArray, entity);
+
+    //EVE -> 3
+    entityIndex = getIndexElementByName("EVE");
+    entity = entitiesArray[entityIndex];
+    arraySorted[3] = entity;
+    arrayUnset(entitiesArray, entity);
+
+    //ARRET TRAM -> 4
+    entityIndex = getIndexElementByName("Arrêt G.Fauré");
     entity = entitiesArray[entityIndex];
     arraySorted[4] = entity;
     arrayUnset(entitiesArray, entity);
-
-    //IAE -> 8
-    entityIndex = getIndexElementByName("IAE");
-    entity = entitiesArray[entityIndex];
-    arraySorted[8] = entity;
-    arrayUnset(entitiesArray, entity);
-
-    //Université Stendhal -> 12
-    entityIndex = getIndexElementByName("Université Stendhal");
-    entity = entitiesArray[entityIndex];
-    arraySorted[12] = entity;
-    arrayUnset(entitiesArray, entity);
-
-    //BIBLIOTHEQUES UNIVERSITAIRES -> 16
-    entityIndex = getIndexElementByName("BIBLIOTHEQUES UNIVERSITAIRES");
-    entity = entitiesArray[entityIndex];
-    arraySorted[16] = entity;
-    arrayUnset(entitiesArray, entity);
-
-    //CONDILLAC UNIVERSITAIRES -> 20
-    entityIndex = getIndexElementByName("Condillac");
-    entity = entitiesArray[entityIndex];
-    arraySorted[20] = entity;
-    arrayUnset(entitiesArray, entity);
-
+	
     entitiesArray = arraySorted;
 
 }
@@ -475,6 +469,72 @@ function buildVotePanelQueue(idEntity) {
     return html;
 }
 
+/*
+ * Construction du panel Horaire
+ * @param {type} arrayHours
+ * @returns {String}
+ */
+function buildSchedulePanel(arrayHours) {
+    var txt = "Horaires théoriques : <br><br>";
+    var arrayToSeyssin = arrayHours[0];
+    var arrayToGieres = arrayHours[1];
+    var actualDate = new Date();// (new Date()).getMinutes() + 60*(new Date()).hours();
+    var actualDateMin = actualDate.getHours() * 60 + actualDate.getMinutes();
+
+    var hoursSeyssin = [];
+    var hoursGieres = [];
+
+    var isFound = false;
+    var i = 0;
+
+    //Vers Sessyn//
+    while (i < arrayToSeyssin.length && !isFound) {
+        if (arrayToSeyssin[i] > actualDateMin) {
+            isFound = true;
+        } else {
+            i++;
+        }
+    }
+    var cptHours = 0;
+    while (i < arrayToSeyssin.length && cptHours < 5) {
+        hoursSeyssin[cptHours] = arrayToSeyssin[i] - actualDateMin;
+        i++;
+        cptHours++;
+    }
+
+    isFound = false;
+    i = 0;
+
+    //Vers Gieres //
+    while (i < arrayToGieres.length && !isFound) {
+        if (arrayToGieres[i] > actualDateMin) {
+            isFound = true;
+        } else {
+            i++;
+        }
+    }
+    cptHours = 0;
+    while (i < arrayToGieres.length && cptHours < 5) {
+        hoursGieres[cptHours] = arrayToGieres[i] - actualDateMin;
+        i++;
+        cptHours++;
+    }
+
+    txt += "<div>";
+    txt += "<b>Direction Seyssins Le Prisme :</b> <br>";
+    hoursSeyssin.forEach(function(hour) {
+        txt += hour + " min - ";
+    });
+    txt += "<br>";
+    txt += "<b>Direction Gières :</b> <br>";
+    hoursGieres.forEach(function(hour) {
+        txt += hour + " min - ";
+    });
+    txt += "</div>";
+
+    return txt;
+}
+
 function buildPanelByIndex(indexElem) {
     buildPanel(entitiesArray[indexElem]);
 }
@@ -520,9 +580,8 @@ function buildPanel(objElem) {
     $("#informationTitle").html(objElem.name);
 
     //Onglet Description
-    var descriptionContent = objElem.description;
-    descriptionContent += "<div class=\"moreBtn\"><button class=\"btn btn-primary\">Plus d'infos</button></div>";
-    
+    var descriptionContent = "<div id=\"descriptionContent\">" + objElem.description + "</div>";
+
     if (objElem.typeCrowdsourcing === "queue") {
         descriptionContent += buildVotePanelQueue(objElem._id);
     }
@@ -530,9 +589,11 @@ function buildPanel(objElem) {
     buildTab("Description", descriptionContent, indexTab);
 
     //Onglet Horaire
-    var scheduleContent = objElem.schedule;
-
-    if (scheduleContent.length !== 0) {
+    var scheduleContent = "";
+    var schedule = objElem.schedule;
+    if (schedule.length !== 0) {
+        var arraySchedule = JSON.parse(schedule);
+        scheduleContent = buildSchedulePanel(arraySchedule);
         buildTab("Horaire", scheduleContent, indexTab);
     }
 
@@ -541,19 +602,44 @@ function buildPanel(objElem) {
         var itemLoaded = loadItemById(itemId);
 
         if (itemLoaded.show !== false) {
-            var itemContent = itemLoaded.description;
+            //DESCRIPTION
+            var itemContent = itemLoaded.description + "<br>";
+
+            // INFOS
+            var infoContent = "";
+            infoContent += "<div id=\"infoDiv\">";
+            itemLoaded.infos.forEach(function(info, index) {
+                if (info !== "") {
+                    var infoDay = info.split(" ");
+                    var day = infoDay[0];
+                    var hour = infoDay [1];
+                    var dateTiretString = infoDay[2];
+                    var date = dateTiretString.split("--")[0];
+                    var meal = info.split("--");
+                    var mealToShow = meal[1];
+                    infoContent += "<br><div class=\"mealDiv\"><b>" + day + " " + hour + " " + date + " </b> : <br>" + mealToShow + "</div>";
+                }
+            });
+            infoContent += "</div>";
+
+            itemContent += infoContent;
+
+            // SENSORS
+            var sensorContent = "";
             if (itemLoaded.Sensors_data.length > 0) {
-                itemContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
-                itemContent += "<div>";
-                //Sensors
+                sensorContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
+                sensorContent += "<div>";
+
                 itemLoaded.Sensors_data.forEach(function(sensorId) {
                     var sensorLoaded = loadSensorById(sensorId);
                     var mesure = loadMesureById(sensorLoaded.mesure[0]);
-                    itemContent += sensorLoaded.type + " : " + mesure.value + "<br>";
+                    sensorContent += sensorLoaded.type + " : " + mesure.value + "<br>";
                 });
-                itemContent += "</div>";
-                itemContent += "</div>";
+                sensorContent += "</div>";
+                sensorContent += "</div>";
             }
+            itemContent += sensorContent;
+
             buildTab(itemLoaded.name, itemContent, indexTab);
         }
     });
@@ -631,5 +717,28 @@ function showModalParameters(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(modalParam);
-//                $("#popParam").modal('show');                
+}
+
+function showModalAbout(htmlNodeToAppend) {
+    var modalAbout = "<div id=\"popAbout\" class=\"modal hide fade\">" +
+            "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
+            "<h3 style=\"text-align:center\">A propros</h3>" +
+            "</div>" +
+            "<div id=\"popUpContent\" class=\"modal-body\">" +
+            "Voulez-vous l'afficher ?" +
+            "</div>" +
+            "</div>";
+    $(htmlNodeToAppend).append(modalAbout);
+}
+
+function showModalHelp(htmlNodeToAppend) {
+    var modalHelp = "<div id=\"popHelp\" class=\"modal hide fade\">" +
+            "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
+            "<h3 style=\"text-align:center\">Aide</h3>" +
+            "</div>" +
+            "<div id=\"popUpContent\" class=\"modal-body\">" +
+            "Voulez-vous l'afficher ?" +
+            "</div>" +
+            "</div>";
+    $(htmlNodeToAppend).append(modalHelp);
 }
