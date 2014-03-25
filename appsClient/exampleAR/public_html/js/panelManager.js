@@ -403,6 +403,7 @@ function closePanel() {
 }
 
 /*
+ * Inutilisée pour le moment!
  * Met la limite height pour affichage contenu
  * @returns {undefined}
  */
@@ -695,7 +696,6 @@ function buildEmptyPanel(htmlNodeToAppend) {
             "</div>" +
             "</div>";
     $(htmlNodeToAppend).append(panel);
-//    changeMaxHeightContentTabs("#map-canvas");console.log("maj heightContent");
 }
 
 /*
