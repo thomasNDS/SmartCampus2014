@@ -13,7 +13,7 @@ var area = {
     zoom: 14
 };
 var map;
-var IMG_DIR = "images/";
+var IMG_DIR = "/images/";
 var ICONS = {
     "Université": IMG_DIR + "school.png",
     "Ecole d'ingénieur": IMG_DIR + "school.png",
