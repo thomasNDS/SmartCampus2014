@@ -138,6 +138,7 @@ function get_events() {
 }
 
 function get_admins() {
+    var selectedAdmin = 0;
     if (current_entity) {
         $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/administrator/',
                 function(data) {
@@ -152,10 +153,48 @@ function get_admins() {
                                 );
                         admin++;
                     }
+                    $("#admins_list").change(function() {
+                        $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/administrator/' + $("#admins_list").val(),
+                                function(selection) {
+                                    selectedAdmin = selection;
+                                    $("#admin_descr").html(
+                                            selection.payload.first_name + ' ' + selection.payload.name
+                                            );
+                                    if (selection.payload.entity.indexOf(current_entity) !== -1) {
+                                        admin_switch_set_to("on");
+                                    } else {
+                                        admin_switch_set_to("off");
+                                    }
+                                });
+                    });
                 }
         );
+        $("#btn_onoff").click(function() {
+            toggle_switch();
+            if ($("#btn_on").hasClass('active')) {
+                console.log(selectedAdmin.payload.login + " va devenir actif");
+            } else {
+                console.log(selectedAdmin.payload.login + " va devenir passif");
+            }
+        });
     }
 }
+
+function admin_switch_set_to(value) {
+    if (($("#btn_on").hasClass('active') && value === "off") ||
+            ($("#btn_off").hasClass('active') && value === "on")) {
+        toggle_switch();
+    }
+}
+
+function toggle_switch() {
+    $(["btn_on", "btn_off"]).each(function(index, value) {
+        $("#" + value).toggleClass('active');
+        $("#" + value).toggleClass('btn-primary');
+        $("#" + value).toggleClass('btn-default');
+    });
+}
+
 
 
 

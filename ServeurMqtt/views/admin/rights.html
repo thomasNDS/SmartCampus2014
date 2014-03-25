@@ -20,9 +20,19 @@ and open the template in the editor.
         <div class="row">
             <select id="admins_list" class="form-control col-md-4" size=5 style="width: 15em"></select>
             <div class="col-md-1">
-                <p>actif <input type="checkbox" name="checkbox" value="checkbox"></p>
+                <p>actif <input id="checkbox_rights" type="checkbox" name="checkbox" value="checkbox"></p>
             </div>
         </div>
+        <div id="btn_onoff" class="btn-group btn-toggle"> 
+            <button id="btn_on" class="btn btn-lg btn-default">ON</button>
+            <button id="btn_off" class="btn btn-lg btn-primary active">OFF</button>
+        </div>
+        
+        <script type="text/javascript">
+//            $("#btn_onoff").click(function(){
+//                set_rights();
+//            });
+        </script>
 
         <div class="row">
             <div id="admin_descr" class="col-md-5">
