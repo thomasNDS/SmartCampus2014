@@ -7,12 +7,14 @@
 exports.login = function(request, response) {
     var username = request.body.username;
     var password = request.body.password;
-    AdministratorModel.findOne({'login': username, 'password': password}, 'username', function(err, admin) {
+    AdministratorModel.findOne({'login': username, 'password': password}, 'username entity', function(err, admin) {
         if (err)
             return handleError(err);
         if (admin != null) {
             request.session.regenerate(function() {
                 request.session.user = username;
+                request.session.id = admin._id;
+                request.session.entity = admin.entity;
                 response.redirect('/restricted');
             });
         } else {
@@ -24,7 +26,7 @@ exports.login = function(request, response) {
 
 exports.whoami = function(request, res) {
     if (request.session && request.session.user) {
-        res.send(request.session.user);
+        res.json({id: request.session.id, user: request.session.user, entity: request.session.entity});
     } else {
         res.send("personne");
     }
