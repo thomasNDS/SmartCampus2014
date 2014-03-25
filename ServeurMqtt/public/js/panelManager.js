@@ -413,7 +413,7 @@ function refreshEntity(entityId) {
         url: "/api/entity/" + entityId,
         success: function(data) {
             console.dir(data);
-            entitiesArray[indexEntity] = data.payload[0];
+            entitiesArray[indexEntity] = data.payload;
         }
     });
     //Rebuild du panel pour mettre à jour l'item commentaire
@@ -752,8 +752,8 @@ function buildPanel(objElem) {
             async: false,
             url: "/api/item/" + itemId,
             success: function(data) {
-                console.dir(data.payload[0]);
-                itemLoaded = data.payload[0];
+                console.dir(data.payload);
+                itemLoaded = data.payload;
             }
         });
 
@@ -793,8 +793,8 @@ function buildPanel(objElem) {
                         async: false,
                         url: "/api/sensors_data/" + sensorId,
                         success: function(data) {
-                            console.dir(data.payload[0]);
-                            sensorLoaded = data.payload[0];
+                            console.dir(data.payload);
+                            sensorLoaded = data.payload;
                         },
                         error: function(err) {
                             console.log(err);
@@ -807,8 +807,8 @@ function buildPanel(objElem) {
                         async: false,
                         url: "/api/mesure/" + mesureId,
                         success: function(data) {
-                            console.dir(data.payload[0]);
-                            mesure = data.payload[0];
+                            console.dir(data.payload);
+                            mesure = data.payload;
                         },
                         error: function(err) {
                             console.log(err);
@@ -835,7 +835,7 @@ function buildPanel(objElem) {
                 async: false,
                 url: "/api/event/" + eventId,
                 success: function(data) {
-                    eventLoaded = data.payload[0];
+                    eventLoaded = data.payload;
                 },
                 error: function(err) {
                     console.log(err);
@@ -862,7 +862,7 @@ function buildPanel(objElem) {
             url: "/api/comment/" + comId,
             success: function(data) {
 //            console.dir(data.payload[0]);
-                com = data.payload[0];
+                com = data.payload;
             },
             error: function(err) {
                 console.log(err);
