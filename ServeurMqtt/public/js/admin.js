@@ -36,9 +36,9 @@ function build_menu() {
                                 "<li><a href=\"#entity_"
                                 + name
                                 + "\" data-toggle=\"tab\" onclick=\"update_current_entity('" + data.payload._id + "')\">"
-                                + "<i class=\"glyphicon glyphicon-home\"></i>"
+                                + "<i class=\"glyphicon glyphicon-home\"></i><strong> "
                                 + data.payload.name
-                                + "</a></li>"
+                                + "</strong></a></li>"
                                 );
                         $("#entities_content").append(
                                 "<div class=\"tab-pane\" id=\"entity_"
@@ -113,8 +113,10 @@ function get_comments() {
                     $(comments).each(function(index, value) {
                         $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/comment/' + value,
                                 function(com) {
-                                    $("#div_comments").append("<blockquote>" + com.payload.value + "</blockquote>");
-                                    $("#div_comments").append($.date(com.payload.date));
+                                    if (com.payload.value && com.payload.date) {
+                                        $("#div_comments").append("<blockquote>" + com.payload.value + "</blockquote>");
+                                        $("#div_comments").append($.date(com.payload.date));
+                                    }
                                 });
                     });
                 });
@@ -140,7 +142,7 @@ function get_events() {
 }
 
 function get_admins() {
-    var selectedAdmin = 0;
+    var selectedAdmin = null;
     if (current_entity) {
         $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/administrator/',
                 function(data) {
@@ -167,40 +169,42 @@ function get_admins() {
                                     }
                                 });
                     });
-                    $("#btn_onoff").click(function() {
-                        toggle_switch();
-                        if ($("#btn_on").hasClass('active')) {
-                            $.ajax({
-                                url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
-                                type: 'PUT',
-                                dataType: 'json',
-                                data: {'entity': $.merge(selectedAdmin.payload.entity, [current_entity])},
-                                success: function(data) {
-                                    show_modal("Ajout des droits", selectedAdmin.payload.login + " est maintenant administrateur de "
-                                            + current_entity_name);
-                                },
-                                error: function() {
-                                    show_modal("Ajout des droits", "Erreur !");
-                                }
-                            });
-                        } else {
-                            $.ajax({
-                                url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
-                                type: 'PUT',
-                                dataType: 'json',
-                                data: {'entity': $.grep(selectedAdmin.payload.entity, function(elt, idx) {
-                                        return (elt !== current_entity);
-                                    })},
-                                success: function(data) {
-                                    show_modal("Retrait des droits", selectedAdmin.payload.login + " n'est plus administrateur de "
-                                            + current_entity_name);
-                                },
-                                error: function() {
-                                    show_modal("Retrait des droits", "Erreur !");
-                                }
-                            });
-                        }
-                    });
+                    if (selectedAdmin) {
+                        $("#btn_onoff").click(function() {
+                            toggle_switch();
+                            if ($("#btn_on").hasClass('active')) {
+                                $.ajax({
+                                    url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
+                                    type: 'PUT',
+                                    dataType: 'json',
+                                    data: {'entity': $.merge(selectedAdmin.payload.entity, [current_entity])},
+                                    success: function(data) {
+                                        show_modal("Ajout des droits", selectedAdmin.payload.login + " est maintenant administrateur de "
+                                                + current_entity_name);
+                                    },
+                                    error: function() {
+                                        show_modal("Ajout des droits", "Erreur !");
+                                    }
+                                });
+                            } else {
+                                $.ajax({
+                                    url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
+                                    type: 'PUT',
+                                    dataType: 'json',
+                                    data: {'entity': $.grep(selectedAdmin.payload.entity, function(elt, idx) {
+                                            return (elt !== current_entity);
+                                        })},
+                                    success: function(data) {
+                                        show_modal("Retrait des droits", selectedAdmin.payload.login + " n'est plus administrateur de "
+                                                + current_entity_name);
+                                    },
+                                    error: function() {
+                                        show_modal("Retrait des droits", "Erreur !");
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
         );
     }
@@ -250,6 +254,7 @@ function update_current_entity(entity_id) {
             function(data) {
                 current_entity_name = data.payload.name || "";
             });
+    $("#leftpanel").html('');
 }
 
 function show_modal(title, text) {
