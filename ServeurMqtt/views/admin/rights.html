@@ -20,23 +20,31 @@ and open the template in the editor.
         <div class="row">
             <select id="admins_list" class="form-control col-md-4" size=5 style="width: 15em"></select>
             <div class="col-md-1">
-                <p>actif <input id="checkbox_rights" type="checkbox" name="checkbox" value="checkbox"></p>
+                <!--<p>actif <input id="checkbox_rights" type="checkbox" name="checkbox" value="checkbox"></p>-->
             </div>
         </div>
         <div id="btn_onoff" class="btn-group btn-toggle"> 
             <button id="btn_on" class="btn btn-lg btn-default">ON</button>
             <button id="btn_off" class="btn btn-lg btn-primary active">OFF</button>
         </div>
-        
-        <script type="text/javascript">
-//            $("#btn_onoff").click(function(){
-//                set_rights();
-//            });
-        </script>
 
         <div class="row">
-            <div id="admin_descr" class="col-md-5">
-
+            <div id="div_modal" class="col-md-5">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="div_modal_title"></h4>
+                            </div>
+                            <div id="div_modal_body" class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

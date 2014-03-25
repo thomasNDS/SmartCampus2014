@@ -9,9 +9,11 @@ serverPort = "4242";
 
 // entity selected by admin (link)
 var current_entity;
+var current_entity_name;
 
 function initialize() {
     current_entity = null;
+    current_entity_name = null;
     build_menu();
     var menus = ['configuration', 'comments', 'rights', 'events'];
     $(menus).each(function(index, menu) {
@@ -157,9 +159,7 @@ function get_admins() {
                         $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/administrator/' + $("#admins_list").val(),
                                 function(selection) {
                                     selectedAdmin = selection;
-                                    $("#admin_descr").html(
-                                            selection.payload.first_name + ' ' + selection.payload.name
-                                            );
+                                    $("#admin_descr").html(selection.payload.first_name + ' ' + selection.payload.name);
                                     if (selection.payload.entity.indexOf(current_entity) !== -1) {
                                         admin_switch_set_to("on");
                                     } else {
@@ -167,16 +167,42 @@ function get_admins() {
                                     }
                                 });
                     });
+                    $("#btn_onoff").click(function() {
+                        toggle_switch();
+                        if ($("#btn_on").hasClass('active')) {
+                            $.ajax({
+                                url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
+                                type: 'PUT',
+                                dataType: 'json',
+                                data: {'entity': $.merge(selectedAdmin.payload.entity, [current_entity])},
+                                success: function(data) {
+                                    show_modal("Ajout des droits", selectedAdmin.payload.login + " est maintenant administrateur de "
+                                            + current_entity_name);
+                                },
+                                error: function() {
+                                    show_modal("Ajout des droits", "Erreur !");
+                                }
+                            });
+                        } else {
+                            $.ajax({
+                                url: 'http://' + serverAddress + ':' + serverPort + '/api/administrator/' + selectedAdmin.payload._id,
+                                type: 'PUT',
+                                dataType: 'json',
+                                data: {'entity': $.grep(selectedAdmin.payload.entity, function(elt, idx) {
+                                        return (elt !== current_entity);
+                                    })},
+                                success: function(data) {
+                                    show_modal("Retrait des droits", selectedAdmin.payload.login + " n'est plus administrateur de "
+                                            + current_entity_name);
+                                },
+                                error: function() {
+                                    show_modal("Retrait des droits", "Erreur !");
+                                }
+                            });
+                        }
+                    });
                 }
         );
-        $("#btn_onoff").click(function() {
-            toggle_switch();
-            if ($("#btn_on").hasClass('active')) {
-                console.log(selectedAdmin.payload.login + " va devenir actif");
-            } else {
-                console.log(selectedAdmin.payload.login + " va devenir passif");
-            }
-        });
     }
 }
 
@@ -220,4 +246,14 @@ $.date = function(dateObject) {
 
 function update_current_entity(entity_id) {
     current_entity = entity_id;
+    $.getJSON('http://' + serverAddress + ':' + serverPort + '/api/entity/' + entity_id,
+            function(data) {
+                current_entity_name = data.payload.name || "";
+            });
+}
+
+function show_modal(title, text) {
+    $("#div_modal_body").html(text);
+    $("#div_modal_title").html(title);
+    $('#myModal').modal();
 }
