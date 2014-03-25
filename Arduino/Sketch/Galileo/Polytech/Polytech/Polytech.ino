@@ -12,8 +12,6 @@ float mesure=0; //Variable pour le stockage mesure retournée par le capteur
 float temperature=0; //Variable pour le stockage de la température
 
 //Variables pour les sockets
-byte      mac[] = { 0x98, 0x4F, 0xEE, 0x00, 0x2E, 0x3C };
-IPAddress ip(127, 0, 0, 1);
 EthernetServer server(8888);
 
 void setup() {
@@ -27,6 +25,8 @@ void loop() {
   if (client) {
       while(client.connected()){
         sensorValue = analogRead(sensorPin);
+        
+        
         tmp = 335 - sensorValue;
         tmp = (tmp*100)/195;  
         sensorValue = tmp;
@@ -43,12 +43,14 @@ void loop() {
         strcat(buf, tempBuf); 
         client.write(buf);
         
+        char buf2[32];
         mesure = analogRead(pinTemp);  //Lecture de la valeur fournie par le capteur de température
-        temperature = (mesure * 3.3 / 1024) - 0.5;  //Conversion en température (en degré Celsius)
-        temperature = temperature * 10;
-        Serial.print("Temp : ");
-        Serial.print(temperature);
-        Serial.println();
+        temperature = (mesure*26.5)/450;
+        strcpy(buf2, "Temp : ");
+        char tempBuf2[16];
+        sprintf(tempBuf2, "%f ", temperature);
+        strcat(buf2, tempBuf2); 
+        client.write(buf2);
         
         delay(1000); 
       }

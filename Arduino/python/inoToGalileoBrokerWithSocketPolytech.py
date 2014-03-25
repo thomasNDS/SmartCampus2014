@@ -17,7 +17,8 @@ import struct
 broker="localhost" 
 port=1883
 nameMosquitto="Polytech"
-topic="humidite"
+topic1="humidite"
+topic2="temperature"
 HOST = ''  # = localhost
 PORT = 8888 
 
@@ -37,7 +38,12 @@ while True:
 	data = s.recv(32)
 	str = data.split(' ')
 	print data
-	#mqttc.publish(topic,str[2])
+	mqttc.publish(topic1,str[2])
+	#receive "temp"	
+	data = s.recv(32)
+	str = data.split(' ')
+	print data
+	mqttc.publish(topic2,str[2])
 
 
 
