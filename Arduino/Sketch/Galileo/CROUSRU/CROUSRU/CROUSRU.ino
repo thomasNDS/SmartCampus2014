@@ -9,8 +9,6 @@ int sensorValue = 0;  // valeur du capteur
 int tmp;
 
 //Variables pour les sockets
-byte      mac[] = { 0x98, 0x4F, 0xEE, 0x00, 0x2E, 0x3C };
-IPAddress ip(127, 0, 0, 1);
 EthernetServer server(8888);
 
 void setup() {
