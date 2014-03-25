@@ -17,6 +17,7 @@ indexTab = 0;
  */
 function loadEntities() {
 //    var entitiesArray = new Array();
+    var entitiesRaw;
     var entities;
     //Requete pour get toutes les entités de la BD
     jQuery.ajax({
@@ -24,14 +25,31 @@ function loadEntities() {
         async: false,
         url: "/api/entity",
         success: function(data) {
-            console.dir(data);
+//            console.dir(data);
+//            entitiesRaw = data;
             entities = data;
 
             //On les stocke dans un tableau
             for (var i = 0; i < entities.payload.length; i++) {
                 entitiesArray[i] = entities.payload[i];
+//                var entity = entities.payload[i];
+//                entitiesArray[i] = loadFullEntity(entity._id);
+
+//                if (entitiesRaw.payload[i].name === "Polytech Grenoble"){
+//                
+//            } else if (entitiesRaw.payload[i].name === "Barnave"){
+//                
+//            } else if (entitiesRaw.payload[i].name === "Cité des Taillées"){
+//                
+//            } else if (entitiesRaw.payload[i].name === "EVE"){
+//                
+//            } else if (entitiesRaw.payload[i].name === "Arrêt G.Fauré"){
+//                
+//            }
             }
             sortEntityArray();
+//            var test = loadFullEntity(entities.payload[1]._id);
+//            console.dir("AAAAAAAAAAAAAAAAAAAAAAAAAa" + test);
 //            return entitiesArray;
         }
     });
@@ -289,7 +307,7 @@ function addComment(entityId, comment) {
     // get value of comment and pseudo
     var valComment = $("#commentArea").val();
     var valpseudo = $("#commentPseudo").val();
-    
+
     //test if not a null comment
     if (valComment && valpseudo && valpseudo !== "" && valComment !== "") {
         comment = '<strong>' + valpseudo + '</strong>' + ' : ' + valComment;
@@ -573,6 +591,7 @@ function buildTab(title, content, i) {
         $("#contentTabs").append(tabContent);
 //        index++;
     })(i);
+    console.log(title + "++");
     indexTab++;
 }
 
@@ -580,7 +599,7 @@ function buildTab(title, content, i) {
  * Chargement d'un objet représentant l'element detecté
  */
 function buildPanel(objElem) {
-    console.log(objElem);
+//    console.log(objElem);
 
     /* Clean le panel */
     cleanChildOfNodeID("tabsPanel");
@@ -608,8 +627,130 @@ function buildPanel(objElem) {
     }
 
     //Onglets Items
+//    objElem.items.forEach(function(itemId) {
+//        var itemLoaded = loadItemById(itemId);
+//
+//        if (itemLoaded.show !== false) {
+//            //DESCRIPTION
+//            var itemContent = itemLoaded.description + "<br>";
+//
+//            // INFOS
+//            var infoContent = "";
+//            infoContent += "<div id=\"infoDiv\">";
+//            itemLoaded.infos.forEach(function(info, index) {
+//                if (info !== "") {
+//                    var infoDay = info.split(" ");
+//                    var day = infoDay[0];
+//                    var hour = infoDay [1];
+//                    var dateTiretString = infoDay[2];
+//                    var date = dateTiretString.split("--")[0];
+//                    var meal = info.split("--");
+//                    var mealToShow = meal[1];
+//                    infoContent += "<br><div class=\"mealDiv\"><b>" + day + " " + hour + " " + date + " </b> : <br>" + mealToShow + "</div>";
+//                }
+//            });
+//            infoContent += "</div>";
+//
+//            itemContent += infoContent;
+//
+//            // SENSORS
+//            var sensorContent = "";
+//            if (itemLoaded.Sensors_data.length > 0) {
+//                sensorContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
+//                sensorContent += "<div>";
+//
+//                itemLoaded.Sensors_data.forEach(function(sensorId) {
+//                    var sensorLoaded = loadSensorById(sensorId);
+//                    var mesure = loadMesureById(sensorLoaded.mesure[0]);
+//                    sensorContent += sensorLoaded.type + " : " + mesure.value + "<br>";
+//                });
+//                sensorContent += "</div>";
+//                sensorContent += "</div>";
+//            }
+//            itemContent += sensorContent;
+//
+//            buildTab(itemLoaded.name, itemContent, indexTab);
+//        }
+//    });
+
+
+    ////////////////
+//    objElem.items.forEach(function(itemId) {
+//        $.getJSON('/api/item/' + itemId,
+//                function(item) {
+//                    var itemLoaded = item.payload[0];
+//                    if (itemLoaded.show !== false) {
+//                        //DESCRIPTION
+//                        var itemContent = itemLoaded.description + "<br>";
+//
+//                        // INFOS
+//                        var infoContent = "";
+//                        infoContent += "<div id=\"infoDiv\">";
+//                        itemLoaded.infos.forEach(function(info, index) {
+//                            if (info !== "") {
+//                                var infoDay = info.split(" ");
+//                                var day = infoDay[0];
+//                                var hour = infoDay [1];
+//                                var dateTiretString = infoDay[2];
+//                                var date = dateTiretString.split("--")[0];
+//                                var meal = info.split("--");
+//                                var mealToShow = meal[1];
+//                                infoContent += "<br><div class=\"mealDiv\"><b>" + day + " " + hour + " " + date + " </b> : <br>" + mealToShow + "</div>";
+//                            }
+//                        });
+//                        infoContent += "</div>";
+//
+//                        itemContent += infoContent;
+//
+//                        // SENSORS
+//                        var sensorContent = "";
+//                        if (itemLoaded.Sensors_data.length > 0) {
+//                            sensorContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
+////                            sensorContent += "<div>";
+//
+//                            itemLoaded.Sensors_data.forEach(function(sensorId) {
+//                                $.getJSON('/api/sensors_data/' + sensorId,
+//                                        function(sensor) {
+//                                            var sensorLoaded = sensor.payload[0];
+//                                            var mesureId = sensorLoaded.mesure[0];
+//                                            $.getJSON('/api/mesure/' + mesureId,
+//                                                    function(mesure) {
+//                                                        console.log(sensorLoaded.type + mesure.payload[0].value);
+//                                                        sensorContent += "<div>";
+//                                                        sensorContent += sensorLoaded.type + " : " + mesure.payload[0].value + "<br>";
+//                                                        sensorContent += "<div>";
+//                                                    });
+//                                        });
+//                            });
+////                            sensorContent += "</div>";
+//                            sensorContent += "</div>";
+//                        }
+//                        itemContent += sensorContent;
+//
+//                        buildTab(itemLoaded.name, itemContent, indexTab);
+//                    }
+//                });
+//
+//
+//    });
+
+    ////////////////
+
+
+
+    ///////////////////
+
     objElem.items.forEach(function(itemId) {
-        var itemLoaded = loadItemById(itemId);
+        var itemLoaded;
+        jQuery.ajax({
+            type: 'GET',
+            async: false,
+            url: "/api/item/" + itemId,
+            success: function(data) {
+                console.dir(data.payload[0]);
+                itemLoaded = data.payload[0];
+            }
+        });
 
         if (itemLoaded.show !== false) {
             //DESCRIPTION
@@ -641,8 +782,33 @@ function buildPanel(objElem) {
                 sensorContent += "<div>";
 
                 itemLoaded.Sensors_data.forEach(function(sensorId) {
-                    var sensorLoaded = loadSensorById(sensorId);
-                    var mesure = loadMesureById(sensorLoaded.mesure[0]);
+                    var sensorLoaded;
+                    jQuery.ajax({
+                        type: 'GET',
+                        async: false,
+                        url: "/api/sensors_data/" + sensorId,
+                        success: function(data) {
+                            console.dir(data.payload[0]);
+                            sensorLoaded = data.payload[0];
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+                    });
+                    var mesureId = sensorLoaded.mesure[0];
+                    var mesure;
+                    jQuery.ajax({
+                        type: 'GET',
+                        async: false,
+                        url: "/api/mesure/" + mesureId,
+                        success: function(data) {
+                            console.dir(data.payload[0]);
+                            mesure = data.payload[0];
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+                    });
                     sensorContent += sensorLoaded.type + " : " + mesure.value + "<br>";
                 });
                 sensorContent += "</div>";
@@ -658,7 +824,18 @@ function buildPanel(objElem) {
     if (objElem.events.length > 0) {
         var eventContent = "<div>";
         objElem.events.forEach(function(eventId) {
-            var eventLoaded = loadEvent(eventId);
+            var eventLoaded;
+            jQuery.ajax({
+                type: 'GET',
+                async: false,
+                url: "/api/event/" + eventId,
+                success: function(data) {
+                    eventLoaded = data.payload[0];
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
             if (eventLoaded.description !== "") {
                 var event = "<div>" + eventLoaded.description + "</div>";
                 eventContent += event;
@@ -673,17 +850,62 @@ function buildPanel(objElem) {
     var commentContent = "";
     //Chargement et affichage
     objElem.comments.forEach(function(comId) {
-        var com = loadComById(comId);
+        var com;
+        jQuery.ajax({
+            type: 'GET',
+            async: false,
+            url: "/api/comment/" + comId,
+            success: function(data) {
+//            console.dir(data.payload[0]);
+                com = data.payload[0];
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
         var date = new Date(com.date);
         commentContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
     });
     //Ajout
-    commentContent += '<hr/><div class="zoneAddComment"><h4>Ajouter un commentaire</h4>'
-    commentContent += '<input id="commentPseudo" class="form-control addPseudo" placeholder="Pseudo"><br/>'
-    commentContent += "<textarea id='commentArea' class='form-control commentArea' placeholder='Commentaire'></textarea> "
+    commentContent += '<hr/><div class="zoneAddComment"><h4>Ajouter un commentaire</h4>';
+    commentContent += '<input id="commentPseudo" class="form-control addPseudo" placeholder="Pseudo"><br/>';
+    commentContent += "<textarea id='commentArea' class='form-control commentArea' placeholder='Commentaire'></textarea> ";
     commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','" + $("#commentArea").val() + "'" + ")\">Poster</button></div>";
     commentContent += "</div></div>";
     buildTab("Avis", commentContent, indexTab);
+
+    //////////////////
+
+    //Onglet Event
+//    if (objElem.events.length > 0) {
+//        var eventContent = "<div>";
+//        objElem.events.forEach(function(eventId) {
+//            var eventLoaded = loadEvent(eventId);
+//            if (eventLoaded.description !== "") {
+//                var event = "<div>" + eventLoaded.description + "</div>";
+//                eventContent += event;
+//            }
+//        });
+//
+//        eventContent += "</div>";
+//        buildTab("Evenement", eventContent, indexTab);
+//    }
+//
+//    //Onglet Com /////////////////////////////////////////////////////////////////////////////////////////////////////
+//    var commentContent = "";
+//    //Chargement et affichage
+//    objElem.comments.forEach(function(comId) {
+//        var com = loadComById(comId);
+//        var date = new Date(com.date);
+//        commentContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
+//    });
+//    //Ajout
+//    commentContent += '<hr/><div class="zoneAddComment"><h4>Ajouter un commentaire</h4>';
+//    commentContent += '<input id="commentPseudo" class="form-control addPseudo" placeholder="Pseudo"><br/>';
+//    commentContent += "<textarea id='commentArea' class='form-control commentArea' placeholder='Commentaire'></textarea> ";
+//    commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','" + $("#commentArea").val() + "'" + ")\">Poster</button></div>";
+//    commentContent += "</div></div>";
+//    buildTab("Avis", commentContent, indexTab);
 
     $("#informationPanel").css("display", "block");
     indexTab = 0;
@@ -736,7 +958,7 @@ function showModalParameters(htmlNodeToAppend) {
 function showModalAbout(htmlNodeToAppend) {
     var modalAbout = "<div id=\"popAbout\" class=\"modal hide fade\">" +
             "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
-            "<h3 style=\"text-align:center\">A propros</h3>" +
+            "<h3 style=\"text-align:center\">A propos</h3>" +
             "</div>" +
             "<div id=\"popUpContent\" class=\"modal-body\">" +
             "Voulez-vous l'afficher ?" +
