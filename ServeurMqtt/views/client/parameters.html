@@ -9,12 +9,21 @@
         <title>Paramètres</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script type="text/javascript" src="/js/libs/jquery/jquery.js"></script>
+        <script>
+            $('#langage').on('change', function() {
+                lang_selected = this.value;
+            });
+        </script>
     </head>
     <body>
         <div>
             <label for="langage">Langue</label><select name="langage" id="langage">
-                <option value="french">French</option>
-                <option value="english">English</option>
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="uk">Ukraine</option>
+                <option value="ru">Russian</option>
             </select>
         </div>
     </body>

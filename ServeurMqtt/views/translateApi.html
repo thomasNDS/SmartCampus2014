@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+menu template for interface
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
+-->
+<html>
+    <head>
+        <title>Index - Bootstrap</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Loading Bootstrap -->
+        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+        <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/translate.js"></script>
+    </head>
+    <body>
+
+        <h1>translation</h1>
+
+        <div id="show" >
+            rien
+        </div>
+        <script>
+//            var res
+//            var text2translate =" bonjour, qui est là ? ok"
+//            var lang = 'en'
+//            var adresse = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20140325T172944Z.a1669eaf10e9af7c.cfbf70161455f55314e8bd3b525142299d4cf49a&lang=fr-'+lang+'&text='+text2translate
+//            $.get(adresse, {
+//            }, function(data, textStatus, jqXHR) {
+//                res= data
+//                console.log(data)
+//                $("#show").html((data.text));
+//            });
+                console.log(translate("toto", "en") )
+                $("#show").html(translate("toto", "en") );
+        </script>
+    </body>
+</html>
+

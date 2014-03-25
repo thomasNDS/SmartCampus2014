@@ -96,6 +96,7 @@ app.get('/admin', restrict_admin, routes.adminapp.adminapp);
 //route to launch child process
 app.post('/covoiturage', routes.script.covoiturage);
 app.post('/casier_nfc', routes.script.casierNFC);
+app.post('/translate', routes.script.translate);
 
 app.use('/api', mers({uri: addrmongo}).rest());
 

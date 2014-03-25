@@ -22,10 +22,10 @@ var ICONS = {
     "Tram": IMG_DIR + "tramway.png",
     "Commerce": IMG_DIR + "store.png",
     "Restaurant Universitaire": IMG_DIR + "food.png",
-	"Cité Universitaire": IMG_DIR + "bed.png",
-	"Laboratoire": IMG_DIR + "school.png",
-	"Bibliothèque": IMG_DIR + "library.png",
-	"Bar": IMG_DIR + "bar.png"	
+    "Cité Universitaire": IMG_DIR + "bed.png",
+    "Laboratoire": IMG_DIR + "school.png",
+    "Bibliothèque": IMG_DIR + "library.png",
+    "Bar": IMG_DIR + "bar.png"
 };
 
 function initialize() {
@@ -75,8 +75,8 @@ function initialize() {
                 while (data.payload[entity]) {
                     if (data.payload[entity].latitude && data.payload[entity].longitude) {
                         pois.push(
-                            data.payload[entity]
-                        );
+                                data.payload[entity]
+                                );
                     }
                     entity++;
                 }
