@@ -37,4 +37,4 @@ Some example of parsing documents with bot or simple mqtt client are available i
 Licencing
 ---------------------
 
- [MIT licence](LICENSE)
+ [MIT licence](../LICENSE)

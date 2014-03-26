@@ -1,8 +1,17 @@
 Views
 =============
 
-Regroup all views of the project
+Regroup all views of the project.
 
-See documentation.html to see usages
+Applications
+------------
 
-A list of code samples is available in samples/
+* [Administrator app](admin)
+* [HTML5 client app](client)
+
+Documentation
+--------------
+
+See [documentation.html](documentation.html) to see usages
+
+A list of code samples is available in [samples/](samples)
