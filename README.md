@@ -4,6 +4,12 @@ SmartCampus2014
 
 SmartCampus2014 project.
 
+<img src="https://raw.githubusercontent.com/thomasNDS/SmartCampus2014/master/documents/img/previewReality.png" height="180px" width="100px" /> 
+<img src="https://raw.githubusercontent.com/thomasNDS/SmartCampus2014/master/documents/img/previewMap.png" height="180px" width="100px" /> 
+<img src="https://raw.githubusercontent.com/thomasNDS/SmartCampus2014/master/documents/img/previewIAE.png" height="180px" width="100px" /> 
+<img src="https://raw.githubusercontent.com/thomasNDS/SmartCampus2014/master/documents/img/previewParam.png" height="180px" width="100px" /> 
+<img src="https://raw.githubusercontent.com/thomasNDS/SmartCampus2014/master/documents/img/previewComment.png" height="180px" width="100px" /> 
+
 SmartCampus is an end-of-studies project at [Polytech’Grenoble](http://www.polytech-grenoble.fr/), led by five [network and communication multimedia (RICM)](http://www.polytech-grenoble.fr/ricm.html) students. The aim of this project is to create an augmented reality (AR) and crowdsourcing application. 
 
 In fine, this application will allow the user to access multiple types of information:
@@ -15,12 +21,6 @@ In fine, this application will allow the user to access multiple types of inform
 Each building will be managed by an admin who can handle the information published. He can also activate or desactivate sensors using the dedicated interface.
 
 Our [wiki page (FR)](http://air.imag.fr/index.php/SmartCampus2014)
-
-![alt tag](documents/img/previewReality.png)
-![alt tag](documents/img/previewMap.png)
-![alt tag](documents/img/previewIAE.png)
-![alt tag](documents/img/previewParam.png)
-![alt tag](documents/img/previewComment.png)
 
 Project
 ========
