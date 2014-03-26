@@ -250,6 +250,12 @@ function update_current_entity(entity_id) {
     $.getJSON('/api/entity/' + entity_id,
             function(data) {
                 current_entity_name = data.payload.name || "";
+                var openhab = data.payload.openhab;
+                if (openhab) {
+                    $("#div_openhab").html("<a href=\"" + openhab + "\"><img src=\"images/openhab-logo.jpg\" alt=\"Interface openHAB\" style=\"width:100%\"/></a>");
+                } else {
+                    $("#div_openhab").html("<img src=\"images/openhab-logo.jpg\" alt=\"Interface openHAB\" style=\"width:100%\"/>");
+                }
             });
     $("#leftpanel").html('');
 }

@@ -39,7 +39,6 @@ app.configure(function() {
     app.use(express.methodOverride());
     app.use(express.static(path.join(__dirname, "/public")));
     app.use(express.static(path.join(__dirname, "/views")));
-    app.use(express.static(path.join(__dirname, "/script")));
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 
 });
