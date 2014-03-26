@@ -1,6 +1,3 @@
-//Adresse du serveur web
-//serverAddress = "192.168.43.142";
-//serverAddress = "localhost";
 
 //Fonction en cas d'erreur
 function onFailure(err) {
@@ -30,8 +27,6 @@ $(window).ready(function() {
 
     scrollBarWidth = 0; //getScrollerWidth();
     menuHeight = $("#menu").height() + 5;
-//                console.log("sc : " + scrollBarWidth);
-//                console.log("menu height : " + $("#menu").height());
 
     ////////////////////////
     //// GESTION CAMERA ////
@@ -40,9 +35,6 @@ $(window).ready(function() {
     //Creation et configuration d'un element video, il sera utilise pour streamer la camera
     //L'element n'est pas affiche et est integre dans un canvas plus loin..
     var video = document.createElement('video');
-//                video.width = 640;
-//                video.height = 480;
-//                console.log("Avt fonction" + $(document).width());
     video.width = $(document).width() - scrollBarWidth;
     video.height = $(document).height() - menuHeight;
     video.loop = true;
@@ -91,7 +83,6 @@ $(window).ready(function() {
     //Contexte du canvas, utilise plus tard pour afficher la video
     var ctx = canvas.getContext('2d');
     //Ajout du canvas de video a la page
-//                document.body.appendChild(videoCanvas);
     $("#backgroundVideo").append(videoCanvas);
     //Fonction appele a chaque interval
     setInterval(function() {
@@ -99,7 +90,6 @@ $(window).ready(function() {
         //Affichage image dans les deux canvas crees
         //Affichage pour la video
         videoCanvas.getContext('2d').drawImage(video, 0, 0, video.width, video.height);
-//                    ctx.drawImage(videoCanvas, 0, 0, 320, 240);
         //Prise de l'image du canvas pour la detection marker
         ctx.drawImage(videoCanvas, 0, 0);
         //Prevenir que le canvas a changer
@@ -112,7 +102,6 @@ $(window).ready(function() {
         var currId;
         // Go through the detected markers (and get their IDs and transformation matrices)
         for (var idx = 0; idx < detected; idx++) {
-
             //Si on entre dans cette boucle, c'est qu'on a lu un marqueur
             qrVisible = true;
             // Get the ID marker data for the current marker.
@@ -142,51 +131,40 @@ $(window).ready(function() {
         //TODO: possiblement plusieurs marqueurs lu..
         if (qrVisible && !isPopUpShown && !isBottomPopUpShown) {
             //Si le marker que l'on lit est différent de celui affiché on affiche le popup pour changer de panel
-//                        if (getPanelFromMarker(currId) !== getPanelFromMarker(currentPanelMarker)) {
             if (currId !== currentPanelMarker) {
                 showPopUp(currId);
                 currentMarker = currId;
             }
         }
     }, 15);
+    
     /// FULL SCREEN ///
     //// TODO : Probleme avec le canvas de detection + paysage / portrait resize foireux ////
     function onResizeHandler(e) {
-//                    console.log("full");
-//                    var isFullScreen = document.mozFullScreen || document.webkitIsFullScreen || document.fullScreen;
-//                    if (isFullScreen) {
         menuHeight = $("#menu").height() + 5;
-//                    console.log("menu height : " + $("#menu").height());
-
         video.width = window.innerWidth - scrollBarWidth;
         video.height = window.innerHeight - menuHeight;
         videoCanvas.width = window.innerWidth - scrollBarWidth;
         videoCanvas.height = window.innerHeight - menuHeight;
         changeMaxHeightContentTabs();
-//                    canvas.width = $(document).width();// - scrollBarWidth;
-//                    canvas.height = $(document).height();
-
-//                    console.log("larg " + window.innerWidth + "haut " + window.innerHeight);
-//                    videoCanvas.getContext('2d').drawImage(video, 0, 0, window.innerWidth - scrollBarWidth, window.innerHeight - menuHeight);
-//                    videoCanvas.getContext('2d').drawImage(video, 0, 0, video.width, video.height);
-//                    }
     }
     window.onresize = onResizeHandler;
-//                window.onfullscreenchange = onResizeHandler;
-//                window.onwebkitfullscreenchange = onResizeHandler;
-//                window.onmozfullscreenchange = onResizeHandler;
 
     //////////////////////
 
+    /*
+     * Censée adapter la hauteur du contenu des contentTabs
+     * NE fonction pas apparemment
+     * @returns {undefined}
+     */
     function changeMaxHeightContentTabs() {
         var height = parseInt($("#backgroundVideo").css("height"));
-//                    console.log("h " + height);
         var maxHeightContentTab = height * (65 / 100);
-//                    console.log("max: " + maxHeightContentTab);
         $("#contentTabs").css("max-height", maxHeightContentTab);
     }
 
 });
+
 /*
  * Fonction pour afficher le panneau d'information du batiment que l'on a repéré
  */
@@ -203,7 +181,6 @@ function showInfoPanel() {
     var elemDetected = entitiesArray[currentPanelMarker];
     //Construction du panel d'info en fonction de l'element
     buildPanel(elemDetected);
-//                $("#informationPanel").css("display", "block");
     isPanelDisplayed = true;
 }
 
@@ -214,11 +191,9 @@ function showInfoPanel() {
 function showPopUp(curMarker) {
     var elem = entitiesArray[curMarker];
     var textTitle = elem.name;
-    var textBody = elem.description;
     var textType = elem.type;
     $("#popUpTitle").html(textTitle);
     $("#popUpContent").html(textType + ", voulez-vous l'afficher ?");
-//                $("#popUpContent").html(textBody);
     $("#bottomPopUpDescription").html("<strong>" + textTitle + "</strong> - " + textType);
     //Si le panel centrale n'est pas affiché, popup centrale
     //Sinon popUp bottom
@@ -244,22 +219,6 @@ function resetMarkerAndBoolean() {
     isPanelDisplayed = false;
 }
 
-function switchAction() {
-    window.location = 'index.html';
-}
-
-function paramaterAction() {
-//                currentMarker = 5;
-//                showPopUp(currentMarker);
-    getVoteValue();
-}
-
-function helpAction() {
-//                currentMarker = 3;
-//                showPopUp(currentMarker);
-    voteTest();
-}
-
 /*
  * Afficher le popup du bas
  */
@@ -267,7 +226,6 @@ function showBottomPopUp() {
     $("#bottomPopUp").animate({
         height: "toggle"
     }, 600, "linear", function() {
-//                    console.log("show!!");
     });
 }
 
@@ -278,7 +236,6 @@ function closeBottomPopUp() {
     $("#bottomPopUp").animate({
         height: "toggle"
     }, 500, "linear", function() {
-//                    console.log("close!!");
     });
 }
 

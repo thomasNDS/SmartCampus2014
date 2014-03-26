@@ -4,20 +4,24 @@
  *  License MIT
  */
 
+//Tableau qui va contenir les id de toutes les entités, pour éviter d'avoir à reload les entités et de faire un sort
 entitiesArray = new Array();
 
-//serverAddress = "192.168.43.142";
-//Var pour les index des onglets
+//var global utilisée pour la construction des onglets
 indexTab = 0;
 
 /// ==== LOADERS ==== ////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Tous les loaders à part loadEntities, ne sont pas utilisés.                                           //
+// Le fait de les utiliser, créer un asynchronisme (même si la requete ajax en elle meme est synchrone)  //
+// Le comportement du programme peut alors diverger en fonction de la machine sur laquelle il est lancé  //
+// Préférer faire la requête directement dans la fonction dans ce cas là (cf buildPanel)                 //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
  * Fonction pour charger le tableau des elements
  */
 function loadEntities() {
-//    var entitiesArray = new Array();
-    var entitiesRaw;
     var entities;
     //Requete pour get toutes les entités de la BD
     jQuery.ajax({
@@ -25,38 +29,20 @@ function loadEntities() {
         async: false,
         url: "/api/entity",
         success: function(data) {
-//            console.dir(data);
-//            entitiesRaw = data;
             entities = data;
 
             //On les stocke dans un tableau
             for (var i = 0; i < entities.payload.length; i++) {
                 entitiesArray[i] = entities.payload[i];
-//                var entity = entities.payload[i];
-//                entitiesArray[i] = loadFullEntity(entity._id);
-
-//                if (entitiesRaw.payload[i].name === "Polytech Grenoble"){
-//                
-//            } else if (entitiesRaw.payload[i].name === "Barnave"){
-//                
-//            } else if (entitiesRaw.payload[i].name === "Cité des Taillées"){
-//                
-//            } else if (entitiesRaw.payload[i].name === "EVE"){
-//                
-//            } else if (entitiesRaw.payload[i].name === "Arrêt G.Fauré"){
-//                
-//            }
             }
             sortEntityArray();
-//            var test = loadFullEntity(entities.payload[1]._id);
-//            console.dir("AAAAAAAAAAAAAAAAAAAAAAAAAa" + test);
-//            return entitiesArray;
         }
     });
 }
 
 /*
- * Fonction pour arranger le tableau d'entites a notre sauce
+ * Fonction pour arranger le tableau d'entites pour choisir quelle entité est à quel index
+ * Association un marker -> une entité
  * @returns {undefined}
  */
 function sortEntityArray() {
@@ -127,6 +113,7 @@ function arrayUnset(array, value) {
 }
 
 /*
+ * @DEPRECATED
  * Fonction pour charger le tableau des elements
  */
 function loadEntitiesCallback(callback) {
@@ -153,6 +140,7 @@ function loadEntitiesCallback(callback) {
 }
 
 /*
+ * @DEPRECATED
  * Charger les items d'une entite
  * @param {type} entity
  * @returns {loadItemsOfEntity.items}
@@ -166,6 +154,7 @@ function loadItemsOfEntity(entity) {
 }
 
 /*
+ * @DEPRECATED
  * Charge les elements d'un item (Requete)
  * @param {type} objElem
  * @returns {undefined}
@@ -185,6 +174,7 @@ function loadItemById(id) {
 }
 
 /*
+ * @DEPRECATED
  * Charge un commentaire à partir de son id
  * @param {type} id
  * @returns {unresolved}
@@ -207,6 +197,7 @@ function loadComById(id) {
 }
 
 /*
+ * @DEPRECATED
  * Charge un sensor à partir de son id
  * @param {type} id
  * @returns {unresolved}
@@ -229,6 +220,7 @@ function loadSensorById(id) {
 }
 
 /*
+ * @DEPRECATED
  * Charge un sensor à partir de son id
  * @param {type} id
  * @returns {unresolved}
@@ -251,6 +243,7 @@ function loadMesureById(id) {
 }
 
 /*
+ * @DEPRECATED
  * Charge les horaires à partir de son id
  * @param {type} id
  * @returns {unresolved}
@@ -273,6 +266,7 @@ function loadSchedule(id) {
 }
 
 /*
+ * @DEPRECATED
  * Charge un event à partir de son id
  * @param {type} id
  * @returns {unresolved}
@@ -284,7 +278,6 @@ function loadEvent(id) {
         async: false,
         url: "/api/event/" + id,
         success: function(data) {
-//            console.dir(data.payload[0]);
             event = data.payload[0];
         },
         error: function(err) {
@@ -333,11 +326,13 @@ function addComment(entityId, comment) {
     }
 }
 
+/*
+ * Vote
+ * @param {type} idEntity : Entité pour laquelle on vote
+ * @param {type} vote
+ * @returns {undefined}
+ */
 function makeVote(idEntity, vote) {
-
-    //recupere le vote choisis
-//    var vote = $('input[name="vote"]:checked').val();
-
     console.log("vote = " + vote);
     jQuery.ajax({
         type: 'POST',
@@ -355,10 +350,15 @@ function makeVote(idEntity, vote) {
         }
     });
 
-    //Met a jour la moyenne
+    //Met a jour la moyenne dans l'interfac
     $("#avgVote").html(getTextualAvg(getVoteValue(idEntity)));
 }
 
+/*
+ * Recupere le vote d'une entité
+ * @param {type} idEntity
+ * @returns {Number|data|Array}
+ */
 function getVoteValue(idEntity) {
     var vote = 1;
     jQuery.ajax({
@@ -378,14 +378,6 @@ function getVoteValue(idEntity) {
         }
     });
     return vote;
-}
-
-function checkDescriptionHeight() {
-//    console.log($("#entityDescription").css("height"));
-}
-
-function activeBtn() {
-    $("#btnVote").attr("disabled", false);
 }
 
 /*
@@ -430,7 +422,7 @@ function closePanel() {
 }
 
 /*
- * Inutilisée pour le moment!
+ * INUTILISEE pour le moment!
  * Met la limite height pour affichage contenu
  * @returns {undefined}
  */
@@ -442,7 +434,8 @@ function changeMaxHeightContentTabs(parentNode) {
 }
 
 /*
- * Obtenir la couleur du text
+ * Obtenir la couleur associé à la moyenne
+ * vert < orange < rouge
  * @param {type} avg
  * @returns {String}
  */
@@ -459,7 +452,9 @@ function getColorAvg(avg) {
 }
 
 /*
- * Obtenir le texte traduisant la valeur des votes
+ * Obtenir le texte traduisant la valeur des votes, et met change la couleur
+ * DIFFERENCE avec le précedent : On gere a la fois le txt et la couleur car on l'appelle
+ * a chaque changement de moyenne
  * @param {type} avg
  * @returns {String}
  */
@@ -479,7 +474,7 @@ function getTextualAvg(avg) {
 }
 
 /*
- * Fonction appelé lors de la construction du panel de vote, type Queue
+ * Fonction appelé lors de la construction du panel de vote pour crowdsourcring de type Queue
  * @param {type} objElem
  * @returns {undefined}
  */
@@ -505,11 +500,13 @@ function buildVotePanelQueue(idEntity) {
  */
 function buildSchedulePanel(arrayHours) {
     var txt = "Horaires théoriques : <br><br>";
+    //Horaires récupérés 
     var arrayToSeyssin = arrayHours[0];
     var arrayToGieres = arrayHours[1];
-    var actualDate = new Date();// (new Date()).getMinutes() + 60*(new Date()).hours();
+    var actualDate = new Date();
     var actualDateMin = actualDate.getHours() * 60 + actualDate.getMinutes();
 
+    //Durées qu'on va afficher
     var hoursSeyssin = [];
     var hoursGieres = [];
 
@@ -530,7 +527,6 @@ function buildSchedulePanel(arrayHours) {
         i++;
         cptHours++;
     }
-
     isFound = false;
     i = 0;
 
@@ -564,11 +560,6 @@ function buildSchedulePanel(arrayHours) {
     return txt;
 }
 
-function buildPanelByIndex(indexElem) {
-    var entity = entitiesArray[indexElem];
-    buildPanel(entity);
-}
-
 /**
  * Build un onglet du panel d'information
  * @param {type} title : Titre de l'onglet
@@ -598,7 +589,8 @@ function buildTab(title, content, i) {
 }
 
 /*
- * Chargement d'un objet représentant l'element detecté
+ * Fonction qui va remplir le panel d'information de l'entité
+ * Va charger au fur et a mesure tous les élements de l'entité
  */
 function buildPanel(objElem) {
     var entity = objElem;
@@ -630,120 +622,6 @@ function buildPanel(objElem) {
         scheduleContent = buildSchedulePanel(arraySchedule);
         buildTab("Horaire", scheduleContent, indexTab);
     }
-
-    //Onglets Items
-//    objElem.items.forEach(function(itemId) {
-//        var itemLoaded = loadItemById(itemId);
-//
-//        if (itemLoaded.show !== false) {
-//            //DESCRIPTION
-//            var itemContent = itemLoaded.description + "<br>";
-//
-//            // INFOS
-//            var infoContent = "";
-//            infoContent += "<div id=\"infoDiv\">";
-//            itemLoaded.infos.forEach(function(info, index) {
-//                if (info !== "") {
-//                    var infoDay = info.split(" ");
-//                    var day = infoDay[0];
-//                    var hour = infoDay [1];
-//                    var dateTiretString = infoDay[2];
-//                    var date = dateTiretString.split("--")[0];
-//                    var meal = info.split("--");
-//                    var mealToShow = meal[1];
-//                    infoContent += "<br><div class=\"mealDiv\"><b>" + day + " " + hour + " " + date + " </b> : <br>" + mealToShow + "</div>";
-//                }
-//            });
-//            infoContent += "</div>";
-//
-//            itemContent += infoContent;
-//
-//            // SENSORS
-//            var sensorContent = "";
-//            if (itemLoaded.Sensors_data.length > 0) {
-//                sensorContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
-//                sensorContent += "<div>";
-//
-//                itemLoaded.Sensors_data.forEach(function(sensorId) {
-//                    var sensorLoaded = loadSensorById(sensorId);
-//                    var mesure = loadMesureById(sensorLoaded.mesure[0]);
-//                    sensorContent += sensorLoaded.type + " : " + mesure.value + "<br>";
-//                });
-//                sensorContent += "</div>";
-//                sensorContent += "</div>";
-//            }
-//            itemContent += sensorContent;
-//
-//            buildTab(itemLoaded.name, itemContent, indexTab);
-//        }
-//    });
-
-
-    ////////////////
-//    objElem.items.forEach(function(itemId) {
-//        $.getJSON('/api/item/' + itemId,
-//                function(item) {
-//                    var itemLoaded = item.payload[0];
-//                    if (itemLoaded.show !== false) {
-//                        //DESCRIPTION
-//                        var itemContent = itemLoaded.description + "<br>";
-//
-//                        // INFOS
-//                        var infoContent = "";
-//                        infoContent += "<div id=\"infoDiv\">";
-//                        itemLoaded.infos.forEach(function(info, index) {
-//                            if (info !== "") {
-//                                var infoDay = info.split(" ");
-//                                var day = infoDay[0];
-//                                var hour = infoDay [1];
-//                                var dateTiretString = infoDay[2];
-//                                var date = dateTiretString.split("--")[0];
-//                                var meal = info.split("--");
-//                                var mealToShow = meal[1];
-//                                infoContent += "<br><div class=\"mealDiv\"><b>" + day + " " + hour + " " + date + " </b> : <br>" + mealToShow + "</div>";
-//                            }
-//                        });
-//                        infoContent += "</div>";
-//
-//                        itemContent += infoContent;
-//
-//                        // SENSORS
-//                        var sensorContent = "";
-//                        if (itemLoaded.Sensors_data.length > 0) {
-//                            sensorContent += "<div id=\"sensorsDiv\">Capteurs : <br>";
-////                            sensorContent += "<div>";
-//
-//                            itemLoaded.Sensors_data.forEach(function(sensorId) {
-//                                $.getJSON('/api/sensors_data/' + sensorId,
-//                                        function(sensor) {
-//                                            var sensorLoaded = sensor.payload[0];
-//                                            var mesureId = sensorLoaded.mesure[0];
-//                                            $.getJSON('/api/mesure/' + mesureId,
-//                                                    function(mesure) {
-//                                                        console.log(sensorLoaded.type + mesure.payload[0].value);
-//                                                        sensorContent += "<div>";
-//                                                        sensorContent += sensorLoaded.type + " : " + mesure.payload[0].value + "<br>";
-//                                                        sensorContent += "<div>";
-//                                                    });
-//                                        });
-//                            });
-////                            sensorContent += "</div>";
-//                            sensorContent += "</div>";
-//                        }
-//                        itemContent += sensorContent;
-//
-//                        buildTab(itemLoaded.name, itemContent, indexTab);
-//                    }
-//                });
-//
-//
-//    });
-
-    ////////////////
-
-
-
-    ///////////////////
 
     objElem.items.forEach(function(itemId) {
         var itemLoaded;
@@ -816,7 +694,13 @@ function buildPanel(objElem) {
                             console.log(err);
                         }
                     });
-                    sensorContent += sensorLoaded.type + " : " + mesure.value + "<br>";
+                    sensorContent += sensorLoaded.type + " : " + mesure.value;
+                    if (sensorLoaded.type === "airQualite") {
+                        sensorContent += " ppm";
+                    } else if (sensorLoaded.type === "humidite") {
+                        sensorContent += " %";
+                    }
+                    sensorContent += "<br>";
                 });
                 sensorContent += "</div>";
                 sensorContent += "</div>";
@@ -853,7 +737,7 @@ function buildPanel(objElem) {
         buildTab("Evenement", eventContent, indexTab);
     }
 
-    //Onglet Com /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Onglet Com ///////////////
     var commentContent = "";
     //Chargement et affichage
     objElem.comments.forEach(function(comId) {
@@ -863,7 +747,6 @@ function buildPanel(objElem) {
             async: false,
             url: "/api/comment/" + comId,
             success: function(data) {
-//            console.dir(data.payload[0]);
                 com = data.payload;
             },
             error: function(err) {
@@ -881,39 +764,7 @@ function buildPanel(objElem) {
     commentContent += "</div></div>";
     buildTab("Avis", commentContent, indexTab);
 
-    //////////////////
-
-    //Onglet Event
-//    if (objElem.events.length > 0) {
-//        var eventContent = "<div>";
-//        objElem.events.forEach(function(eventId) {
-//            var eventLoaded = loadEvent(eventId);
-//            if (eventLoaded.description !== "") {
-//                var event = "<div>" + eventLoaded.description + "</div>";
-//                eventContent += event;
-//            }
-//        });
-//
-//        eventContent += "</div>";
-//        buildTab("Evenement", eventContent, indexTab);
-//    }
-//
-//    //Onglet Com /////////////////////////////////////////////////////////////////////////////////////////////////////
-//    var commentContent = "";
-//    //Chargement et affichage
-//    objElem.comments.forEach(function(comId) {
-//        var com = loadComById(comId);
-//        var date = new Date(com.date);
-//        commentContent += "<div>" + date.toLocaleDateString() + " : " + com.value + "</div>";
-//    });
-//    //Ajout
-//    commentContent += '<hr/><div class="zoneAddComment"><h4>Ajouter un commentaire</h4>';
-//    commentContent += '<input id="commentPseudo" class="form-control addPseudo" placeholder="Pseudo"><br/>';
-//    commentContent += "<textarea id='commentArea' class='form-control commentArea' placeholder='Commentaire'></textarea> ";
-//    commentContent += "<div class=\"commentBtn\"><button class=\"btn btn-primary\" onclick=\"addComment('" + objElem._id + "','" + $("#commentArea").val() + "'" + ")\">Poster</button></div>";
-//    commentContent += "</div></div>";
-//    buildTab("Avis", commentContent, indexTab);
-
+    //Panel totalement construit, on affiche !
     $("#informationPanel").css("display", "block");
     indexTab = 0;
 }
@@ -921,11 +772,10 @@ function buildPanel(objElem) {
 /**
  * Fonction à appeler pour build le panneau d'information vide
  * A appeler au début
- * @param {type} htmlNodeToAppend
+ * @param {type} htmlNodeToAppend - Element HTML sur lequel on va ajouter le panel
  * @returns {undefined}
  */
 function buildEmptyPanel(htmlNodeToAppend) {
-//    console.log("Construction Panel vide a : " + htmlNodeToAppend);
     var panel = "<div id=\"informationPanel\">" +
             "<div class=\"titlePanel\">" +
             "<h3 id=\"informationTitle\"></h3>" +
@@ -950,6 +800,9 @@ function cleanChildOfNodeID(parentNode) {
     }
 }
 
+/*
+ * Création de la fenetre modal parametre
+ */
 function showModalParameters(htmlNodeToAppend) {
     var modalParam = "<div id=\"popParam\" class=\"modal hide fade\">" +
             "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
@@ -965,6 +818,9 @@ function showModalParameters(htmlNodeToAppend) {
     $(htmlNodeToAppend).append(modalParam);
 }
 
+/*
+ * Création de la fenetre modal A propos
+ */
 function showModalAbout(htmlNodeToAppend) {
     var modalAbout = "<div id=\"popAbout\" class=\"modal hide fade\">" +
             "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +
@@ -980,6 +836,9 @@ function showModalAbout(htmlNodeToAppend) {
     $(htmlNodeToAppend).append(modalAbout);
 }
 
+/*
+ * Creation de la fenetre modal Aide
+ */
 function showModalHelp(htmlNodeToAppend) {
     var modalHelp = "<div id=\"popHelp\" class=\"modal hide fade\">" +
             "<div class=\"modal-header\"> <a class=\"close\" data-dismiss=\"modal\">×</a>" +

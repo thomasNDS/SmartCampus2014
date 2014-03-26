@@ -1,0 +1,316 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{graphicx}
+\usepackage{marvosym}
+\usepackage{lmodern}
+\usepackage{pifont}
+
+\usetheme{Frankfurt}
+\usecolortheme{dolphin}
+\addtobeamertemplate{footline}{\hspace{12.1cm}\textbf{\insertframenumber/\inserttotalframenumber} \vspace{0.1cm}}
+
+%%%%%%%%%%%%%%% BLOCS %%%%%%%%%%%%%%%
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+%%%%%%%%%%%%%% PLAN DEBUT SECTION %%%%%%%%%%%%%%%%
+\AtBeginSection[]{
+  %ici, on ajoute un rappel du plan
+  \begin{frame}{Plan de la présentation}
+  \small \tableofcontents[currentsection, hideothersubsections]  
+  \end{frame}
+}
+
+%%%%%%%%%%%%%%%% TITRE et AUTEUR %%%%%%%%%%%%%%%%%
+%\title[Projet innovant]{\LARGE{SmartCampus 2014}}
+\author[]{Morgan Bidois, Laurène Guelorget, Nicolas Husson,\\Thomas Nunes et Simon Planès}
+\institute[Polytech'Grenoble - RICM5]{27 Mars 2014\\Polytech'Grenoble - RICM5}
+\date{}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% 1ere DIOAPO %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+	\includegraphics[width=3cm]{logopolytech.png}\\
+	\vspace{0.5cm}
+	\centering{\includegraphics[width=5cm]{smartcampus.png}}
+	\titlepage
+\end{frame}
+
+
+\section*{Introduction}
+\begin{frame}{\insertsection}
+\begin{itemize}
+\item Projet innovant de fin d'études
+\vspace{0.2cm}
+\item 5 membres de RICM5 
+	\begin{itemize}
+	\item 3 de l'option Communication Multimédia
+	\item 2 de l'option Systèmes et Réseaux
+	\end{itemize} 
+\vspace{0.2cm}
+\item Chef de projet : Nicolas Husson
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%% TABLE MATIERES %%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Plan de la présentation}
+  \setcounter{tocdepth}{1}
+  \small \tableofcontents
+  \setcounter{tocdepth}{2}
+\end{frame}
+
+%%%%%%%%%%%%%%%%% PRESENTATION PROJET %%%%%%%%%%%%%%%%%%%
+\section{Présentation du projet}
+\subsection{Notre projet}
+\begin{frame}{\insertsubsection}
+\begin{center}\textbf{But du projet :} améliorer l'accessibilité et l'utilisabilité du campus, et centraliser les informations.\\\end{center}
+\vspace{0.2cm}
+Réalisation de différents outils :
+\begin{itemize}
+\item Application mobile de réalité augmentée (AR) ;
+\item Application administrateur ;
+\item Application super-administrateur ;
+\item Maquette du campus de Grenoble.
+\end{itemize}
+\end{frame}
+
+\subsection{Cahier des charges}
+\begin{frame}{\insertsubsection}
+Les ambitions du projet :
+\begin{itemize}
+\item Application mobile client AR 
+\item Application/site web administrateur
+\item Intégration de capteurs Arduino
+\item Construction de la maquette
+\item Fonctionnalités :
+	\begin{itemize}
+	\item RU : open data et crowdsourcing
+	\item co-voiturage
+	\item projet RICM5 casiers NFC
+	\item projet RICM4 Smart Citizen
+	\item projet RICM4 COQP
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Organisation du projet}
+\subsection{Méthodologie Agile}
+\begin{frame}{\insertsubsection}
+Méthodes agiles respectées :
+\vspace{0.2cm}
+\begin{itemize}
+\item Scrum Master fixe
+\vspace{0.2cm}
+\item Sprint : 1 semaine
+\vspace{0.2cm}
+\item Poker planning
+\end{itemize}
+\end{frame}
+
+\subsection{Diagramme de Gantt}
+\begin{frame}{\insertsubsection}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=10.5cm]{gantt.png}
+\end{center}
+\end{figure}
+\end{frame}
+
+\section{Réalisations}
+\subsection{Technologies utilisées}
+\begin{frame}{\insertsubsection}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=10.5cm]{techno.png}
+\end{center}
+\end{figure}
+\end{frame}
+
+\subsection{Architecture globale}
+\begin{frame}{\insertsubsection}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=10.5cm]{archi.png}
+\end{center}
+\end{figure}
+\end{frame}
+
+\subsection{Application client}
+\begin{frame}{\insertsubsection}
+Le but de cette application est de permettre à l'utilisateur d'accéder à plusieurs types d'informations :
+\begin{itemize}
+\item Des infos de crowdsourcing ;
+\item Des infos générales sur les bâtiments et objets ;
+\item Des infos variables ;
+\item Des données de capteurs.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\insertsubsection}
+\begin{minipage}{6cm}
+\begin{itemize}
+\item Deux interfaces
+	\begin{itemize}
+	\item Réalitée augmentée
+	\item Carte du campus
+	\end{itemize}
+\item Informations contextuelles
+	\begin{itemize}
+	\item au clic 
+	\item à la détection de QRcode
+	\end{itemize}
+\end{itemize}
+\end{minipage}
+\begin{minipage}{4.5cm}
+\includegraphics[width=4.5cm]{appli.png}
+\end{minipage}
+\end{frame}
+
+\subsection{Administration}
+\begin{frame}{\insertsubsection}
+\begin{itemize}
+\item Application admin
+	\begin{itemize}
+	\item adaptée à chaque admin
+	\item interface OpenHAB des bâtiments
+	\item accès aux capteurs et actionneurs
+	\end{itemize}
+\item Application super-admin
+	\begin{itemize}
+	\item gestion de la base de données
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Intel Galileo}
+\begin{frame}{\insertsubsection}
+\begin{minipage}{7cm}
+\begin{itemize}
+\item Nouvelle carte Intel
+\item Création d'un OS adapté
+\item Portage de JAVA/OSGi et MQTT
+\item Gestion de capteurs
+\item OpenHab
+\end{itemize}
+\end{minipage}
+\begin{minipage}{3.5cm}
+\begin{center}\includegraphics[width=1.5cm]{intel.png}\end{center}
+\includegraphics[width=3.5cm]{galileo.jpg}
+\end{minipage}
+\end{frame}
+
+\subsection{Maquette}
+\begin{frame}{\insertsubsection}
+\begin{minipage}{7cm}
+\begin{itemize}
+\item Maquette du campus de Grenoble
+\item Du bois et de la moquette 
+\item Differents éléments :
+	\begin{itemize}
+	\item diverses écoles et universités
+	\item un restaurant universitaire
+	\item une résidence universitaire
+	\item des boutiques et un bar étudiant
+	\item un parking et des terrains de sport
+	\end{itemize}
+\end{itemize}
+\end{minipage}
+\begin{minipage}{3.5cm}
+\includegraphics[width=3.5cm]{maquette.jpg}
+\end{minipage}
+\end{frame}
+
+\begin{frame}{\insertsubsection}
+\begin{minipage}{7cm}
+\begin{itemize}
+\item Design des plans
+\item Maquette de 6 $m^2$
+\item Découpeuse laser du LIG
+\item Bâtiments équipés de capteurs
+\item QR codes sur les bâtiments
+\end{itemize}
+\end{minipage}
+\begin{minipage}{3.5cm}
+\begin{center}\includegraphics[width=1.5cm]{LIG_logo.jpg}\end{center}
+\includegraphics[width=3.5cm]{laser.png}
+\end{minipage}
+\end{frame}
+
+\section{Bilan du projet}
+\subsection{Objectifs}
+\begin{frame}{\insertsubsection}
+\begin{itemize}
+\item Application mobile client AR \ding{51}
+\item Application/site web administrateur \ding{51}
+\item Intégration de capteurs Arduino \ding{51}
+\item Construction de la maquette \ding{51}
+\item Fonctionnalités :
+	\begin{itemize}
+	\item RU : open data et crowdsourcing \ding{51}
+	\item co-voiturage \ding{51}
+	\item projet RICM5 casiers NFC \ding{51}
+	\item projet RICM4 Smart Citizen \ding{51}
+	\item projet RICM4 COQP \ding{55}
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\insertsubsection -- Extensions}
+\begin{itemize}
+%\item Application cross-platform (tablette, smartphone, PC)
+%\vspace{0.2cm}
+\item Application multi-langues
+\vspace{0.2cm}
+\item Système de commentaires
+\vspace{0.2cm}
+\item Smart parking
+\vspace{0.2cm}
+\item Informations sur le tram
+\end{itemize}
+\end{frame}
+
+\subsection{Perspectives d'évolution}
+\begin{frame}{\insertsubsection}
+\begin{itemize}
+\item Modules complémentaires : météo, horaires de cinéma, etc.
+\vspace{0.2cm}
+\item Ajouter des langues (langues asiatiques)
+\vspace{0.2cm}
+\item Capteurs pour détecter les fenêtres ouvertes
+\vspace{0.2cm}
+\item Détection par position GPS + boussole
+\vspace{0.2cm}
+\item Plus d'informations provenant d'Open Data
+\end{itemize}
+\end{frame}
+
+\subsection{Difficultés rencontrées}
+\begin{frame}{\insertsubsection}
+\begin{itemize}
+\item Nouvelles technologies
+\vspace{0.2cm}
+\item Paradigme de programmation différent
+\vspace{0.2cm}
+\item Emplois du temps différents (projet biométrie et IAE)
+\end{itemize}
+\end{frame}
+
+\subsection{Apports techniques et personnels}
+\begin{frame}{\insertsubsection}
+\begin{itemize}
+\item Systèmes embarqués (Galileo)
+\vspace{0.2cm}
+\item Programmation événementielle
+\vspace{0.2cm}
+\item Projet conséquent en groupe
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%% QUESTIONS %%%%%%%%%%%%%%%
+\section*{}
+\begin{frame}{Questions}
+\begin{center}\LARGE Merci de votre attention,\\
+avez-vous des questions ?\end{center}
+\end{frame}
+
+\end{document}
