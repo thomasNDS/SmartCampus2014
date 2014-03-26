@@ -20,8 +20,12 @@ Project
 
 The project contains:
 * [A Server MQTT with Mongo DB](ServeurMqtt)
-* [A HTML5 client application](appsClient)
+* [A HTML5 client application](ServeurMqtt/views/client)
+* [An super administrator application](super_admin_app)
+* [An administrator of a building application](ServeurMqtt/views/admin/admin)
 * [Differents bots](Bots/) parser to access diferents API on internet (Opendata)
+* OpenHab integration, [See configuration file](openhabConfigurationFile) 
+* [Arduino Sketch and mqtt python client](Arduino) to communicate with the smartCampus server
 
 You can also see our presentation (PDF in french) or [diagram and documents](documents).
 
@@ -31,9 +35,12 @@ Technologies
 * [MQTT](http://mqtt.org/)
 * [Node.js](http://nodejs.org/)
 * [Mosquitto](http://mosquitto.org/)
+* [OpenHab](https://github.com/openhab)
 * [Arduino Galileo](http://arduino.cc/en/ArduinoCertified/IntelGalileo)
 
 Licensing
 ===========
 
 MIT
+
+[See term of licence](LICENSE)
