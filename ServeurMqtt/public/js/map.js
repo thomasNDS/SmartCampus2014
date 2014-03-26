@@ -1,9 +1,8 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * SmartCampus
+ *  ©SmartCampus 2014 https://github.com/thomasNDS/SmartCampus2014
+ *  License MIT
  */
-
 
 // campus boundaries
 var area = {
@@ -96,28 +95,6 @@ function initialize() {
                 });
             });
 
-
-
-//    $.getJSON('http://localhost:4242/api/entity/',
-//            function(data) {
-//                var entity = 0;
-//                var marker;
-//                while (data.payload[entity]) {
-//                    if (data.payload[entity].latitude && data.payload[entity].longitude) {
-//                        marker = new google.maps.Marker({
-//                            position: new google.maps.LatLng(data.payload[entity].latitude, data.payload[entity].longitude),
-//                            map: map,
-//                            title: data.payload[entity].name,
-//                            icon: ICONS[data.payload[entity].type]
-//                        });
-//                        google.maps.event.addListener(marker, 'click', function() {
-//                            buildPanel(data.payload[entity]);
-////                            buildPanelByIndex(entity);
-//                        });
-//                    }
-//                    entity++;
-//                }
-//            });
 
 }
 google.maps.event.addDomListener(window, 'load', initialize);
