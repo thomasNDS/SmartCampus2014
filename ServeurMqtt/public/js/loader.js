@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 
-
+/*
+ * A FINIR
+ * Fonction pour chager une entité avec ses différents items / sensor / mesure
+ */
 function loadFullEntity(idEntity) {
 
     var entity = {};
