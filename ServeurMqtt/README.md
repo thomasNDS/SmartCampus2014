@@ -1,6 +1,8 @@
 MQTT server
 ==============
 
+The Node.js (Express) smartCampus server
+
 Install
 -----------
 
