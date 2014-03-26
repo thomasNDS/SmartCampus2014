@@ -7,6 +7,9 @@ html {
     margin-left: 5%;
     margin-right: 5%;
 }
+.modal-footer{
+    text-align: center;    
+}
 
 .addPseudo{
     margin: 3px;

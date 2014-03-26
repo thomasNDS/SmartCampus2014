@@ -759,8 +759,8 @@ function buildPanel(objElem) {
 
         if (itemLoaded.show !== false) {
             //DESCRIPTION
-//            itemLoaded.description = translate(itemLoaded.description);
-//            itemLoaded.name = translate(itemLoaded.name);
+            itemLoaded.description = translate(itemLoaded.description);
+            itemLoaded.name = translate(itemLoaded.name);
             var itemContent = itemLoaded.description + "<br>";
 
             // INFOS
@@ -964,6 +964,9 @@ function showModalParameters(htmlNodeToAppend) {
             "<div id=\"popUpContent\" class=\"modal-body\">" +
             "Voulez-vous l'afficher ?" +
             "</div>" +
+            ' <div  class="modal-footer"> ' +
+            '<a class="btn btn-success" data-dismiss="modal">Fermer </a>' +
+            ' </div>' +
             "</div>";
     $(htmlNodeToAppend).append(modalParam);
 }
@@ -976,6 +979,9 @@ function showModalAbout(htmlNodeToAppend) {
             "<div id=\"popUpContent\" class=\"modal-body\">" +
             "Voulez-vous l'afficher ?" +
             "</div>" +
+            ' <div  class="modal-footer"> ' +
+            '<a class="btn btn-success" data-dismiss="modal">Fermer </a>' +
+            ' </div>' +
             "</div>";
     $(htmlNodeToAppend).append(modalAbout);
 }
@@ -988,6 +994,9 @@ function showModalHelp(htmlNodeToAppend) {
             "<div id=\"popUpContent\" class=\"modal-body\">" +
             "Voulez-vous l'afficher ?" +
             "</div>" +
+            ' <div  class="modal-footer"> ' +
+            '<a class="btn btn-success" data-dismiss="modal">Fermer </a>' +
+            ' </div>' +
             "</div>";
     $(htmlNodeToAppend).append(modalHelp);
 }
