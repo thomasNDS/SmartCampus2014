@@ -8,7 +8,7 @@
 exports.covoiturage = function(req, res) {
     var dataRes = "";
     var spawn = require('child_process').spawn,
-            pythonProcess = spawn('python', ['script/covoiturage.py', req.body.destination, req.body.day, req.body.month, req.body.year]);
+            pythonProcess = spawn('python', ['/script/covoiturage.py', req.body.destination, req.body.day, req.body.month, req.body.year]);
 
     pythonProcess.stdout.on('data', function(data) {
         console.log('stdout: ' + data);
@@ -28,7 +28,7 @@ exports.covoiturage = function(req, res) {
 exports.translate = function(req, res) {
     var dataRes = "";
     var spawn = require('child_process').spawn,
-            pythonProcess = spawn('python', ['script/translate.py', req.body.lang, req.body.corpus]);
+            pythonProcess = spawn('python', ['/script/translate.py', req.body.lang, req.body.corpus]);
 
     pythonProcess.stdout.on('data', function(data) {
         console.log('stdout: ' + data);
@@ -48,7 +48,7 @@ exports.translate = function(req, res) {
 exports.casierNFC = function(req, res) {
     var dataRes = "";
     var spawn = require('child_process').spawn,
-            pythonProcess = spawn('python', ['script/casier_nfc.py']);
+            pythonProcess = spawn('python', ['/script/casier_nfc.py']);
 
     pythonProcess.stdout.on('data', function(data) {
         console.log('stdout: ' + data);
