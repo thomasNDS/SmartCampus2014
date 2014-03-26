@@ -816,7 +816,13 @@ function buildPanel(objElem) {
                             console.log(err);
                         }
                     });
-                    sensorContent += sensorLoaded.type + " : " + mesure.value + "<br>";
+                    sensorContent += sensorLoaded.type + " : " + mesure.value;
+                    if (sensorLoaded.type === "airQualite"){
+                        sensorContent += " ppm";
+                    } else if (sensorLoaded.type === "humidite") {
+                        sensorContent += " %";
+                    }
+                    sensorContent += "<br>";
                 });
                 sensorContent += "</div>";
                 sensorContent += "</div>";
