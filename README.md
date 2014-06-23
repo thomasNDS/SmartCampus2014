@@ -45,3 +45,8 @@ Technologies
 * [OpenHab](https://github.com/openhab)
 * [Arduino Galileo](http://arduino.cc/en/ArduinoCertified/IntelGalileo)
 
+Licensing
+============
+
+GPL
+http://www.gnu.org/copyleft/gpl.html
